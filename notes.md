@@ -2,21 +2,17 @@
 - [x] Turned based combat function
 - [x] Add speed stat
 - [ ] Add xp
-- [ ] Add cool ideas (at the bottom)
+- [ ] Add cool ideas (B)
 
-## TurnBasedCombat Function ( A to D ) :
+## TurnBasedCombat Function (A) :
 ### A.
-Takes in 2 arguments 
+- Takes in 2 arguments 
 1. Player
 2. Enemy
 
-### B. 
-Who goes first?? 
-( Add speed stat? )
-
-### C. 
-Battle start :
-Ex. Player start
+- Who goes first?? ( Add speed stat? )
+- Battle start :
+- Ex. Player start
 1. Options printed ( refer to D. )
 2. After player turn
 3. Print out Enemy attack ( or decision if decided to add a random deciding pattern for enemies ex. attacking or defending )
@@ -26,13 +22,12 @@ Ex. Player start
 7. If loss/died loop back to start (path0)
 8. If died proportional penalty or complete reset?
 
-### D.
-Options :
+- Options :
 1. Attack ( Direct dmg or total dmg - enemy defense if added )
 2. Defend ( Add defense stat? )
 3. Run ( Only possible if have higher speed? )
 
-### E.
+### B.
 Cool idea
 1. Add "stat" command. Displays current player stat. // Finished
 2. Add "map" command. Display current player position in the paths ex. could be tree style.
@@ -44,3 +39,5 @@ Ex.
 
 Design is subject to change 
 
+### C.
+- Add HP bar during combat
