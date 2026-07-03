@@ -31,21 +31,27 @@ void path2(char move1[], player *p);
 void path3(char move1[], player *p);
 
 // Combat
-void turnBasedCombat(player *p, enemy *e);
+int turnBasedCombat(player *p, enemy *e);
 void playerCombatOption(player *p, enemy *e);
 
-// Tools
+// Player Tools
 void playerStats(player *p);
 void enemyStats(enemy *p);
 
+// Dev tools
+void yesno(void);
+void respawn(player *p);
+void resetPlayerStats(player *p);
 
 int main (void)
 {
     char menuOptions[50] = "";
 
     printf("Welcome to astra's short dungeon game!\n");
+    printf("Type the respective number of the decision you want to make!\n");
     printf("[1] New Game\n");
     printf("[2] Exit\n");
+    printf("Next Move: ");
 
     fgets(menuOptions, sizeof(menuOptions), stdin);
     menuOptions[strcspn(menuOptions, "\n")] = 0;
@@ -57,16 +63,17 @@ int main (void)
 
         player p;
         p.name;
-        p.hp = 100;
+        p.hp = 100; 
         p.atk = 10; 
+        p.speed = 5;
         p.gold;
 
-        printf("Player Name: ");
+        printf("Enter Player Name: ");
         //sleep(1);
         fgets(p.name, sizeof(p.name), stdin);
         p.name[strcspn(p.name, "\n")] = 0;
         
-        printf(" * = player action\n");
+        printf(" * = Player/NPC Action\n");
         printf(" # = Story\n");
         printf("Enter \"X\" to exit game anytime\n");
         //sleep(2);
@@ -90,6 +97,8 @@ int main (void)
     return 0;
 }
 
+
+// - - - - - - - - - - Paths - - - - - - - - - -
 void path0(player *p) // Starting Area
 {       
     int running = 1;
@@ -185,10 +194,12 @@ void path1_2(player *p) // King Goblin Route
     enemy kingGoblin;
     kingGoblin.hp = 200;
     kingGoblin.atk = 50;
+    kingGoblin.speed = 25;
     kingGoblin.goldDrop = 300;
     strcpy(kingGoblin.name, "King Goblin");
 
-    turnBasedCombat(p, &kingGoblin);
+    int result = turnBasedCombat(p, &kingGoblin);
+    
 }
 
 void path2(char move1[], player *p) // Meet a Swordsman Route (Increase Attack)
@@ -201,7 +212,10 @@ void path3(char move1[], player *p) // Meet a Wizard Route (Increase HP)
     printf("* You selected path 3\n");
 }
 
-void turnBasedCombat(player *p, enemy *e)
+
+// - - - - - - - - - - Combat - - - - - - - - - -
+// Main Combat mechanics
+int turnBasedCombat(player *p, enemy *e)
 {
     printf("Combat start!\n");
 
@@ -227,9 +241,13 @@ void turnBasedCombat(player *p, enemy *e)
 
             playerCombatOption(p,e);
 
-            if (e->hp <= 0 )
+            if (e->hp <= 0 ) // Winning condition
             {
-                printf("You win!");
+                printf("You win!\n");
+                p->gold = p->gold + e->goldDrop; // Receive enemy gold
+                printf("Received gold : %i\n", e->goldDrop);
+                printf("Current player gold : %i\n", p->gold);
+                return 0; // Returns 0 for surviving the fight ( Can continue )
                 break;
             }
 
@@ -239,12 +257,15 @@ void turnBasedCombat(player *p, enemy *e)
         {
             printf("%s's Turn\n", e->name);
 
-            printf("%s Attacks! \n", e->name);
+            printf("* %s Attacks! \n", e->name);
             p->hp = p->hp - e->atk;
 
-            if (p->hp <= 0 )
+            if (p->hp <= 0 ) // Losing condition
             {
-                printf("You lose!\n");
+                printf("You died!\n");
+                resetPlayerStats(p);
+                respawn(p);
+                return 1; // Returns 1 for dying after the fight ( Can't continue )
                 break;
             }
 
@@ -253,52 +274,66 @@ void turnBasedCombat(player *p, enemy *e)
     }
 }
 
+// Used in turnBasedCombat function for players actions during combat
 void playerCombatOption(player *p, enemy *e)
 {
-    char playerCombatDecision[50];
-    printf("[1] Attack\n");
-    printf("[2] Defend\n");
-    printf("[3] Run\n");
-    printf("[4] Player Stats\n");
-    printf("[5] Enemy stats\n");
-    printf("Next Move : ");
+    int running = 1;
+    while (running)
+    {
+        char playerCombatDecision[50];
+        printf("[1] Attack\n");
+        printf("[2] Defend\n");
+        printf("[3] Run\n");
+        printf("[4] Player Stats\n");
+        printf("[5] Enemy stats\n");
+        printf("Next Move : ");
 
-    fgets(playerCombatDecision, sizeof(playerCombatDecision), stdin);
-    playerCombatDecision[strcspn(playerCombatDecision, "\n")] = 0;
+        fgets(playerCombatDecision, sizeof(playerCombatDecision), stdin);
+        playerCombatDecision[strcspn(playerCombatDecision, "\n")] = 0;
 
-    if (strcmp(playerCombatDecision, "1") == 0)
-    {
-        e->hp = e->hp - p->atk;
-    }
-    else if (strcmp(playerCombatDecision, "2") == 0) // Placeholder | add later
-    {
-        printf("Add defence later\n");
-    }
-    else if (strcmp(playerCombatDecision, "3") == 0) // Placeholder | add later
-    {
-        printf("Add run later\n");
-    }
-    else if (strcmp(playerCombatDecision, "4") == 0)
-    {
-        playerStats(p);
-        playerCombatOption(p, e);
-    }
-    else if (strcmp(playerCombatDecision, "5") == 0)
-    {
-        enemyStats(e);
-        playerCombatOption(p, e);
-    }
-    else 
-    {
-        printf("error\n"); // Add better error checking | Consider adding loop back if error
+        if (strcmp(playerCombatDecision, "1") == 0)
+        {
+            printf("* %s Attacks!\n", p->name);
+            e->hp = e->hp - p->atk;
+            break;
+        }
+        else if (strcmp(playerCombatDecision, "2") == 0) // Placeholder | add later
+        {
+            printf("* %s Defends!\n", p->name);
+            printf("Add defence later\n");
+            break;
+        }
+        else if (strcmp(playerCombatDecision, "3") == 0) // Placeholder | add later
+        {
+            printf("* %s Tried to run away!\n", p->name);
+            printf("Add run later\n");
+            break;
+        }
+        else if (strcmp(playerCombatDecision, "4") == 0)
+        {
+            playerStats(p);
+            printf("%s's Turn\n", p->name);
+        }
+        else if (strcmp(playerCombatDecision, "5") == 0)
+        {
+            enemyStats(e);
+            printf("%s's Turn\n", p->name);
+        }
+        else 
+        {
+            printf("[x] Invalid Move\n"); 
+            printf("%s's Turn", p->name);
+        }
     }
 } 
 
+
+// - - - - - - - - - - Player Tools - - - - - - - - - -
 // Print stats functions
-void playerStats(player *p)
+void playerStats(player *p) // Display player stats
 {
-    printf("%s\n", p->name);
     printf("Player Stats : \n");
+    printf("%s\n", p->name);
     printf("HP : %i\n", p->hp);
     printf("ATK : %i\n", p->atk);
     printf("SPEED : %i\n", p->speed);
@@ -306,14 +341,64 @@ void playerStats(player *p)
     printf("Press Enter to exit. . .\n");
     getchar();
 }
-void enemyStats(enemy *e)
+void enemyStats(enemy *e) // Display enemy stats
 {
-    printf("%s\n", e->name);
     printf("Enemy Stats : \n");
+    printf("%s\n", e->name);
     printf("HP : %i\n", e->hp);
     printf("ATK : %i\n", e->atk);
     printf("SPEED : %i\n",e->speed);
     printf("GOLD : %i\n", e->goldDrop);
     printf("Press Enter to exit. . .\n");
     getchar();
+}
+// Consider adding map function? ( display current player position in paths)
+
+
+// - - - - - - - - - - Dev Tools - - - - - - - - - -
+// Basic Yes / No Options
+void yesno(void)
+{
+    printf("[1] Yes\n");
+    printf("[2] No\n");
+    printf("Next Move: ");
+}
+
+// Handles player respawns after death
+void respawn(player *p)
+{
+    char afterDeathDecision[50];
+    
+    int running = 1;
+    while (running)
+    {
+        printf("Respawn?\n");
+        yesno();
+        fgets(afterDeathDecision, sizeof(afterDeathDecision), stdin);
+        afterDeathDecision[strcspn(afterDeathDecision, "\n")] = 0;
+
+        if (strcmp(afterDeathDecision, "1") == 0)
+        {
+            printf("# Here we go again. . .\n");
+            path0(p);
+            break;
+        }
+        else if (strcmp(afterDeathDecision, "2") == 0)
+        {
+            printf("Goodbye!\n");
+            break;
+        }
+        else 
+        {
+            printf("Not a valid option. PLease try again\n");
+        }
+    }
+}
+// Reset player stats to default starting value
+void resetPlayerStats(player *p)
+{
+    p->hp = 100;
+    p->atk = 10;
+    p->speed = 5;
+    p->gold = 0;
 }
