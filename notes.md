@@ -1,10 +1,12 @@
 ## Summary
-- [x] Turned based combat function
-- [x] Add speed stat
-- [ ] Add xp
-- [ ] Add cool ideas (B)
+- [x] Turned based combat function (A)
+- [x] Add speed stat (A)
+- [ ] Add xp (A)
+- [x] Display stats command (B)
+- [ ] Map command (B)
+- [x] HP during combat (C)
 
-## TurnBasedCombat Function (A) :
+## TurnBasedCombat Function:
 ### A.
 - Takes in 2 arguments 
 1. Player

@@ -2,7 +2,6 @@
 #include <string.h>
 #include <unistd.h>
 
-
 typedef struct
 {
     char name[50];
@@ -45,54 +44,59 @@ void resetPlayerStats(player *p);
 
 int main (void)
 {
-    char menuOptions[50] = "";
-
-    printf("Welcome to astra's short dungeon game!\n");
-    printf("Type the respective number of the decision you want to make!\n");
-    printf("[1] New Game\n");
-    printf("[2] Exit\n");
-    printf("Next Move: ");
-
-    fgets(menuOptions, sizeof(menuOptions), stdin);
-    menuOptions[strcspn(menuOptions, "\n")] = 0;
-
-    if (strcmp(menuOptions, "1") == 0)
+    int running = 1;
+    while (running)
     {
-        printf("Starting new game...\n");
-        //sleep(1);
+        char menuOptions[50] = "";
 
-        player p;
-        p.name;
-        p.hp = 100; 
-        p.atk = 10; 
-        p.speed = 5;
-        p.gold;
+        printf("Welcome to astra's short dungeon game!\n");
+        printf("Type the respective number of the decision you want to make!\n");
+        printf("[1] New Game\n");
+        printf("[2] Exit\n");
+        printf("Next Move: ");
 
-        printf("Enter Player Name: ");
-        //sleep(1);
-        fgets(p.name, sizeof(p.name), stdin);
-        p.name[strcspn(p.name, "\n")] = 0;
-        
-        printf(" * = Player/NPC Action\n");
-        printf(" # = Story\n");
-        printf("Enter \"X\" to exit game anytime\n");
-        //sleep(2);
-        printf("# You start your adventure inside a dungeon with no memory of how you got here\n");
-        //sleep(3);
-        printf("# Presented before you are 3 paths\n");
+        fgets(menuOptions, sizeof(menuOptions), stdin);
+        menuOptions[strcspn(menuOptions, "\n")] = 0;
 
-        path0(&p); // "&p" Passes Player "p" Struct To Other Functions. Just "p" For The Rest No "&". 
+        if (strcmp(menuOptions, "1") == 0)
+        {
+            printf("Starting new game...\n");
+            //sleep(1);
 
+            player p;
+            p.name;
+            p.hp = 100; 
+            p.atk = 1000; 
+            p.speed = 5;
+            p.gold;
+
+            printf("Enter Player Name: ");
+            //sleep(1);
+            fgets(p.name, sizeof(p.name), stdin);
+            p.name[strcspn(p.name, "\n")] = 0;
+            
+            printf(" * = Player/NPC Action\n");
+            printf(" # = Story\n");
+            printf("Enter \"Ctrl + c\" to exit game anytime\n");
+            //sleep(2);
+            printf("# You start your adventure inside a dungeon with no memory of how you got here\n");
+            //sleep(3);
+            printf("# Presented before you are 3 paths\n");
+
+            path0(&p); // "&p" Passes Player "p" Struct To Other Functions. Just "p" For The Rest No "&". 
+            
+            break;
+        }
+        else if (strcmp(menuOptions, "2") == 0)
+        {
+            printf("Goodbye :(\n");
+            break;
+        }
+        else
+        {
+            printf("Invalid move\n");
+        }
     }
-    else if (strcmp(menuOptions, "2") == 0)
-    {
-        printf("Goodbye :(\n");
-    }
-    else
-    {
-        printf("Error\n");
-    }
-
 
     return 0;
 }
@@ -171,11 +175,6 @@ void path1(char move1[], player *p) // Optional King Goblin Route
             path0(p);
             break;
         }
-        else if (strcmp(move2, "X") == 0)
-        {
-            printf("goodbye\n");
-            break;
-        }
         else
         {
             printf("Invalid move. Try again\n");
@@ -199,12 +198,17 @@ void path1_2(player *p) // King Goblin Route
     strcpy(kingGoblin.name, "King Goblin");
 
     int result = turnBasedCombat(p, &kingGoblin);
-    
+
+    if (result == 0)
+    {
+        printf("Congrats you won!\n");
+        printf("Story To Be Continued. . .\n"); // Add path 1-3 here
+    }
 }
 
 void path2(char move1[], player *p) // Meet a Swordsman Route (Increase Attack)
 {
-    printf("* You selected path 2\n");
+    printf("* You enter path 2\n");
 }
 
 void path3(char move1[], player *p) // Meet a Wizard Route (Increase HP)
@@ -232,21 +236,29 @@ int turnBasedCombat(player *p, enemy *e)
         start = 1; // Enemy start = 1
     }
     
+    int playerhpstart = p->hp; // Starting player hp (Before combat)
+    int enemyhpstart = e->hp; // Same but for enemy
+
     int running = 1;
     while (running)
     {
         if (start == 0)
         {
             printf("%s's Turn \n", p->name);
-
+            printf("HP: %i / %i\n", p->hp, playerhpstart);
             playerCombatOption(p,e);
 
             if (e->hp <= 0 ) // Winning condition
             {
                 printf("You win!\n");
+
+                p->hp = playerhpstart; // Restore hp after combat
+
                 p->gold = p->gold + e->goldDrop; // Receive enemy gold
                 printf("Received gold : %i\n", e->goldDrop);
-                printf("Current player gold : %i\n", p->gold);
+                
+                playerStats(p);
+
                 return 0; // Returns 0 for surviving the fight ( Can continue )
                 break;
             }
@@ -256,7 +268,9 @@ int turnBasedCombat(player *p, enemy *e)
         else if (start == 1)
         {
             printf("%s's Turn\n", e->name);
-
+            
+            printf("HP: %i / %i\n", e->hp, enemyhpstart);
+            
             printf("* %s Attacks! \n", e->name);
             p->hp = p->hp - e->atk;
 
@@ -338,7 +352,7 @@ void playerStats(player *p) // Display player stats
     printf("ATK : %i\n", p->atk);
     printf("SPEED : %i\n", p->speed);
     printf("GOLD : %i\n", p->gold);
-    printf("Press Enter to exit. . .\n");
+    printf("Press Enter to exit. . .");
     getchar();
 }
 void enemyStats(enemy *e) // Display enemy stats
@@ -349,7 +363,7 @@ void enemyStats(enemy *e) // Display enemy stats
     printf("ATK : %i\n", e->atk);
     printf("SPEED : %i\n",e->speed);
     printf("GOLD : %i\n", e->goldDrop);
-    printf("Press Enter to exit. . .\n");
+    printf("Press Enter to exit. . .");
     getchar();
 }
 // Consider adding map function? ( display current player position in paths)
