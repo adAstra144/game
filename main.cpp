@@ -36,7 +36,7 @@ void path1_2(player *p);
 
 
 // Combat 
-void turnBasedCombat (player *p, enemy *e);
+int turnBasedCombat (player *p, enemy *e);
 void playerCombatOptions (player *p, enemy *e, int playerStartingHp);
 
 
@@ -49,6 +49,10 @@ void validnum (void);
 void yn (void);
 void respawn (player *p);
 void resetPlayerStats (player *p);
+int accept (void);
+void space (void);
+void contin (void);
+void cinignore (void);
 
 
 int main ()
@@ -70,8 +74,7 @@ int main ()
         {
             std::cout << "Starting game. . . " << std::endl;
 
-            player p;
-            p.name;
+            player p; // Starting Player Stats
             p.hp = 100;
             p.atk = 10;
             p.speed = 10;
@@ -104,7 +107,7 @@ int main ()
 }
 
 // - - - - - - - - - - Paths - - - - - - - - - -
-void path0 (player *p)
+void path0 (player *p) // Root path 
 {
     while (1)
     {
@@ -145,24 +148,24 @@ void path0 (player *p)
     }
 }
 
-void path1 (player *p)
+void path1 (player *p) // Pre King Goblin Path
 {
-    int move2;
+    int move1;
 
     while (1)
     {
         std::cout << "[1] Continue Path 1" << std::endl;
         std::cout << "[2] Turn Back" << std::endl;
         std::cout << "Next Move: ";
-        std::cin >> move2;
+        std::cin >> move1;
 
-        if (move2 == 1)
+        if (move1 == 1)
         {
             std::cout << "*" << p->name << " Continues" << std::endl; 
             path1_2(p);
             break;
         }
-        else if (move2 == 2)
+        else if (move1 == 2)
         {
             std::cout << "*" << p->name << " Turn's Back" << std::endl;
             path0(p);
@@ -178,20 +181,69 @@ void path1 (player *p)
     }
 }
 
-void path2 (player *p)
+void path2 (player *p) // Wizard Path (Increase ? Stat)
 {
-    std::cout << "Welcome to path 2" << std::endl;
+    cinignore();
+
+    std::cout << "- - - - - Dialouge Start - - - - -" << std::endl;
+
+    std::cout << "< ??? >" << std::endl;
+    std::cout << "What brings thee in this parts?" << std::endl;
+    contin();
+    std::cout << "< " << p->name << " >" << std::endl;
+    std::cout << "Who are you?" << std::endl;
+    contin();
+    std::cout << "< Wizard >" << std::endl;
+    std::cout << "I am but a humble wizard" << std::endl;
+    contin();
+    std::cout << "< " << p->name << " >" << std::endl;
+    std::cout << "What is a wizard doing here?" << std::endl;
+    contin();
+    std::cout << "< Wizard >" << std::endl;
+    std::cout << "You need not know of it" << std::endl;
+    std::cout << "Instead I can offer some services if you do me a favor" << std::endl;
+    contin();
+    std::cout << "< " << p->name << " >" << std::endl;
+    std::cout << "What favor?" << std::endl;
+    contin();
+    std::cout << "< Wizard >" << std::endl;
+    std::cout << "In the room the next of this one" << std::endl;
+    std::cout << "There's a pesky skeleton ruining my garden" << std::endl;
+    std::cout << "Kill it in exchange for a reward" << std::endl;
+    contin();
+    std::cout << "< " << p->name << " >" << std::endl;
+    int move1 = accept();
+    space();
+
+    if (move1 == 1)
+    {
+        std::cout << "< Wizard >" << std::endl;
+        std::cout << "I knew I could count on you!" << std::endl;
+        contin();
+
+        // Continue Path 2_2 Here
+    }
+    else if (move1 == 0)
+    {
+        std::cout << "< Wizard >" << std::endl;
+        std::cout << "Eh? Your loss then" << std::endl;
+        std::cout << "Come to me again if you ever change your mind" << std::endl;
+        contin();
+
+        // 3 Options : 1. Talk to wizard (Shortened ex. "Want to take the offer now?") 2. Return to parent path 3. Continue path2_2
+    }
+
+    std::cout << "- - - - - Dialouge End - - - - -" << std::endl;
 }
 
 void path3 (player *p)
-
 {
     std::cout << "Welcome to path 3" << std::endl;
 }
 
 
 // - - - - - - - - - - Paths 2 - - - - - - - - - -
-void path1_2(player *p)
+void path1_2(player *p) // King Goblin Path
 {
     enemy kingGoblin;
     kingGoblin.name = "King Goblin";
@@ -202,12 +254,18 @@ void path1_2(player *p)
 
     std::cout << "King Goblin Has Appeared!" << std::endl;
     
-    turnBasedCombat(p, &kingGoblin);
+    int result = turnBasedCombat(p, &kingGoblin);
+
+    if (result == 0) // Add Path1_3 Here
+    {
+        std::cout << "You Won" << std::endl; // What's Next After King Goblin?
+    }
+
 }
 
 
 // - - - - - - - - - - Combat System - - - - - - - - - -
-void turnBasedCombat (player *p, enemy *e)
+int turnBasedCombat (player *p, enemy *e) // Main Combat Mechanics (Basic Turn Based)
 {
     int turn; // Determine who starts first
 
@@ -222,13 +280,11 @@ void turnBasedCombat (player *p, enemy *e)
         std::cout << "Enemy Start" << std::endl;
     }
 
-    int playerStartingHp = p->hp;
-    int enemyStartingHp = e->hp;
+    int playerStartingHp = p->hp; // Stores in HP before the fight begins
+    int enemyStartingHp = e->hp; // Used for determining max hp and restoring hp after combat 
 
     while (1)
     {
-        
-
         if (turn == 0)
         {
             std::cout << p->name << "\'s Turn" << std::endl;
@@ -239,8 +295,16 @@ void turnBasedCombat (player *p, enemy *e)
             if (e->hp <= 0)
             {
                 std::cout << "You Win!" << std::endl;
-                break;
+                
+                p->hp = playerStartingHp; // Restore HP
+
+                p->gold = p->gold + e->gold; // Receive Enemies Gold
+                std::cout << "Received Gold: " << e->gold << std::endl;
+
+                return 0;
             }
+            cinignore();
+            contin();
 
             turn = 1;
         }
@@ -252,24 +316,28 @@ void turnBasedCombat (player *p, enemy *e)
 
             if (p->defend == 1) // If defending reduce enemy attack
             {
+                contin();
                 p->hp = p->hp - (e->atk / 2);
-                std::cout << "You Defended, Reduced Damage Taken" << std::endl;
+                std::cout << p->name << " Defended, Reduced Damage Taken" << std::endl;
             }
             else
             {
-                p->hp = p->hp - e->atk; 
+                p->hp = p->hp - e->atk; // Normal Attack
             }
 
             if (p->hp <= 0)
             {
                 std::cout << "You Died!" << std::endl;
                 respawn(p);
-                break;
+                return 1;
             }
-
+            contin();
+            
             turn = 0;
         }
     }
+
+    return -1; // Fail Safe (Claude Suggested)
 }
 
 // Players Options during Combat
@@ -345,7 +413,7 @@ void playerStats (player *p)
     std::cout << "SPEED: " << p->speed << std::endl;
     std::cout << "GOLD: " << p->gold << std::endl;
 
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cinignore();
     std::cout << "Press Enter To Exit. . .";
     getchar();
 }
@@ -358,7 +426,7 @@ void enemyStats (enemy *e)
     std::cout << "SPEED: " << e->speed << std::endl;
     std::cout << "GOLD: " << e->gold << std::endl;
 
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cinignore();
     std::cout << "Press Enter To Exit. . .";
     getchar();
 }
@@ -368,7 +436,7 @@ void enemyStats (enemy *e)
 void validnum (void) // Fixes cin(input) if it's supposed to be a number
 {   
     std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cinignore();
     std::cout << "Not a number please try again" << std::endl;
 }
 
@@ -418,4 +486,50 @@ void resetPlayerStats (player *p)
     p->atk = 10;
     p->speed = 10;
     p->gold = 0;
+}
+
+int accept (void) // Return 1 If Accept. 2 If Decline
+{
+    while (1)
+    {
+        int decision;
+        std::cout << "[1] Accept" << std::endl;
+        std::cout << "[2] Decline" << std::endl;
+
+        std::cout << "Next Move: ";
+        std::cin >> decision;
+
+        if (decision == 1)
+        {
+            return 1;
+        }
+        else if (decision == 2)
+        {
+            return 0;
+        }
+        else if (std::cin.fail())
+        {
+            validnum();
+        }
+        else 
+        {
+            std::cout << "Invalid Number" << std::endl;
+        }
+    }
+}
+
+void space (void) // Create 1 line space
+{
+    std::cout << "\n";
+}
+
+void contin (void) // Continue dialouge 
+{
+    std::cout << "->";
+    getchar();
+}
+
+void cinignore (void)
+{
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
