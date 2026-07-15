@@ -231,9 +231,44 @@ void path2 (player *p) // Wizard Path (Increase ? Stat)
         contin();
 
         // 3 Options : 1. Talk to wizard (Shortened ex. "Want to take the offer now?") 2. Return to parent path 3. Continue path2_2
+        
+        std::cout << "- - - - - Dialouge End - - - - -" << std::endl;
+        
+        space();
+        
+        int move2;
+        
+        std::cout << "[1] Continue to next room " << std::endl;
+        std::cout << "[2] Talk to Wizard" << std::endl;
+        std::cout << "[3] Go back" << std::endl;
+        
+        std::cout << "Next Move: ";
+        std::cin >> move2;
+        
+        if (move2 == 1)
+        {
+            std::cout << "Entering next room. . ." << std::endl;
+         }
+         else if (move2 == 2)
+         {
+             std::cout << "Approaching the Wizard. . ." << std::endl;   
+         }
+         else if (move2 == 3)
+         {
+             std::cout << "Here we are again. . ." << std::endl;
+             path0(p);
+         }
+         else if (std::cin.fail())
+         {
+             validnum();    
+         }
+         else
+         {
+             std::cout << "Invalid Number" << std::endl;
+         }
+        
+        
     }
-
-    std::cout << "- - - - - Dialouge End - - - - -" << std::endl;
 }
 
 void path3 (player *p)
