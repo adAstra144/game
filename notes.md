@@ -5,4 +5,5 @@
 - [x] Display stats command 
 - [ ] Map command 
 - [x] HP during combat 
-- [ ] Add a talk to npcs option in paths (ex. in path 2 if declined wizardoffer. Talk to wizard option becomes avail)
+- [x] Add a talk to wizard option in path 2 (ex. in path 2 if declined wizardoffer. Talk to wizard option becomes avail)
+- [ ] Path2_2
