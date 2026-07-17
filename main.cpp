@@ -3,18 +3,98 @@
 #include <limits>
 #include <cstdio>
 
+// Class
+
+class player
+{
+    private:
+        int hp;
+        int atk;
+        int speed;
+        int gold;
+        bool defending;
+    
+    public:
+        std::string name;
+
+        player()
+        {
+            hp = 100;
+            atk = 10;
+            speed = 10;
+            gold = 0;
+            defending = false;
+        }
+
+
+
+        // Combat Methods
+        void takeDamage (int amount)
+        {
+            if (defending) amount /= 2;
+
+            hp -= amount;
+
+            if (hp < 0) hp = 0;
+        }
+
+
+        // Set Player Variables Methods
+        void setName (std::string setName)
+        {
+            name = setName;
+        }
+        void setHp (int setHp)
+        {
+            hp = setHp;
+        }
+        void setAtk (int setAtk)
+        {
+            atk = setAtk;
+        }
+        void setSpeed (int setSpeed)
+        {
+            speed = setSpeed;
+        }
+        void setGold (int setGold) // Or Gain Gold
+        {
+            gold = setGold;
+        }
+        void setDefend (bool defend)
+        {
+            defending = defend;
+        }
+
+
+        // Get Player Variables Methods
+        std::string getName ()
+        {
+            return name;
+        }
+        int getHp ()
+        {
+            return hp;
+        }
+        int getAtk ()
+        {
+            return atk;
+        }
+        int getSpeed ()
+        {
+            return speed;
+        }
+        int getGold ()
+        {
+            return gold;
+        }
+        bool getDefend ()
+        {
+            return defending;
+        }
+};
+
 
 // Structs
-
-struct player 
-{
-    std::string name;
-    int hp;
-    int atk;
-    int defend;
-    int speed;
-    int gold;
-};
 
 struct quest
 {
@@ -42,6 +122,7 @@ struct enemy
     int speed;
     int gold;
 };
+
 
 // Functions
 
@@ -96,13 +177,6 @@ int main ()
     // Game State
     gameState g;
 
-    // Player
-    g.p.hp = 100; // Starting Player Stats
-    g.p.atk = 10;
-    g.p.speed = 10;
-    g.p.gold = 0;
-
-
     // Quests
     g.wizard.active = false;
     g.wizard.finished = false;
@@ -129,10 +203,12 @@ int main ()
             std::cout << "Starting game. . . " << std::endl;
             
             std::cout << "Enter player name: ";
-            std::cin >> g.p.name;
+            std::string name;
+            std::cin >> name;
+            g.p.setName(name);
             
             std::cout << "Presented before you are 3 paths" << std::endl;
-            
+
             path0(&g);
 
             break;
@@ -141,10 +217,10 @@ int main ()
         {
             std::cout << "Goodbye!" << std::endl;
             break;
-        }
+        } 
         else if (menuOptions == 1) // Quick Start. Defaulted Player Name To Astra (Remove After Development)
         {
-            g.p.name = "Astra"; // Remove This In The Future        
+            g.p.setName("Astra");       
             
             std::cout << "Presented before you are 3 paths" << std::endl;
             
@@ -440,7 +516,7 @@ int turnBasedCombat (gameState *g, enemy *e) // Main Combat Mechanics (Basic Tur
 {
     int turn; // Determine who starts first
 
-    if (g->p.speed > e->speed)
+    if (g->p.getSpeed() > e->speed)
     {
         turn = 0;
         std::cout << "Player Start" << std::endl;
@@ -451,7 +527,7 @@ int turnBasedCombat (gameState *g, enemy *e) // Main Combat Mechanics (Basic Tur
         std::cout << "Enemy Start" << std::endl;
     }
 
-    int playerStartingHp = g->p.hp; // Stores in HP before the fight begins
+    int playerStartingHp = g->p.getHp(); // Stores in HP before the fight begins
     int enemyStartingHp = e->hp; // Used for determining max hp and restoring hp after combat 
 
     while (1)
@@ -460,7 +536,7 @@ int turnBasedCombat (gameState *g, enemy *e) // Main Combat Mechanics (Basic Tur
         {
             std::cout << g->p.name << "\'s Turn" << std::endl;
 
-            g->p.defend = 0; // Resets Defending to false 
+            g->p.setDefend(false); // Resets Defending to false 
             int decision = playerCombatOptions(g, e, playerStartingHp);
 
             if (decision == 2) // If Successfully Ran Away. Return To 2 Caller. 
@@ -472,9 +548,9 @@ int turnBasedCombat (gameState *g, enemy *e) // Main Combat Mechanics (Basic Tur
             {
                 std::cout << "You Win!" << std::endl;
                 
-                g->p.hp = playerStartingHp; // Restore HP
+                g->p.setHp(playerStartingHp); // Restore HP
 
-                g->p.gold = g->p.gold + e->gold; // Receive Enemies Gold
+                g->p.setGold(g->p.getGold() + e->gold); // Receive Enemies Gold
                 std::cout << "Received Gold: " << e->gold << std::endl;
 
                 return 0;
@@ -490,18 +566,9 @@ int turnBasedCombat (gameState *g, enemy *e) // Main Combat Mechanics (Basic Tur
             std::cout << e->name << "\'s HP: " << e->hp << " / " << enemyStartingHp << std::endl; // Display Enemy HP
             std::cout << e->name << " Attacks!" << std::endl;
 
-            if (g->p.defend == 1) // If defending reduce enemy attack
-            {
-                contin();
-                g->p.hp = g->p.hp - (e->atk / 2);
-                std::cout << g->p.name << " Defended, Reduced Damage Taken" << std::endl;
-            }
-            else
-            {
-                g->p.hp = g->p.hp - e->atk; // Normal Attack
-            }
+            g->p.takeDamage(e->atk);
 
-            if (g->p.hp <= 0)
+            if (g->p.getHp() <= 0)
             {
                 std::cout << "You Died!" << std::endl;
                 respawn(g);
@@ -523,7 +590,7 @@ int playerCombatOptions (gameState *g, enemy *e, int playerStartingHp)
 
     while (1)
     {
-        std::cout << g->p.name << "\'s HP: " << g->p.hp << " / " << playerStartingHp << std::endl; // Display Player HP
+        std::cout << g->p.getName() << "\'s HP: " << g->p.getHp() << " / " << playerStartingHp << std::endl; // Display Player HP
         std::cout << "[1] Attack" << std::endl;
         std::cout << "[2] Defend" << std::endl;
         std::cout << "[3] Try To Run" << std::endl;
@@ -535,13 +602,13 @@ int playerCombatOptions (gameState *g, enemy *e, int playerStartingHp)
 
         if (combatDecision == 1) // Attack
         {
-            e->hp = e->hp - g->p.atk;
+            e->hp = e->hp - g->p.getAtk();
             std::cout << g->p.name << " Attacks!" << std::endl;
             break;
         }
         else if (combatDecision == 2) // Defend
         {
-            g->p.defend = 1;
+            g->p.setDefend(true);
             std::cout << g->p.name << " Defends!" << std::endl;
             break;
         }
@@ -553,13 +620,13 @@ int playerCombatOptions (gameState *g, enemy *e, int playerStartingHp)
             std::cout << "< " << g->p.name << " >" << std::endl;
             std::cout << "Time to run!" << std::endl;
 
-            if (g->p.speed > e->speed)
+            if (g->p.getSpeed() > e->speed)
             {
                 contin();
                 std::cout << " Succesfully Ran Away" << std::endl;
                 contin();
 
-                g->p.hp = playerStartingHp;
+                g->p.setHp(playerStartingHp);
 
                 return 2; 
             }
@@ -630,10 +697,10 @@ void respawn (gameState *g)
 void playerStats (gameState *g)
 {
     std::cout << g->p.name << "\'s Stats:" << std::endl;
-    std::cout << "HP: " << g->p.hp << std::endl;
-    std::cout << "ATK: " << g->p.atk << std::endl;
-    std::cout << "SPEED: " << g->p.speed << std::endl;
-    std::cout << "GOLD: " << g->p.gold << std::endl;
+    std::cout << "HP: " << g->p.getHp() << std::endl;
+    std::cout << "ATK: " << g->p.getAtk() << std::endl;
+    std::cout << "SPEED: " << g->p.getSpeed() << std::endl;
+    std::cout << "GOLD: " << g->p.getGold() << std::endl;
 
     cinignore();
     std::cout << "Press Enter To Exit. . .";
@@ -671,10 +738,10 @@ void yn (void)
 
 void resetPlayerStats (gameState *g)
 {
-    g->p.hp = 100;
-    g->p.atk = 10;
-    g->p.speed = 10;
-    g->p.gold = 0;
+    g->p.setHp(100);
+    g->p.setAtk(10);
+    g->p.setSpeed(10);
+    g->p.setGold(0);
 }
 
 void resetGame (gameState *g) // Add All Dialogues and Quests Here
