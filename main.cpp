@@ -3,8 +3,16 @@
 #include <limits>
 #include <cstdio>
 
+
+
+// Design Functions
+void space (void);
+void contin (void);
+
+
 // Class
 
+// Main Player 
 class player
 {
     private:
@@ -12,18 +20,18 @@ class player
         int atk;
         int speed;
         int gold;
-        bool defending;
+        bool defend;
     
     public:
         std::string name;
 
         player()
         {
-            hp = 100;
+            hp = 1000;
             atk = 10;
             speed = 10;
             gold = 0;
-            defending = false;
+            defend = false;
         }
 
 
@@ -31,7 +39,7 @@ class player
         // Combat Methods
         void takeDamage (int amount)
         {
-            if (defending) amount /= 2;
+            if (defend) amount /= 2;
 
             hp -= amount;
 
@@ -39,38 +47,35 @@ class player
         }
 
 
+        void gainGold (int gold) // Or Gain Gold
+        {
+            this->gold += gold;
+        }
+
         // Set Player Variables Methods
-        void setName (std::string setName)
+        void setHp (int hp)
         {
-            name = setName;
+            this->hp = hp;
         }
-        void setHp (int setHp)
+        void setAtk (int atk)
         {
-            hp = setHp;
+            this->atk = atk;
         }
-        void setAtk (int setAtk)
+        void setSpeed (int speed)
         {
-            atk = setAtk;
+            this->speed = speed;
         }
-        void setSpeed (int setSpeed)
+        void setGold (int gold)
         {
-            speed = setSpeed;
-        }
-        void setGold (int setGold) // Or Gain Gold
-        {
-            gold = setGold;
+            this->gold = gold;
         }
         void setDefend (bool defend)
         {
-            defending = defend;
+            this->defend = defend;
         }
 
 
         // Get Player Variables Methods
-        std::string getName ()
-        {
-            return name;
-        }
         int getHp ()
         {
             return hp;
@@ -89,9 +94,98 @@ class player
         }
         bool getDefend ()
         {
-            return defending;
+            return defend;
         }
 };
+
+// Main Enemy Class
+class enemy 
+{
+    protected:
+        int hp;
+        int atk;
+        int speed;
+        int gold;
+
+    public:
+        std::string name;
+
+        enemy(std::string n, int h, int a, int s, int g) // Create Enemies By Using enemy(Name, HP, ATTACK, SPEED, GOLD)
+        {
+            name = n;
+            hp = h;
+            atk = a;
+            speed = s;
+            gold = g;
+        }
+
+        // Combat
+        void takeDamage (int amount)
+        {
+            hp -= amount; 
+        }
+        virtual void specialMove (int turnCount)
+        {
+            
+        }
+
+        // Set Enemy Variables
+        void setHp (int hp)
+        {
+            this->hp = hp;
+        }
+
+        // Get Enemy Variables
+        int getHp ()
+        {
+            return hp;
+        }
+        int getAtk ()
+        {
+            return atk;
+        }
+        int getSpeed()
+        {
+            return speed;
+        }
+        int getGold ()
+        {
+            return gold;
+        }
+
+};
+
+// Separate Enemy Classes / Unique Enemies With distinguishing Features
+
+class kingGoblin : public enemy
+{
+    public:
+        kingGoblin() : enemy("King Goblin", 200, 50, 5, 200) {}
+
+    void specialMove (int turnCount) override
+    {
+        if (turnCount % 3 == 0)
+        {
+            hp += hp * 0.05;
+
+            if (hp > 200) hp = 200;
+
+            contin();
+            std::cout << name << " Used Special Move: Heal" << std::endl;
+            std::cout << name << " New HP: " << hp << " / 200" << std::endl;
+        }
+            
+    }
+    
+};
+
+class skeleton : public enemy
+{
+    public:
+        skeleton() : enemy("Skeleton", 30, 5, 15, 30) {}
+
+};
+
 
 
 // Structs
@@ -114,14 +208,6 @@ struct gameState
     bool dialogue2;
 };
 
-struct enemy 
-{
-    std::string name;
-    int hp;
-    int atk;
-    int speed;
-    int gold;
-};
 
 
 // Functions
@@ -165,12 +251,6 @@ void cinignore (void);
 void optionsPath2_2 (gameState *g);
 
 
-// Design
-void space (void);
-void contin (void);
-
-
-
 int main ()
 {
 
@@ -205,7 +285,7 @@ int main ()
             std::cout << "Enter player name: ";
             std::string name;
             std::cin >> name;
-            g.p.setName(name);
+            g.p.name = name;
             
             std::cout << "Presented before you are 3 paths" << std::endl;
 
@@ -220,7 +300,7 @@ int main ()
         } 
         else if (menuOptions == 1) // Quick Start. Defaulted Player Name To Astra (Remove After Development)
         {
-            g.p.setName("Astra");       
+            g.p.name = "Astra";       
             
             std::cout << "Presented before you are 3 paths" << std::endl;
             
@@ -334,12 +414,7 @@ void path1 (gameState *g) // Pre King Goblin Path
 
 void path1_2 (gameState *g) // King Goblin Path
 {
-    enemy kingGoblin;
-    kingGoblin.name = "King Goblin";
-    kingGoblin.hp = 200;
-    kingGoblin.atk = 50;
-    kingGoblin.speed = 5;
-    kingGoblin.gold = 200;
+    kingGoblin kingGoblin;
 
     std::cout << "King Goblin Has Appeared!" << std::endl;
     
@@ -448,12 +523,7 @@ void path2_2 (gameState *g)
 
     contin();
 
-    enemy skeleton;
-    skeleton.hp = 30;
-    skeleton.atk = 5;
-    skeleton.speed = 15;
-    skeleton.gold = 30;
-    skeleton.name = "Skeleton";
+    skeleton skeleton;
 
     std::cout << "< " << skeleton.name << " >" << std::endl;
     std::cout << "(Bones Crackling)" << std::endl;
@@ -516,7 +586,7 @@ int turnBasedCombat (gameState *g, enemy *e) // Main Combat Mechanics (Basic Tur
 {
     int turn; // Determine who starts first
 
-    if (g->p.getSpeed() > e->speed)
+    if (g->p.getSpeed() > e->getSpeed())
     {
         turn = 0;
         std::cout << "Player Start" << std::endl;
@@ -528,45 +598,59 @@ int turnBasedCombat (gameState *g, enemy *e) // Main Combat Mechanics (Basic Tur
     }
 
     int playerStartingHp = g->p.getHp(); // Stores in HP before the fight begins
-    int enemyStartingHp = e->hp; // Used for determining max hp and restoring hp after combat 
+    int enemyStartingHp = e->getHp(); // Used for determining max hp and restoring hp after combat 
+
+    int playerTurnCount = 0;
+    int enemyTurnCount = 0;
 
     while (1)
     {
         if (turn == 0)
         {
-            std::cout << g->p.name << "\'s Turn" << std::endl;
+            playerTurnCount++;
+            std::cout << g->p.name << "\'s Turn" << " | " << playerTurnCount << std::endl;
 
             g->p.setDefend(false); // Resets Defending to false 
-            int decision = playerCombatOptions(g, e, playerStartingHp);
+            int decision = playerCombatOptions(g, e, playerStartingHp); 
 
             if (decision == 2) // If Successfully Ran Away. Return To 2 Caller. 
             {
                 return 2;
             }
 
-            if (e->hp <= 0)
+            if (e->getHp() <= 0)
             {
                 std::cout << "You Win!" << std::endl;
                 
                 g->p.setHp(playerStartingHp); // Restore HP
 
-                g->p.setGold(g->p.getGold() + e->gold); // Receive Enemies Gold
-                std::cout << "Received Gold: " << e->gold << std::endl;
+                g->p.gainGold(e->getGold()); // Receive Enemies Gold
+                std::cout << "Received Gold: " << e->getGold() << std::endl;
 
                 return 0;
             }
             cinignore();
             contin();
 
+
             turn = 1;
         }
         else if (turn == 1)
         {
-            std::cout << e->name << "\'s Turn" << std::endl;
-            std::cout << e->name << "\'s HP: " << e->hp << " / " << enemyStartingHp << std::endl; // Display Enemy HP
+            enemyTurnCount++;
+            std::cout << e->name << "\'s Turn" << " | " << enemyTurnCount << std::endl;
+            std::cout << e->name << "\'s HP: " << e->getHp() << " / " << enemyStartingHp << std::endl; // Display Enemy HP
             std::cout << e->name << " Attacks!" << std::endl;
 
-            g->p.takeDamage(e->atk);
+            e->specialMove(enemyTurnCount);
+
+            g->p.takeDamage(e->getAtk());
+
+            if (g->p.getDefend() == true)
+            {
+                contin();
+                std::cout << g->p.name << " Defended, Reduced Damage Taken" << std::endl;
+            }
 
             if (g->p.getHp() <= 0)
             {
@@ -590,7 +674,7 @@ int playerCombatOptions (gameState *g, enemy *e, int playerStartingHp)
 
     while (1)
     {
-        std::cout << g->p.getName() << "\'s HP: " << g->p.getHp() << " / " << playerStartingHp << std::endl; // Display Player HP
+        std::cout << g->p.name << "\'s HP: " << g->p.getHp() << " / " << playerStartingHp << std::endl; // Display Player HP
         std::cout << "[1] Attack" << std::endl;
         std::cout << "[2] Defend" << std::endl;
         std::cout << "[3] Try To Run" << std::endl;
@@ -602,7 +686,7 @@ int playerCombatOptions (gameState *g, enemy *e, int playerStartingHp)
 
         if (combatDecision == 1) // Attack
         {
-            e->hp = e->hp - g->p.getAtk();
+            e->takeDamage(g->p.getAtk());
             std::cout << g->p.name << " Attacks!" << std::endl;
             break;
         }
@@ -620,7 +704,7 @@ int playerCombatOptions (gameState *g, enemy *e, int playerStartingHp)
             std::cout << "< " << g->p.name << " >" << std::endl;
             std::cout << "Time to run!" << std::endl;
 
-            if (g->p.getSpeed() > e->speed)
+            if (g->p.getSpeed() > e->getSpeed())
             {
                 contin();
                 std::cout << " Succesfully Ran Away" << std::endl;
@@ -710,10 +794,10 @@ void playerStats (gameState *g)
 void enemyStats (enemy *e)
 {
     std::cout << e->name << "\'s Stats:" << std::endl;
-    std::cout << "HP: " << e->hp << std::endl;
-    std::cout << "ATK: " << e->atk << std::endl;
-    std::cout << "SPEED: " << e->speed << std::endl;
-    std::cout << "GOLD: " << e->gold << std::endl;
+    std::cout << "HP: " << e->getHp() << std::endl;
+    std::cout << "ATK: " << e->getAtk() << std::endl;
+    std::cout << "SPEED: " << e->getSpeed() << std::endl;
+    std::cout << "GOLD: " << e->getGold() << std::endl;
 
     cinignore();
     std::cout << "Press Enter To Exit. . .";
@@ -742,6 +826,7 @@ void resetPlayerStats (gameState *g)
     g->p.setAtk(10);
     g->p.setSpeed(10);
     g->p.setGold(0);
+    g->p.setDefend(false);
 }
 
 void resetGame (gameState *g) // Add All Dialogues and Quests Here
@@ -788,6 +873,19 @@ int accept (void) // Return 1 If Accept. 2 If Decline
 void cinignore (void)
 {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+
+// - - - - - - - - - - Design - - - - - - - - - -
+void space (void) // Create 1 line space
+{
+    std::cout << "\n";
+}
+
+void contin (void) // Continue dialouge 
+{
+    std::cout << "->";
+    getchar();
 }
 
 
@@ -879,17 +977,4 @@ void optionsPath2_2 (gameState *g)
     {
         std::cout << "Invalid Number" << std::endl;
     }   
-}
-
-
-// - - - - - - - - - - Design - - - - - - - - - -
-void space (void) // Create 1 line space
-{
-    std::cout << "\n";
-}
-
-void contin (void) // Continue dialouge 
-{
-    std::cout << "->";
-    getchar();
 }
