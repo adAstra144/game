@@ -28,7 +28,7 @@ class player
         player()
         {
             hp = 1000;
-            atk = 10;
+            atk = 100;
             speed = 10;
             gold = 0;
             defend = false;
@@ -75,6 +75,7 @@ class player
         }
 
 
+
         // Get Player Variables Methods
         int getHp ()
         {
@@ -95,6 +96,20 @@ class player
         bool getDefend ()
         {
             return defend;
+        }
+
+        // Methods For Increasing/Upgrading Player Stats
+        void hpUp (int amount)
+        {
+            hp += 10 * amount; 
+        }
+        void atkUp (int amount)
+        {
+            atk += 10 * amount;
+        }
+        void speedUp (int amount)
+        {
+            speed += 10 * amount;
         }
 };
 
@@ -156,7 +171,6 @@ class enemy
 };
 
 // Separate Enemy Classes / Unique Enemies With distinguishing Features
-
 class kingGoblin : public enemy
 {
     public:
@@ -183,6 +197,14 @@ class skeleton : public enemy
 {
     public:
         skeleton() : enemy("Skeleton", 30, 5, 15, 30) {}
+    
+        void resetStats ()
+        {
+            hp = 30;
+            atk = 5;
+            speed = 15;
+            gold = 30;
+        }
 
 };
 
@@ -202,7 +224,7 @@ struct gameState
     player p;    
 
     // Quests
-    quest wizard;
+    quest qWizard;
     
     // Dialogues
     bool dialogue2;
@@ -258,8 +280,8 @@ int main ()
     gameState g;
 
     // Quests
-    g.wizard.active = false;
-    g.wizard.finished = false;
+    g.qWizard.active = false;
+    g.qWizard.finished = false;
 
 
     // Dialogues
@@ -325,6 +347,7 @@ void path0 (gameState *g) // Root path
 {
     while (1)
     {
+        std::cout << "Current Path: 0" << std::endl;
         int move1;
         std::cout << "[1] Enter Path 1" << std::endl;
         std::cout << "[2] Enter Path 2" << std::endl;
@@ -381,11 +404,12 @@ void path0 (gameState *g) // Root path
 // - - - - - - - - - - Paths 1 - - - - - - - - - -
 void path1 (gameState *g) // Pre King Goblin Path
 {
+    std::cout << "Current Path: 1" << std::endl;
     int move1;
 
     while (1)
     {
-        std::cout << "[1] Continue Path 1" << std::endl;
+        std::cout << "[1] Continue To Path 1-2?" << std::endl;
         std::cout << "[2] Turn Back" << std::endl;
         std::cout << "Next Move: ";
         std::cin >> move1;
@@ -414,9 +438,14 @@ void path1 (gameState *g) // Pre King Goblin Path
 
 void path1_2 (gameState *g) // King Goblin Path
 {
+    cinignore();
+
+    std::cout << "Current Path: 1-2" << std::endl;
+
     kingGoblin kingGoblin;
 
     std::cout << "King Goblin Has Appeared!" << std::endl;
+    contin();
     
     int result = turnBasedCombat(g, &kingGoblin);
 
@@ -436,6 +465,8 @@ void path1_2 (gameState *g) // King Goblin Path
 // - - - - - - - - - - Paths 2 - - - - - - - - - -
 void path2 (gameState *g) // Wizard Path (Increase ? Stat)
 {   
+    std::cout << "Current Path: 2" << std::endl;
+
     if (g->dialogue2 == true) // With Dialogue
     {
         cinignore();
@@ -475,7 +506,7 @@ void path2 (gameState *g) // Wizard Path (Increase ? Stat)
         {
             cinignore();
 
-            g->wizard.active = true; // Activates The Wizards Quest
+            g->qWizard.active = true; // Activates The Wizards Quest
 
             std::cout << "< Wizard >" << std::endl;
             std::cout << "\"I knew I could count on you!\"" << std::endl;
@@ -493,7 +524,7 @@ void path2 (gameState *g) // Wizard Path (Increase ? Stat)
         {
             cinignore();
 
-            g->wizard.active = false;
+            g->qWizard.active = false;
 
             std::cout << "< Wizard >" << std::endl;
             std::cout << "\"Eh? Your loss then\"" << std::endl;
@@ -512,11 +543,13 @@ void path2 (gameState *g) // Wizard Path (Increase ? Stat)
 
 void path2_2 (gameState *g)
 {
-    if (g->wizard.active == true)
+    std::cout << "Current Path: 2-2" << std::endl;
+
+    if (g->qWizard.active == true)
     {
         std::cout << "Wizard Quest: Active" << std::endl;
     }
-    else if (g->wizard.active == false)
+    else if (g->qWizard.active == false)
     {
         std::cout << "Wizard Quest: Inactive" << std::endl;
     }
@@ -533,42 +566,194 @@ void path2_2 (gameState *g)
     std::cout << "# They're Busy And Haven't Noticed You Yet" << std::endl;
 
     int move1;
+    int numOfSkeletons = 3;
 
     while (1)
     {
-        std::cout << "[1] Attack Skeleton 1" << std::endl;
-        std::cout << "[2] Attack Skeleton 2" << std::endl;
-        std::cout << "[3] Attack Skeleton 3" << std::endl;
-        std::cout << "[4] Turn Back" << std::endl;
+        if (numOfSkeletons == 3)
+        {
+            std::cout << "[1] Attack Skeleton 1" << std::endl;
+            std::cout << "[2] Attack Skeleton 2" << std::endl;
+            std::cout << "[3] Attack Skeleton 3" << std::endl;            
+            std::cout << "[4] Turn Back" << std::endl;
 
+
+        }
+        else if (numOfSkeletons == 2)
+        {
+            std::cout << "[1] Attack Skeleton 1" << std::endl;
+            std::cout << "[2] Attack Skeleton 2" << std::endl;
+            std::cout << "[3] Turn Back" << std::endl;
+        }
+        else if (numOfSkeletons == 1)
+        {
+            std::cout << "[1] Attack Skeleton 1" << std::endl;
+            std::cout << "[2] Turn Back" << std::endl;
+        }
+        else 
+        {
+            std::cout << "[1] Turn Back" << std::endl;
+        }
         std::cout << "Next Move: ";
         std::cin >> move1;
+    
 
-        if (move1 == 1)
-        {
-            std::cout << "Attacking Skeleton 1" << std::endl; // Add Combat Function To Each. After Each Win Make It Realize That the Skeletons Are Dead.
-            break;
-        }
-        else if (move1 == 2)
-        {
-            std::cout << "Attacking Skeleton 2" << std::endl;
-            break;
-        }
-        else if (move1 == 3)
-        {
-            std::cout << "Attacking Skeleton 3" << std::endl;
-            break;
-        }
-        else if (move1 == 4)
-        {
-            cinignore();
-            contin(); 
-            std::cout << "Turning Back. . ." << std::endl;
-            contin();
+        int result;
 
-            g->dialogue2 = false;
-            path2(g);
-            break;
+
+
+        // Adaptive Choices (Changes Everytime A Skeleton Is Killed)
+        if (numOfSkeletons == 3)
+        {
+            if (move1 == 1)
+            {
+                std::cout << "Attacking Skeleton 1" << std::endl; 
+                result = turnBasedCombat(g, &skeleton);
+
+                if (result == 0)
+                {
+                    numOfSkeletons--;
+                    skeleton.resetStats();
+                }
+                else 
+                {
+                    std::cout << "Error" << std::endl;
+                }
+            }
+            else if (move1 == 2)
+            {
+                std::cout << "Attacking Skeleton 2" << std::endl;
+                result = turnBasedCombat(g, &skeleton);
+
+                if (result == 0)
+                {
+                    numOfSkeletons--;
+                    skeleton.resetStats();
+                }
+                else
+                {
+                    std::cout << "Error" << std::endl;
+                }
+            }
+            else if (move1 == 3)
+            {
+                std::cout << "Attacking Skeleton 3" << std::endl;
+                result = turnBasedCombat(g, &skeleton);
+
+                if (result == 0)
+                {
+                    numOfSkeletons--;
+                    skeleton.resetStats();
+                }
+            }
+            else if (move1 == 4)
+            {
+                cinignore();
+                contin(); 
+                std::cout << "Turning Back. . ." << std::endl;
+                contin();
+
+                g->dialogue2 = false;
+                path2(g);
+                break;
+
+            }
+        }
+        else if (numOfSkeletons == 2)
+        {
+            if (move1 == 1)
+            {
+                std::cout << "Attacking Skeleton 1" << std::endl; 
+                result = turnBasedCombat(g, &skeleton);
+
+                if (result == 0)
+                {
+                    numOfSkeletons--;
+                    skeleton.resetStats();
+                }
+                else 
+                {
+                    std::cout << "Error" << std::endl;
+                }
+            }
+            else if (move1 == 2)
+            {
+                std::cout << "Attacking Skeleton 2" << std::endl;
+                result = turnBasedCombat(g, &skeleton);
+
+                if (result == 0)
+                {
+                    numOfSkeletons--;
+                    skeleton.resetStats();
+                }
+                else
+                {
+                    std::cout << "Error" << std::endl;
+                }
+            }
+            else if (move1 == 3)
+            {
+                cinignore();
+                contin(); 
+                std::cout << "Turning Back. . ." << std::endl;
+                contin();
+
+                g->dialogue2 = false;
+                path2(g);
+                break;
+            }
+        }
+        else if (numOfSkeletons == 1)
+        {
+            if (move1 == 1)
+            {
+                std::cout << "Attacking Skeleton 1" << std::endl; 
+                result = turnBasedCombat(g, &skeleton);
+
+                if (result == 0)
+                {
+                    numOfSkeletons--;
+                    skeleton.resetStats();
+
+                    if (g->qWizard.active)
+                    {
+                        g->qWizard.finished = true;
+                    }
+                }
+                else 
+                {
+                    std::cout << "Error" << std::endl;
+                }
+            }
+            else if (move1 == 2)
+            {
+                cinignore();
+                contin(); 
+                std::cout << "Turning Back. . ." << std::endl;
+                contin();
+
+                g->dialogue2 = false;
+                path2(g);
+                break;
+            }
+        }
+        else 
+        {
+            if (move1 == 1)
+            {
+                cinignore();
+                contin(); 
+                std::cout << "Turning Back. . ." << std::endl;
+                contin();
+
+                g->dialogue2 = false;
+                path2(g);
+                break;
+            }
+            else 
+            {
+                std::cout << "Error" << std::endl;
+            }
         }
     }
 
@@ -578,8 +763,11 @@ void path2_2 (gameState *g)
 // - - - - - - - - - - Paths 3 - - - - - - - - - -
 void path3 (gameState *g)
 {
+    std::cout << "Current Path: 3" <<std::endl;
+
     std::cout << "Welcome to path 3" << std::endl;
 }
+
 
 // - - - - - - - - - - Combat System - - - - - - - - - -
 int turnBasedCombat (gameState *g, enemy *e) // Main Combat Mechanics (Basic Turn Based)
@@ -596,6 +784,8 @@ int turnBasedCombat (gameState *g, enemy *e) // Main Combat Mechanics (Basic Tur
         turn = 1;
         std::cout << "Enemy Start" << std::endl;
     }
+    cinignore();
+    contin();
 
     int playerStartingHp = g->p.getHp(); // Stores in HP before the fight begins
     int enemyStartingHp = e->getHp(); // Used for determining max hp and restoring hp after combat 
@@ -620,14 +810,20 @@ int turnBasedCombat (gameState *g, enemy *e) // Main Combat Mechanics (Basic Tur
 
             if (e->getHp() <= 0)
             {
+                cinignore();
+                contin();
                 std::cout << "You Win!" << std::endl;
                 
                 g->p.setHp(playerStartingHp); // Restore HP
 
+                contin();
+
                 g->p.gainGold(e->getGold()); // Receive Enemies Gold
                 std::cout << "Received Gold: " << e->getGold() << std::endl;
 
-                return 0;
+                contin();
+
+                return 0; // Returns 0 If The Player Won
             }
             cinignore();
             contin();
@@ -656,7 +852,7 @@ int turnBasedCombat (gameState *g, enemy *e) // Main Combat Mechanics (Basic Tur
             {
                 std::cout << "You Died!" << std::endl;
                 respawn(g);
-                return 1;
+                return 1; // Returns 1 If Player Lost
             }
             contin();
             
@@ -804,6 +1000,25 @@ void enemyStats (enemy *e)
     getchar();
 }
 
+void statUp (gameState *g)
+{
+    int move1;
+    int amount;
+
+    std::cout << "Select A Stat To Upgrade: " << std::endl;
+    std::cout << "[1] HP" << std::endl;
+    std::cout << "[2] ATK" << std::endl;
+    std::cout << "[3] SPEED" << std::endl;
+    std::cout << "Next Move: ";
+    std::cin >> move1;
+
+    if (move1 == 1)
+    {
+        g->p.hpUp(amount);
+    }
+    // Continue statUp 
+}
+
 
 // - - - - - - - - - - Dev Tools - - - - - - - - - -
 void validnum (void) // Fixes cin(input) if it's supposed to be a number
@@ -835,8 +1050,8 @@ void resetGame (gameState *g) // Add All Dialogues and Quests Here
     g->dialogue2 = true;
 
     // Quests
-    g->wizard.active = false;
-    g->wizard.finished = false;
+    g->qWizard.active = false;
+    g->qWizard.finished = false;
 
 }
 
@@ -911,55 +1126,92 @@ void optionsPath2_2 (gameState *g)
     }
     else if (move1 == 2)
     {
-        int move2;
-
-        std::cout << "Approaching the Wizard. . ." << std::endl;
-        
-        if (g->wizard.active == true) // If The Quest Is Currently Active
+        if (g->qWizard.finished == true)
         {
+            cinignore();
             std::cout << "< Wizard >" << std::endl;
-            std::cout << "\"You have Skeletons To Kill\"" << std::endl;
-            std::cout << "\"Stop Wasting Time Here!\"" << std::endl;
+            std::cout << "What Do You Need?" << std::endl;
+            contin();
+            std::cout << "< " << g->p.name << " >" << std::endl;
+            std::cout << "So About The Reward?" << std::endl;
+            contin();
+            std::cout << "< Wizard >" << std::endl;
+            std::cout << "Ohh.. Right" << std::endl;
+            contin();
+            std::cout << "< Wizard >" << std::endl;
+            std::cout << "Done Already?" << std::endl;
+            contin();
+            std::cout << "< " << g->p.name << " >" << std::endl;
+            std::cout << "Yup" << std::endl;
+            contin();
+            std::cout << "< Wizard >" << std::endl;
+            std::cout << "In Return I Can Make You Stronger!" << std::endl;
+            contin();
+            std::cout << "< " << g->p.name << " >" << std::endl;
+            std::cout << "Stronger? How?" << std::endl;
+            contin();
+            std::cout << "< Wizard >" << std::endl;
+            std::cout << "Well It's Quite Easy Actually" << std::endl;
+            std::cout << "All I Need Is A Few Gold And I Can Magically Enhance You" << std::endl;
+            std::cout << "I'll Make Your First Few Upgrades Free Since You Took The Time To Get Rid Of Those Skeletons" << std::endl;
 
-            path2(g);
+            int freeUps = 5;
+
+            // Add statup Function Here
+            // Consider Making This A One Time Section (Dialogue & Free statUp's)
         }
-        else if (g->wizard.active == false)
+        else
         {
-            std::cout << "< Wizard >" << std::endl;
-            std::cout << "\"Ready To Take My Offer?\"" << std::endl;
-            yn();
-            std::cin >> move2;
+            int move2;
 
-            if (move2 == 1) // If Yes. Accept Wizard Quest
-            {
-                cinignore();
-
-                std::cout << "< Wizard >" << std::endl;
-                std::cout << "\"Nice!\"" << std::endl;
-                std::cout << "\"Now Go Slay Me Some Skeletons\"" << std::endl;
-                contin();
-
-                std::cout << "Entering Next Room. . ." << std::endl;
-                contin();
-
-                g->wizard.active = true; // Activates Quest
-
-                path2_2(g);
-            }
-            else if (move2 == 2)
+            std::cout << "Approaching the Wizard. . ." << std::endl;
+            
+            if (g->qWizard.active == true) // If The Quest Is Currently Active
             {
                 std::cout << "< Wizard >" << std::endl;
-                std::cout << "\"Stop Wasting My Time Then!\"" << std::endl;
+                std::cout << "\"You have Skeletons To Kill\"" << std::endl;
+                std::cout << "\"Stop Wasting Time Here!\"" << std::endl;
 
                 path2(g);
             }
-            else if (std::cin.fail())
+            else if (g->qWizard.active == false)
             {
-                validnum();
-            }
-            else
-            {
-                std::cout << "Invalid Number" << std::endl;
+                std::cout << "< Wizard >" << std::endl;
+                std::cout << "\"Ready To Take My Offer?\"" << std::endl;
+                yn();
+                std::cin >> move2;
+
+                if (move2 == 1) // If Yes. Accept Wizard Quest
+                {
+                    cinignore();
+
+                    std::cout << "< Wizard >" << std::endl;
+                    std::cout << "\"Nice!\"" << std::endl;
+                    std::cout << "\"Now Go Slay Me Some Skeletons\"" << std::endl;
+                    contin();
+
+                    std::cout << "Entering Next Room. . ." << std::endl;
+                    contin();
+
+                    g->qWizard.active = true; // Activates Quest
+
+                    path2_2(g);
+                }
+                else if (move2 == 2)
+                {
+                    std::cout << "< Wizard >" << std::endl;
+                    std::cout << "\"Stop Wasting My Time Then!\"" << std::endl;
+
+                    path2(g);
+                }
+                else if (std::cin.fail())
+                {
+                    validnum();
+                }
+                else
+                {
+                    std::cout << "Invalid Number" << std::endl;
+                }
             }
         }
 
