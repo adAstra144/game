@@ -3,12 +3,15 @@
 #include <limits>
 #include <cstdio>
 
-
+// Dev Tools
+void validnum (void);
+void yn (void);
+int accept (void);
+void cinignore (void);
 
 // Design Functions
 void space (void);
 void contin (void);
-
 
 // Class
 
@@ -21,17 +24,26 @@ class player
         int speed;
         int gold;
         bool defend;
+        int lvlHp;
+        int lvlAtk;
+        int lvlSpeed;
     
     public:
         std::string name;
 
         player()
         {
-            hp = 1000;
-            atk = 100;
+            // Base Stats
+            hp = 100;
+            atk = 10;
             speed = 10;
-            gold = 0;
+            gold = 100;
             defend = false;
+
+            // Base Level Of Stats
+            lvlHp = 1;
+            lvlAtk = 1;
+            lvlSpeed = 1;
         }
 
 
@@ -97,20 +109,82 @@ class player
         {
             return defend;
         }
+        int getLvlHp ()
+        {
+            return lvlHp;
+        }
+        int getLvlAtk ()
+        {
+            return lvlAtk;
+        }
+        int getLvlSpeed ()
+        {
+            return lvlSpeed;
+        }
 
         // Methods For Increasing/Upgrading Player Stats
-        void hpUp (int amount)
+        int hpUp (int amount, int price)
         {
-            hp += 10 * amount; 
+            int beforeGold = gold;
+
+            gold -= price;
+
+            if (gold < 0)
+            {
+                std::cout << "Not Enough Gold!" << std::endl;
+                gold = beforeGold;
+                return 0; // Transac Failed
+            }
+            else
+            {
+                hp += 10 * amount;    
+                lvlHp += amount;
+                return 1; // Transac Success
+            }
+             
         }
-        void atkUp (int amount)
+        int atkUp (int amount, int price)
+        {   
+            int beforeGold = gold;
+
+            gold -= price;
+
+            if (gold < 0)
+            {
+                std::cout << "Not Enough Gold" << std::endl;
+                gold = beforeGold;
+                return 0; // Transac Failed
+            }
+            else
+            {
+                atk += 10 * amount;
+                lvlAtk += amount;
+                return 1; // Transac Success
+            }
+        }
+
+        int speedUp (int amount, int price)
         {
-            atk += 10 * amount;
+            std::cout << "This Will Cost " << price << " Gold. Continue?" << std::endl;
+
+            int beforeGold;
+
+            gold -= price;
+
+            if (gold < 0)
+            {
+                std::cout << "Not Enough Gold" << std::endl;
+                gold = beforeGold;
+                return 0; // Transac Failed
+            }
+            else
+            {
+                speed += 10 * amount;
+                lvlSpeed += amount;
+                return 1; // Transac Success
+            }
         }
-        void speedUp (int amount)
-        {
-            speed += 10 * amount;
-        }
+
 };
 
 // Main Enemy Class
@@ -225,6 +299,7 @@ struct gameState
 
     // Quests
     quest qWizard;
+    int numOfSkeletons = 3;
     
     // Dialogues
     bool dialogue2;
@@ -248,6 +323,9 @@ void path2_2 (gameState *g);
 // Paths 3
 void path3 (gameState *g);
 
+// Game State Related Functions
+void resetPlayerStats (gameState *g);
+void resetGame (gameState *g);
 
 // Combat 
 int turnBasedCombat (gameState *g, enemy *e);
@@ -258,16 +336,7 @@ void respawn (gameState *g);
 // Player Tools
 void playerStats (gameState *g);
 void enemyStats (enemy *e);
-
-
-// Dev Tools
-void validnum (void);
-void yn (void);
-void resetPlayerStats (gameState *g);
-void resetGame (gameState *g);
-int accept (void);
-void cinignore (void);
-
+int statUp (gameState *g);
 
 // Path Specific Options
 void optionsPath2_2 (gameState *g);
@@ -512,8 +581,6 @@ void path2 (gameState *g) // Wizard Path (Increase ? Stat)
             std::cout << "\"I knew I could count on you!\"" << std::endl;
             contin();
 
-            space();
-
             // Continue Path 2_2 Here With Wizard Quest
             std::cout << "Entering The Next Room. . ." << std::endl;
             contin();
@@ -558,19 +625,20 @@ void path2_2 (gameState *g)
 
     skeleton skeleton;
 
-    std::cout << "< " << skeleton.name << " >" << std::endl;
-    std::cout << "(Bones Crackling)" << std::endl;
-    contin();
-
-    std::cout << "# You See A Total Of 3 Skeletons Scattered In The Wizards Garden" << std::endl;
-    std::cout << "# They're Busy And Haven't Noticed You Yet" << std::endl;
+    if (g->numOfSkeletons > 0)
+    {
+        std::cout << "< " << skeleton.name << " >" << std::endl;
+        std::cout << "(Bones Crackling)" << std::endl;
+        contin();
+        std::cout << "# You See " << g->numOfSkeletons << " Skeleton Scattered In The Wizards Garden" << std::endl;
+    }
 
     int move1;
-    int numOfSkeletons = 3;
+    g->numOfSkeletons;
 
     while (1)
     {
-        if (numOfSkeletons == 3)
+        if (g->numOfSkeletons == 3)
         {
             std::cout << "[1] Attack Skeleton 1" << std::endl;
             std::cout << "[2] Attack Skeleton 2" << std::endl;
@@ -579,13 +647,13 @@ void path2_2 (gameState *g)
 
 
         }
-        else if (numOfSkeletons == 2)
+        else if (g->numOfSkeletons == 2)
         {
             std::cout << "[1] Attack Skeleton 1" << std::endl;
             std::cout << "[2] Attack Skeleton 2" << std::endl;
             std::cout << "[3] Turn Back" << std::endl;
         }
-        else if (numOfSkeletons == 1)
+        else if (g->numOfSkeletons == 1)
         {
             std::cout << "[1] Attack Skeleton 1" << std::endl;
             std::cout << "[2] Turn Back" << std::endl;
@@ -603,7 +671,7 @@ void path2_2 (gameState *g)
 
 
         // Adaptive Choices (Changes Everytime A Skeleton Is Killed)
-        if (numOfSkeletons == 3)
+        if (g->numOfSkeletons == 3)
         {
             if (move1 == 1)
             {
@@ -612,7 +680,7 @@ void path2_2 (gameState *g)
 
                 if (result == 0)
                 {
-                    numOfSkeletons--;
+                    g->numOfSkeletons--;
                     skeleton.resetStats();
                 }
                 else 
@@ -627,7 +695,7 @@ void path2_2 (gameState *g)
 
                 if (result == 0)
                 {
-                    numOfSkeletons--;
+                    g->numOfSkeletons--;
                     skeleton.resetStats();
                 }
                 else
@@ -642,7 +710,7 @@ void path2_2 (gameState *g)
 
                 if (result == 0)
                 {
-                    numOfSkeletons--;
+                    g->numOfSkeletons--;
                     skeleton.resetStats();
                 }
             }
@@ -659,7 +727,7 @@ void path2_2 (gameState *g)
 
             }
         }
-        else if (numOfSkeletons == 2)
+        else if (g->numOfSkeletons == 2)
         {
             if (move1 == 1)
             {
@@ -668,7 +736,7 @@ void path2_2 (gameState *g)
 
                 if (result == 0)
                 {
-                    numOfSkeletons--;
+                    g->numOfSkeletons--;
                     skeleton.resetStats();
                 }
                 else 
@@ -683,7 +751,7 @@ void path2_2 (gameState *g)
 
                 if (result == 0)
                 {
-                    numOfSkeletons--;
+                    g->numOfSkeletons--;
                     skeleton.resetStats();
                 }
                 else
@@ -703,7 +771,7 @@ void path2_2 (gameState *g)
                 break;
             }
         }
-        else if (numOfSkeletons == 1)
+        else if (g->numOfSkeletons == 1)
         {
             if (move1 == 1)
             {
@@ -712,7 +780,7 @@ void path2_2 (gameState *g)
 
                 if (result == 0)
                 {
-                    numOfSkeletons--;
+                    g->numOfSkeletons--;
                     skeleton.resetStats();
 
                     if (g->qWizard.active)
@@ -976,10 +1044,10 @@ void respawn (gameState *g)
 // - - - - - - - - - - Player Tools - - - - - - - - - -
 void playerStats (gameState *g)
 {
-    std::cout << g->p.name << "\'s Stats:" << std::endl;
-    std::cout << "HP: " << g->p.getHp() << std::endl;
-    std::cout << "ATK: " << g->p.getAtk() << std::endl;
-    std::cout << "SPEED: " << g->p.getSpeed() << std::endl;
+    std::cout << "Stats:    | Level:" << std::endl;
+    std::cout << "HP:   " << g->p.getHp() << " | " << g->p.getLvlHp() << std::endl;
+    std::cout << "ATK:   " << g->p.getAtk() << " | " << g->p.getLvlAtk() << std::endl;
+    std::cout << "SPEED: " << g->p.getSpeed() << " | " << g->p.getLvlSpeed() << std::endl;
     std::cout << "GOLD: " << g->p.getGold() << std::endl;
 
     cinignore();
@@ -999,24 +1067,132 @@ void enemyStats (enemy *e)
     std::cout << "Press Enter To Exit. . .";
     getchar();
 }
-
-void statUp (gameState *g)
+// Handles Increasing
+int statUp (gameState *g)
 {
     int move1;
     int amount;
+    int basePrice = 10;
+    int price;
+    int result;
 
-    std::cout << "Select A Stat To Upgrade: " << std::endl;
-    std::cout << "[1] HP" << std::endl;
-    std::cout << "[2] ATK" << std::endl;
-    std::cout << "[3] SPEED" << std::endl;
-    std::cout << "Next Move: ";
-    std::cin >> move1;
-
-    if (move1 == 1)
+    while (1)
     {
-        g->p.hpUp(amount);
+        std::cout << "Select A Stat To Upgrade: " << std::endl;
+        std::cout << "Current Gold: " << g->p.getGold() << std::endl;
+        std::cout << "[1] HP" << std::endl;
+        std::cout << "[2] ATK" << std::endl;
+        std::cout << "[3] SPEED" << std::endl;
+        std::cout << "[4] Exit" << std::endl;
+        std::cout << "Next Move: ";
+        std::cin >> move1;
+        
+        if (move1 == 1 || move1 == 2 || move1 == 3)
+        {
+            std::cout << "Enter Amount: ";
+            std::cin >> amount;
+            price = basePrice * amount;
+
+            if (std::cin.fail())
+            {
+                validnum();
+                contin();
+                statUp(g);
+                return -1;
+            }
+        }
+
+        
+        switch (move1)
+        {
+            case 1:
+            {
+                int hpBefore = g->p.getHp();
+                int lvlBefore = g->p.getLvlHp();
+
+                result = g->p.hpUp(amount, price);
+                if (result == 1)
+                {
+                    cinignore();
+                    std::cout << "Upgrade Succesful!" << std::endl;
+                    contin();
+                    std::cout << "HP: " << hpBefore << " -> " << g->p.getHp() << std::endl;
+                    std::cout << "Level: " << lvlBefore << " -> " << g->p.getLvlHp() << std::endl;
+                    contin();
+                }
+                else
+                {
+                    cinignore();
+                    contin();
+                }
+                break;
+            }
+
+            case 2:
+            {
+                int atkBefore = g->p.getAtk();
+                int lvlBefore = g->p.getLvlAtk();
+
+                result = g->p.atkUp(amount, price);
+                if (result == 1)
+                {
+                    cinignore();
+                    std::cout << "Upgrade Succesful!" << std::endl;
+                    contin();
+                    std::cout << "HP: " << atkBefore << " -> " << g->p.getAtk() << std::endl;
+                    std::cout << "Level: " << lvlBefore << " -> " << g->p.getLvlAtk() << std::endl;
+                    contin();
+                }
+                else
+                {
+                    cinignore();
+                    contin();
+                }
+                break;
+            }
+
+            case 3:
+            {
+                int speedBefore = g->p.getSpeed();
+                int lvlBefore = g->p.getLvlSpeed();
+
+                result = g->p.speedUp(amount, price);
+                if (result == 1)
+                {
+                    cinignore();
+                    std::cout << "Upgrade Succesful!" << std::endl;
+                    contin();
+                    std::cout << "HP: " << speedBefore << " -> " << g->p.getSpeed() << std::endl;
+                    std::cout << "Level: " << lvlBefore << " -> " << g->p.getLvlSpeed() << std::endl;
+                    contin();
+                }
+                break;
+            }
+
+            case 4:
+            {
+                return 0; // Exit With Return 0
+                break;
+            }
+
+            default:
+            {
+                if (std::cin.fail())
+                {
+                    validnum();
+                }
+                else
+                {
+                    cinignore();
+                    std::cout << "Invalid Number" << std::endl;
+                }
+                contin();
+                break;
+            }
+        }
     }
-    // Continue statUp 
+
+    return -1;
 }
 
 
@@ -1153,9 +1329,10 @@ void optionsPath2_2 (gameState *g)
             std::cout << "< Wizard >" << std::endl;
             std::cout << "Well It's Quite Easy Actually" << std::endl;
             std::cout << "All I Need Is A Few Gold And I Can Magically Enhance You" << std::endl;
-            std::cout << "I'll Make Your First Few Upgrades Free Since You Took The Time To Get Rid Of Those Skeletons" << std::endl;
+            std::cout << "Try Using The Gold You Got From Those Skeletons" << std::endl;
+            contin();
 
-            int freeUps = 5;
+            statUp(g);
 
             // Add statup Function Here
             // Consider Making This A One Time Section (Dialogue & Free statUp's)
@@ -1168,9 +1345,11 @@ void optionsPath2_2 (gameState *g)
             
             if (g->qWizard.active == true) // If The Quest Is Currently Active
             {
+                cinignore();
                 std::cout << "< Wizard >" << std::endl;
                 std::cout << "\"You have Skeletons To Kill\"" << std::endl;
                 std::cout << "\"Stop Wasting Time Here!\"" << std::endl;
+                contin();
 
                 path2(g);
             }
