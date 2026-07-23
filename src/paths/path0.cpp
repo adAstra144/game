@@ -1,7 +1,4 @@
-#include "path0.h"
-#include "path1.h"
-#include "path2.h"
-#include "path3.h"
+#include "paths/path0.h"
 
 void path0 (gameState *g) // Root path 
 {

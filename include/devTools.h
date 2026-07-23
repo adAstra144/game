@@ -18,3 +18,4 @@ void contin (void);
 std::string textSpacerHp (int amount);
 std::string textSpacerAtk (int amount);
 std::string textSpacerSpeed (int amount);
+void horizontalBrokenLines ();

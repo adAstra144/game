@@ -1,0 +1,231 @@
+#include "player/player.h"
+
+// Player Constructor For Base Player Stats
+player::player()
+{
+    // Base Stats
+    hp = 100;
+    atk = 100; // Default Is 10
+    speed = 10;
+    gold = 100;
+    defend = false;
+
+    // Base Level Of Stats
+    lvlHp = 1;
+    lvlAtk = 1;
+    lvlSpeed = 1;
+}
+
+
+// Combat Methods
+void player::takeDamage (int amount)
+{
+    if (defend) amount /= 2;
+
+    hp -= amount;
+
+    if (hp < 0) hp = 0;
+}
+
+
+void player::gainGold (int gold) // Or Gain Gold
+{
+    this->gold += gold;
+}
+
+// Set Player Variables Methods
+void player::setHp (int hp)
+{
+    this->hp = hp;
+}
+void player::setAtk (int atk)
+{
+    this->atk = atk;
+}
+void player::setSpeed (int speed)
+{
+    this->speed = speed;
+}
+void player::setGold (int gold)
+{
+    this->gold = gold;
+}
+void player::setDefend (bool defend)
+{
+    this->defend = defend;
+}
+
+
+
+// Get Player Variables Methods
+int player::getHp ()
+{
+    return hp;
+}
+int player::getAtk ()
+{
+    return atk;
+}
+int player::getSpeed ()
+{
+    return speed;
+}
+int player::getGold ()
+{
+    return gold;
+}
+bool player::getDefend ()
+{
+    return defend;
+}
+int player::getLvlHp ()
+{
+    return lvlHp;
+}
+int player::getLvlAtk ()
+{
+    return lvlAtk;
+}
+int player::getLvlSpeed ()
+{
+    return lvlSpeed;
+}
+
+// Methods For Increasing/Upgrading Player Stats
+int player::continueStatUp (int price)
+{
+    int decision;
+
+    std::cout << "Will Cost: " << price << " Gold" << std::endl;
+    std::cout << "Continue? (y/n):" << std::endl; 
+    yn();
+    std::cin >> decision;
+
+    if (decision == 1)
+    {
+        return 1;
+    }
+    else
+    {
+        horizontalBrokenLines();
+        std::cout << "Stat Level Up Canceled" << std::endl;
+        horizontalBrokenLines();
+        
+        return 0;
+    }
+}
+
+int player::hpUp (int amount, int price)
+{
+    int beforeGold = gold;
+
+    int decision = continueStatUp(price);
+
+    if (decision == 1)
+    {
+        gold -= price;
+    }
+    else if (decision == 0)
+    {
+        return 0;
+    }
+
+    if (gold >= 0)
+    {
+        hp += 10 * amount;    
+        lvlHp += amount;
+
+        horizontalBrokenLines();
+        std::cout << "Upgrade Succesful!" << std::endl;
+        horizontalBrokenLines();
+
+        return 1; // Transac Success
+    }
+    else
+    {
+        horizontalBrokenLines();
+        std::cout << "Not Enough Gold!" << std::endl;
+        horizontalBrokenLines();
+
+        gold = beforeGold;
+
+        return 0; // Transac Failed
+    }
+
+        
+}
+int player::atkUp (int amount, int price)
+{   
+    int beforeGold = gold;
+
+    int decision = continueStatUp(price);
+
+    if (decision == 1)
+    {
+        gold -= price;
+    }
+    else if (decision == 0)
+    {
+        return 0;
+    }
+
+    if (gold >= 0)
+    {
+        atk += 10 * amount;
+        lvlAtk += amount;
+
+        horizontalBrokenLines();
+        std::cout << "Upgrade Succesful!" << std::endl;
+        horizontalBrokenLines();
+
+        return 1; // Transac Success
+    }
+    else
+    {
+        horizontalBrokenLines();
+        std::cout << "Not Enough Gold" << std::endl;
+        horizontalBrokenLines();
+
+        gold = beforeGold;
+
+        return 0; // Transac Failed
+    }
+}
+
+int player::speedUp (int amount, int price)
+{
+    int beforeGold;
+
+    int decision = continueStatUp(price);
+
+    if (decision == 1)
+    {
+        gold -= price;
+    }
+    else if (decision == 0)
+    {
+        return 0;
+    }
+
+    if (gold >= 0)
+    {
+        speed += 10 * amount;
+        lvlSpeed += amount;
+
+        horizontalBrokenLines();
+        std::cout << "Upgrade Succesful!" << std::endl;
+        horizontalBrokenLines();
+
+        return 1; // Transac Success
+    }
+    else
+    {
+        horizontalBrokenLines();
+        std::cout << "Not Enough Gold" << std::endl;
+        horizontalBrokenLines();
+
+        gold = beforeGold;
+
+        return 0; // Transac Failed
+    }
+}

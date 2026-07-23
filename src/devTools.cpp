@@ -5,7 +5,10 @@ void validnum (void) // Fixes cin(input) if it's supposed to be a number
 {   
     std::cin.clear();
     cinignore();
+    
+    horizontalBrokenLines();
     std::cout << "Not a number please try again" << std::endl;
+    horizontalBrokenLines();
 }
 void cinignore (void)
 {
@@ -96,4 +99,9 @@ std::string textSpacerSpeed (int amount)
     {
         return "   ";
     }
+}
+
+void horizontalBrokenLines ()
+{
+    std::cout << "- - - - - - - - - -" << std::endl;
 }

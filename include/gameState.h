@@ -1,6 +1,6 @@
 #pragma once
 
-#include "player.h"
+#include "player/player.h"
 
 struct quest
 {
@@ -15,10 +15,11 @@ struct gameState
 
     // Quests
     quest qWizard;
-    int numOfSkeletons = 3;
+    int numOfSkeletons;
     
-    // Dialogues
+    // Dialogues (Format Dialogue(n)<- Path)
     bool dialogue2;
+    bool dialogue2_2;
 };
 
 // Add All Dialogues and Quests Here

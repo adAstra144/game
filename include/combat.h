@@ -1,9 +1,9 @@
 #pragma once
 
+#include "enemy/enemy.h"
+#include "paths/path0.h"
+#include "player/playerTools.h"
 #include "gameState.h"
-#include "enemy.h"
-#include "playerTools.h"
-#include "path0.h"
 
 // Main Combat Mechanics (Basic Turn Based)
 int turnBasedCombat (gameState *g, enemy *e);

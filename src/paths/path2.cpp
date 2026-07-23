@@ -1,4 +1,4 @@
-#include "path2.h"
+#include "paths/path2.h"
 
 // - - - - - - - - - - Paths 2 - - - - - - - - - -
 void path2 (gameState *g) // Wizard Path (Increase ? Stat)
@@ -67,12 +67,12 @@ void path2 (gameState *g) // Wizard Path (Increase ? Stat)
             std::cout << "\"Come to me again if you ever change your mind\"" << std::endl;
             contin();
             
-            optionsPath2_2(g);
+            optionsPath2(g);
         }
     }
     else if (g->dialogue2 == false) // No Dialogue
     { 
-        optionsPath2_2(g);  
+        optionsPath2(g);  
     }
 
 }
@@ -103,10 +103,17 @@ void path2_2 (gameState *g)
     }
 
     int move1;
-    g->numOfSkeletons;
 
     while (1)
     {
+        if (g->numOfSkeletons <= 0) // Checks If All Skeletons Are Dead. If True Completes Wizard Quest
+        {
+            if (g->qWizard.active == true)
+            {
+                g->qWizard.finished = true;
+            }
+        }
+
         if (g->numOfSkeletons == 3)
         {
             std::cout << "[1] Attack Skeleton 1" << std::endl;
@@ -251,11 +258,6 @@ void path2_2 (gameState *g)
                 {
                     g->numOfSkeletons--;
                     skeleton.resetStats();
-
-                    if (g->qWizard.active)
-                    {
-                        g->qWizard.finished = true;
-                    }
                 }
                 else 
                 {
@@ -295,7 +297,7 @@ void path2_2 (gameState *g)
     }
 }
 
-void optionsPath2_2 (gameState *g)
+void optionsPath2 (gameState *g)
 {
     int move1;
     
@@ -316,41 +318,95 @@ void optionsPath2_2 (gameState *g)
     }
     else if (move1 == 2)
     {
-        if (g->qWizard.finished == true)
+        if (g->qWizard.finished == true) // After Killing The 3 Skeletons (Path 2-2)
         {
-            cinignore();
-            std::cout << "< Wizard >" << std::endl;
-            std::cout << "What Do You Need?" << std::endl;
-            contin();
-            std::cout << "< " << g->p.name << " >" << std::endl;
-            std::cout << "So About The Reward?" << std::endl;
-            contin();
-            std::cout << "< Wizard >" << std::endl;
-            std::cout << "Ohh.. Right" << std::endl;
-            contin();
-            std::cout << "< Wizard >" << std::endl;
-            std::cout << "Done Already?" << std::endl;
-            contin();
-            std::cout << "< " << g->p.name << " >" << std::endl;
-            std::cout << "Yup" << std::endl;
-            contin();
-            std::cout << "< Wizard >" << std::endl;
-            std::cout << "In Return I Can Make You Stronger!" << std::endl;
-            contin();
-            std::cout << "< " << g->p.name << " >" << std::endl;
-            std::cout << "Stronger? How?" << std::endl;
-            contin();
-            std::cout << "< Wizard >" << std::endl;
-            std::cout << "Well It's Quite Easy Actually" << std::endl;
-            std::cout << "All I Need Is A Few Gold And I Can Magically Enhance You" << std::endl;
-            std::cout << "Try Using The Gold You Got From Those Skeletons" << std::endl;
-            contin();
+            if (g->dialogue2_2 == true) // One Time Dialogue After Finishing Wizard Quest
+            {
+                g->dialogue2_2 = false;
 
-            statUp(g);
+                cinignore();
+                std::cout << "< Wizard >" << std::endl;
+                std::cout << "What Do You Need?" << std::endl;
+                contin();
+                std::cout << "< " << g->p.name << " >" << std::endl;
+                std::cout << "So About The Reward?" << std::endl;
+                contin();
+                std::cout << "< Wizard >" << std::endl;
+                std::cout << "Ohh.. Right" << std::endl;
+                contin();
+                std::cout << "< Wizard >" << std::endl;
+                std::cout << "Done Already?" << std::endl;
+                contin();
+                std::cout << "< " << g->p.name << " >" << std::endl;
+                std::cout << "Yup" << std::endl;
+                contin();
+                std::cout << "< Wizard >" << std::endl;
+                std::cout << "In Return I Can Make You Stronger!" << std::endl;
+                contin();
+                std::cout << "< " << g->p.name << " >" << std::endl;
+                std::cout << "Stronger? How?" << std::endl;
+                contin();
+                std::cout << "< Wizard >" << std::endl;
+                std::cout << "Well It's Quite Easy Actually" << std::endl;
+                contin();
+                std::cout << "< Wizard >" << std::endl;
+                std::cout << "All I Need Is A Few Gold And I Can Magically Enhance You" << std::endl;
+                contin();
+                std::cout << "< Wizard >" << std::endl;
+                std::cout << "Try Using The Gold You Got From Those Skeletons" << std::endl;
+                contin();
 
-            
-            // Add statup Function Here
-            // Consider Making This A One Time Section (Dialogue & Free statUp's)
+                statUp(g);
+
+                optionsPath2(g);
+            }
+            else // No Dialogue
+            {
+                int move2;
+
+                std::cout << "< Wizard >" << std::endl;
+                std::cout << "What is it?" << std::endl;
+                cinignore();
+                contin();
+
+                while (1)
+                {
+                    std::cout << "[1] Level Up Stats" << std::endl;
+                    std::cout << "[2] Talk" << std::endl;
+                    std::cout << "[3] Nevermind" << std::endl;
+    
+                    std::cout << "Next Move: ";
+                    std::cin >> move2;
+    
+                    if (move2 == 1)
+                    {
+                        statUp(g);
+                        break;
+                    }
+                    else if (move2 == 2)
+                    {
+                        std::cout << "< Wizard >" << std::endl;
+                        std::cout << "My Senses Are Telling Me That A Fortune Awaits For You In The Farthest Path" << std::endl;
+                        contin();
+                        
+                        path2(g);
+                        break;
+                    }
+                    else if (move2 == 3)
+                    {
+                        path2(g);
+                        break;
+                    }
+                    else if (std::cin.fail())
+                    {
+                        validnum();
+                    }
+                    else 
+                    {
+                        std::cout << "Invalid Number" << std::endl;
+                    }
+                }
+            }       
         }
         else
         {
@@ -362,8 +418,8 @@ void optionsPath2_2 (gameState *g)
             {
                 cinignore();
                 std::cout << "< Wizard >" << std::endl;
-                std::cout << "\"You have Skeletons To Kill\"" << std::endl;
-                std::cout << "\"Stop Wasting Time Here!\"" << std::endl;
+                std::cout << "You have Skeletons To Kill" << std::endl;
+                std::cout << "Stop Wasting Time Here!" << std::endl;
                 contin();
 
                 path2(g);
@@ -371,7 +427,7 @@ void optionsPath2_2 (gameState *g)
             else if (g->qWizard.active == false)
             {
                 std::cout << "< Wizard >" << std::endl;
-                std::cout << "\"Ready To Take My Offer?\"" << std::endl;
+                std::cout << "Ready To Take My Offer?" << std::endl;
                 yn();
                 std::cin >> move2;
 
@@ -380,22 +436,49 @@ void optionsPath2_2 (gameState *g)
                     cinignore();
 
                     std::cout << "< Wizard >" << std::endl;
-                    std::cout << "\"Nice!\"" << std::endl;
-                    std::cout << "\"Now Go Slay Me Some Skeletons\"" << std::endl;
+                    std::cout << "Nice!" << std::endl;
+                    std::cout << "Now Go Slay Me Some Skeletons" << std::endl;
                     contin();
 
-                    std::cout << "Entering Next Room. . ." << std::endl;
-                    contin();
 
-                    g->qWizard.active = true; // Activates Quest
+                    if (g->numOfSkeletons <= 0)
+                    {
+                        std::cout << "< Wizard >" << std::endl;
+                        std::cout << "Say what?" << std::endl;
+                        contin();
+                        std::cout << "< Wizard >" << std::endl;
+                        std::cout << "You Already Killed Them?" << std::endl;
+                        contin();
+                        std::cout << "< Wizard >" << std::endl;
+                        std::cout << "Alright Then" << std::endl;
+                        contin();
+                        std::cout << "< Wizard >" << std::endl;
+                        std::cout << "I Can Enhance Your Stats In Exchange For Gold" << std::endl;
+                        contin();
+                        std::cout << "< Wizard >" << std::endl;
+                        std::cout << "Here Try Using The Gold You Have" << std::endl;
+                        contin();
 
-                    path2_2(g);
+                        statUp(g);
+
+                        path2(g);
+                    }
+                    else
+                    {
+                        std::cout << "Entering Next Room. . ." << std::endl;
+                        contin();
+    
+                        g->qWizard.active = true; // Activates Quest
+    
+                        path2_2(g);
+                    }
                 }
                 else if (move2 == 2)
                 {
                     std::cout << "< Wizard >" << std::endl;
-                    std::cout << "\"Stop Wasting My Time Then!\"" << std::endl;
-
+                    std::cout << "Stop Wasting My Time Then!" << std::endl;
+                    contin();
+                    
                     path2(g);
                 }
                 else if (std::cin.fail())
@@ -408,7 +491,6 @@ void optionsPath2_2 (gameState *g)
                 }
             }
         }
-
     }                                                           
     else if (move1 == 3)
     {

@@ -1,4 +1,4 @@
-#include "path3.h"
+#include "paths/path3.h"
 
 // - - - - - - - - - - Paths 3 - - - - - - - - - -
 void path3 (gameState *g)

@@ -7,33 +7,34 @@
 #include "devTools.h"
 
 // Main Player Class
-#include "player.h"
+#include "player/player.h"
 
 // Main Enemy Class
-#include "enemy.h"
+#include "enemy/enemy.h"
 
 // Separate Enemy Classes / Unique Enemies With distinguishing Features
-#include "kingGoblin.h"
-#include "skeleton.h"
+#include "enemy/kingGoblin.h"
+#include "enemy/skeleton.h"
 
 // Includes Player Global Progression
 #include "gameState.h"
 
 // Paths
 // Root Path
-#include "path0.h"
+#include "paths/path0.h"
 
 // Paths 1
-#include "path1.h"
+#include "paths/path1.h"
 
 // Paths 2
-#include "path2.h"
+#include "paths/path2.h"
 
 // Paths 3
-#include "path3.h"
+#include "paths/path3.h"
 
 // Combat 
 #include "combat.h"
+
 
 int main ()
 {
@@ -41,13 +42,7 @@ int main ()
     // Game State
     gameState g;
 
-    // Quests
-    g.qWizard.active = false;
-    g.qWizard.finished = false;
-
-
-    // Dialogues
-    g.dialogue2 = true;
+    resetGame(&g); // Sets Gamestate Default Values
 
     int menuOptions;
     
@@ -100,5 +95,5 @@ int main ()
             std::cout << "Invalid Number" << std::endl;
         }
         
-    }
+    } 
 }

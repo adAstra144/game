@@ -1,8 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include "enemy.h"
-#include "devTools.h"
+#include "enemy/enemy.h"
+#include "../devTools.h"
 
 class kingGoblin : public enemy
 {

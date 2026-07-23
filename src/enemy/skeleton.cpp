@@ -1,4 +1,4 @@
-#include "skeleton.h"
+#include "enemy/skeleton.h"
 
 
 skeleton::skeleton() : enemy("Skeleton", 30, 5, 15, 30) {}

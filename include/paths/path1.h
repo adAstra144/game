@@ -1,10 +1,10 @@
 #pragma once
 
-#include "gameState.h"
-#include "path0.h"
-#include "devTools.h"
-#include "kingGoblin.h"
-#include "combat.h" 
+#include "paths/path0.h"
+#include "enemy/kingGoblin.h"
+#include "../combat.h" 
+#include "../devTools.h"
+#include "../gameState.h"
 
 // - - - - - - - - - - Paths 1 - - - - - - - - - -
 void path1 (gameState *g); // Pre King Goblin Path

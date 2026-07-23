@@ -1,6 +1,6 @@
 #pragma once
 
-#include "enemy.h"
+#include "enemy/enemy.h"
 
 class skeleton : public enemy
 {

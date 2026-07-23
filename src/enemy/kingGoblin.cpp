@@ -1,4 +1,4 @@
-#include "kingGoblin.h"
+#include "enemy/kingGoblin.h"
 
 kingGoblin::kingGoblin() : enemy("King Goblin", 200, 50, 5, 200) 
 {

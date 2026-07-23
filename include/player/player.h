@@ -2,8 +2,8 @@
 
 #include <iostream>
 #include <string>
-#include "devTools.h"
-#include "enemy.h"
+#include "enemy/enemy.h"
+#include "../devTools.h"
 
 // Main Player 
 class player
@@ -47,6 +47,7 @@ class player
         int getLvlSpeed ();
 
         // Methods For Increasing/Upgrading Player Stats
+        int continueStatUp (int price);
         int hpUp (int amount, int price);
         int atkUp (int amount, int price);
         int speedUp (int amount, int price);

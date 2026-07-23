@@ -1,7 +1,7 @@
-#include "path1.h"
+#include "paths/path1.h"
 
-// - - - - - - - - - - Paths 1 - - - - - - - - - -
-void path1 (gameState *g) // Pre King Goblin Path
+// Pre King Goblin Path
+void path1 (gameState *g) 
 {
     std::cout << "Current Path: 1" << std::endl;
     int move1;

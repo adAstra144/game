@@ -1,4 +1,4 @@
-#include "playerTools.h"
+#include "player/playerTools.h"
 
 // Player Tools
 // - - - - - - - - - - Player Tools - - - - - - - - - -
@@ -58,10 +58,12 @@ int statUp (gameState *g)
         std::cout << "Next Move: ";
         std::cin >> move1;
         
-        if (move1 == 1 || move1 == 2 || move1 == 3)
+        // Only Requests An "Amount" Input If Picking A Stat Option
+        if (move1 == 1 || move1 == 2 || move1 == 3) 
         {
             std::cout << "Enter Amount: ";
             std::cin >> amount;
+
             price = basePrice * amount;
 
             if (std::cin.fail())
@@ -71,9 +73,21 @@ int statUp (gameState *g)
                 statUp(g);
                 return -1;
             }
+
+            if (amount <= 0) // Prevents Zero & Negative Values
+            {
+                horizontalBrokenLines();
+                std::cout << "Amount Must Be At least 1" << std::endl;
+                horizontalBrokenLines();
+
+                statUp(g);
+
+                return -1;          
+            }
+
+            space();
         }
 
-        
         switch (move1)
         {
             case 1:
@@ -82,20 +96,19 @@ int statUp (gameState *g)
                 int lvlBefore = g->p.getLvlHp();
 
                 result = g->p.hpUp(amount, price);
+
                 if (result == 1)
                 {
-                    cinignore();
-                    std::cout << "Upgrade Succesful!" << std::endl;
-                    contin();
                     std::cout << "HP: " << hpBefore << " -> " << g->p.getHp() << std::endl;
                     std::cout << "Level: " << lvlBefore << " -> " << g->p.getLvlHp() << std::endl;
+                    cinignore();
                     contin();
                 }
                 else
                 {
-                    cinignore();
                     contin();
                 }
+
                 break;
             }
 
@@ -107,18 +120,16 @@ int statUp (gameState *g)
                 result = g->p.atkUp(amount, price);
                 if (result == 1)
                 {
-                    cinignore();
-                    std::cout << "Upgrade Succesful!" << std::endl;
-                    contin();
                     std::cout << "ATK: " << atkBefore << " -> " << g->p.getAtk() << std::endl;
                     std::cout << "Level: " << lvlBefore << " -> " << g->p.getLvlAtk() << std::endl;
+                    cinignore();
                     contin();
                 }
                 else
                 {
-                    cinignore();
                     contin();
                 }
+
                 break;
             }
 
@@ -130,13 +141,16 @@ int statUp (gameState *g)
                 result = g->p.speedUp(amount, price);
                 if (result == 1)
                 {
-                    cinignore();
-                    std::cout << "Upgrade Succesful!" << std::endl;
-                    contin();
                     std::cout << "SPD: " << speedBefore << " -> " << g->p.getSpeed() << std::endl;
                     std::cout << "Level: " << lvlBefore << " -> " << g->p.getLvlSpeed() << std::endl;
+                    cinignore();
                     contin();
                 }
+                else 
+                {
+                    contin();
+                }
+
                 break;
             }
 
@@ -155,7 +169,10 @@ int statUp (gameState *g)
                 else
                 {
                     cinignore();
+
+                    horizontalBrokenLines();
                     std::cout << "Invalid Number" << std::endl;
+                    horizontalBrokenLines();
                 }
                 contin();
                 break;
