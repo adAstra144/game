@@ -3,11 +3,6 @@
 #include <limits>
 #include <cstdio>
 
-// Dev Tools
-#include "devTools.h"
-
-// Main Player Class
-#include "player/player.h"
 
 // Main Enemy Class
 #include "enemy/enemy.h"
@@ -16,8 +11,6 @@
 #include "enemy/kingGoblin.h"
 #include "enemy/skeleton.h"
 
-// Includes Player Global Progression
-#include "gameState.h"
 
 // Paths
 // Root Path
@@ -32,8 +25,19 @@
 // Paths 3
 #include "paths/path3.h"
 
+
+// Main Player Class
+#include "player/player.h"
+
+
 // Combat 
 #include "combat.h"
+
+// Dev Tools
+#include "devTools.h"
+
+// Includes Player Global Progression
+#include "gameState.h"
 
 
 int main ()
@@ -55,6 +59,8 @@ int main ()
         std::cout << "[2] Exit" << std::endl;
         std::cout << "Next Move: ";
         std::cin >> menuOptions;
+
+        clear();
 
         if (menuOptions == 0) // Return To 1 After Development
         {

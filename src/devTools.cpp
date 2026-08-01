@@ -65,6 +65,11 @@ void contin (void) // Continue dialouge
     getchar();
 }
 
+void clear (void)
+{
+    std::system("clear");
+}
+
 std::string textSpacerHp (int amount)
 {
     if (amount >= 100)

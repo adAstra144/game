@@ -5,7 +5,7 @@ player::player()
 {
     // Base Stats
     hp = 100;
-    atk = 100; // Default Is 10
+    atk = 20; // Default Is 10
     speed = 10;
     gold = 100;
     defend = false;

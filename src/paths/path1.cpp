@@ -15,12 +15,14 @@ void path1 (gameState *g)
 
         if (move1 == 1)
         {
+            clear();
             std::cout << "*" << g->p.name << " Continues" << std::endl; 
             path1_2(g);
             break;
         }
         else if (move1 == 2)
         {
+            clear();
             std::cout << "*" << g->p.name << " Turn's Back" << std::endl;
             path0(g);
         }
@@ -43,7 +45,17 @@ void path1_2 (gameState *g) // King Goblin Path
 
     kingGoblin kingGoblin;
 
+    std::cout << "< " << g->p.name << " >" << std::endl;
+    std::cout << "Something doesn't feel right" << std::endl;
+    contin();
+
+    std::cout << "< " << g->p.name << " >" << std::endl;
+    std::cout << "! ! !" << std::endl;
+    contin();
+
+    horizontalBrokenLines();
     std::cout << "King Goblin Has Appeared!" << std::endl;
+    horizontalBrokenLines();
     contin();
     
     int result = turnBasedCombat(g, &kingGoblin);
@@ -54,6 +66,7 @@ void path1_2 (gameState *g) // King Goblin Path
     }
     else if (result == 2) // If Succesfully Ran Away
     {
+        clear();
         std::cout << "Back at the start. . ." << std::endl;
         path0(g);
     }

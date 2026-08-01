@@ -15,6 +15,7 @@ void path0 (gameState *g) // Root path
 
         if (move1 == 1)
         {
+            clear();
             std::cout << "* " << g->p.name << " Enter's path 1" << std::endl;
             std::cout << "# As you wander around you encounter a sign saying \"Danger ahead\"" << std::endl;      
 
@@ -23,6 +24,7 @@ void path0 (gameState *g) // Root path
         }
         else if (move1 == 2)
         {
+            clear();
 
             if (g->dialogue2 == true)
             {
@@ -43,6 +45,8 @@ void path0 (gameState *g) // Root path
         }
         else if (move1 == 3)
         {
+            clear();
+            
             path3(g);
             break;
         }

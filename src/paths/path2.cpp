@@ -79,6 +79,8 @@ void path2 (gameState *g) // Wizard Path (Increase ? Stat)
 
 void path2_2 (gameState *g)
 {
+    clear();
+
     std::cout << "Current Path: 2-2" << std::endl;
 
     if (g->qWizard.active == true)
@@ -144,8 +146,7 @@ void path2_2 (gameState *g)
 
         int result;
 
-
-
+        cinignore();
         // Adaptive Choices (Changes Everytime A Skeleton Is Killed)
         if (g->numOfSkeletons == 3)
         {
@@ -192,7 +193,6 @@ void path2_2 (gameState *g)
             }
             else if (move1 == 4)
             {
-                cinignore();
                 contin(); 
                 std::cout << "Turning Back. . ." << std::endl;
                 contin();
@@ -237,7 +237,6 @@ void path2_2 (gameState *g)
             }
             else if (move1 == 3)
             {
-                cinignore();
                 contin(); 
                 std::cout << "Turning Back. . ." << std::endl;
                 contin();
@@ -266,7 +265,6 @@ void path2_2 (gameState *g)
             }
             else if (move1 == 2)
             {
-                cinignore();
                 contin(); 
                 std::cout << "Turning Back. . ." << std::endl;
                 contin();
@@ -280,7 +278,6 @@ void path2_2 (gameState *g)
         {
             if (move1 == 1)
             {
-                cinignore();
                 contin(); 
                 std::cout << "Turning Back. . ." << std::endl;
                 contin();

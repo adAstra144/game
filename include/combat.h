@@ -9,7 +9,7 @@
 int turnBasedCombat (gameState *g, enemy *e);
 
 // Players Options during Combat
-int playerCombatOptions (gameState *g, enemy *e, int playerStartingHp);
+int playerCombatOptions (gameState *g, enemy *e, int playerStartingHp, int enemyHpBeforeAttack);
 
 // Handles Player Respawns
 void respawn (gameState *g);
