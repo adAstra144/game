@@ -58,16 +58,22 @@ int turnBasedCombat (gameState *g, enemy *e) // Main Combat Mechanics (Basic Tur
             {
                 cinignore();
                 contin();
-                std::cout << "You Win!" << std::endl;
-                
+                clear();
+
                 g->p.setHp(playerStartingHp); // Restore HP
 
-                contin();
-
                 g->p.gainGold(e->getGold()); // Receive Enemies Gold
+
+                horizontalBrokenLines();
+                std::cout << "You Win!" << std::endl;
+                horizontalBrokenLines();
                 std::cout << "Received Gold: " << e->getGold() << std::endl;
+                std::cout << "Current Gold: " << g->p.getGold() << std::endl;
+                horizontalBrokenLines();
 
                 contin();
+
+                clear();
 
                 return 0; // Returns 0 If The Player Won
             }
@@ -112,6 +118,8 @@ int turnBasedCombat (gameState *g, enemy *e) // Main Combat Mechanics (Basic Tur
 
             if (g->p.getHp() <= 0)
             {
+                contin();
+                clear();
                 horizontalBrokenLines();
                 std::cout << "You Died!" << std::endl;
                 horizontalBrokenLines();
@@ -172,7 +180,6 @@ int playerCombatOptions (gameState *g, enemy *e, int playerStartingHp, int enemy
             cinignore();
             std::cin.clear();
 
-            contin();
             std::cout << "< " << g->p.name << " >" << std::endl;
             std::cout << "Time to run!" << std::endl;
 
@@ -234,6 +241,7 @@ void respawn (gameState *g)
         {
             resetPlayerStats(g);
             resetGame(g);
+            clear();
             std::cout << "Here we go again. . ." << std::endl;
             path0(g);
             break;
@@ -241,6 +249,7 @@ void respawn (gameState *g)
         else if (respawnDecision == 2)
         {
             std::cout << "Goobye!" << std::endl;
+            
             break;
         }
         else if (std::cin.fail())

@@ -13,7 +13,7 @@ void resetPlayerStats (gameState *g)
 
 void playerStats (gameState *g)
 {
-
+    clear();
     std::cout << g->p.name << "\'s Stats" << std::endl;
     std::cout << "Stats:    | Level:" << std::endl;
     std::cout << "HP:" << textSpacerHp(g->p.getHp()) << g->p.getHp() << " | " << g->p.getLvlHp() << std::endl;
@@ -24,10 +24,12 @@ void playerStats (gameState *g)
     cinignore();
     std::cout << "Press Enter To Exit. . .";
     getchar();
+    clear();
 }
 
 void enemyStats (enemy *e)
 {
+    clear();
     std::cout << e->name << "\'s Stats:" << std::endl;
     std::cout << "HP: " << e->getHp() << std::endl;
     std::cout << "ATK: " << e->getAtk() << std::endl;
@@ -37,6 +39,7 @@ void enemyStats (enemy *e)
     cinignore();
     std::cout << "Press Enter To Exit. . .";
     getchar();
+    clear();
 }
 // Handles Increasing
 int statUp (gameState *g)

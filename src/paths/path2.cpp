@@ -278,10 +278,9 @@ void path2_2 (gameState *g)
         {
             if (move1 == 1)
             {
-                contin(); 
                 std::cout << "Turning Back. . ." << std::endl;
                 contin();
-
+                clear();
                 g->dialogue2 = false;
                 path2(g);
                 break;
