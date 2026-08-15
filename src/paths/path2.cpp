@@ -45,10 +45,14 @@ void path2 (gameState *g) {
 
             g->qWizard.active = true;
 
+            clear();
+
             std::cout << "< Wizard >" << std::endl;
             std::cout << "\"I knew I could count on you!\"" << std::endl;
             contin();
 
+            clear();
+            
             std::cout << "Entering The Next Room. . ." << std::endl;
             contin();
 

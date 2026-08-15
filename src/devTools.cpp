@@ -93,7 +93,7 @@ void delay (int seconds, int milliseconds) {
     std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
 }
 
-void delayDots (int amount, int seconds, int milliseconds) {
+void delayDots (int amount, int seconds, int milliseconds, bool newLine) {
     int i = 0;
     
     while (i != amount) {
@@ -106,5 +106,9 @@ void delayDots (int amount, int seconds, int milliseconds) {
         std::cout << " ." << std::flush;
         delay(seconds, milliseconds);
         i++;
+    }
+
+    if (newLine == true) {
+        std::cout << std::endl;
     }
 }

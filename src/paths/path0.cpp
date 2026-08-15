@@ -14,7 +14,6 @@ void path0 (gameState *g) {
         if (move1 == 1) {
             clear();
             std::cout << "* " << g->p.name << " Enter's path 1" << std::endl;
-            delay(1, 0);
             std::cout << "# As you wander around you encounter a sign saying \"Danger ahead\"" << std::endl;    
 
             path1(g);

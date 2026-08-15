@@ -3,14 +3,16 @@
 // Main Combat Mechanic
 int turnBasedCombat (gameState *g, enemy *e) {
     clear();
-    
-    int turn; 
-    
-    int playerStartingHp = g->p.getHp(); 
-    int enemyStartingHp = e->getHp(); 
 
-    int playerTurnCount = 0;
-    int enemyTurnCount = 0;
+    combatVariables cv;
+
+    cv.turn = 0;
+
+    cv.playerStartingHp = g->p.getHp(); 
+    cv.enemyStartingHp = e->getHp(); 
+
+    cv.playerTurnCount = 0;
+    cv.enemyTurnCount = 0;
 
     std::cout << "Combat Start!" << std::endl;
     contin();
@@ -18,27 +20,27 @@ int turnBasedCombat (gameState *g, enemy *e) {
     // Determine who goes first based on speed stat
     if (g->p.getSpeed() > e->getSpeed()) {   
         // Player Start
-        turn = 0;
+        cv.turn = 0;
         std::cout << g->p.name << " Starts First" << std::endl;
     } else {   
         // Enemy Start
-        turn = 1;
+        cv.turn = 1;
         std::cout << e->name << " Starts First" << std::endl;
     }
     contin();
 
     // Main combat loop
     while (1) {
-        if (turn == 0) {
+        if (cv.turn == 0) {
             clear();
 
-            int enemyHpBeforeAttack = e->getHp();
+            cv.enemyHpBeforeAttack = e->getHp();
 
-            playerTurnCount++;
-            std::cout << g->p.name << "\'s Turn" << " | " << playerTurnCount << std::endl;
+            cv.playerTurnCount++;
+            std::cout << g->p.name << "\'s Turn" << " | " << cv.playerTurnCount << std::endl;
 
             g->p.setDefend(false); // Resets Defending to false 
-            int decision = playerCombatOptions(g, e, playerStartingHp, enemyHpBeforeAttack); 
+            int decision = playerCombatOptions(g, e, &cv); 
 
             // If Successfully Ran Away. Return To 2 Caller. 
             if (decision == 2) { 
@@ -50,7 +52,7 @@ int turnBasedCombat (gameState *g, enemy *e) {
                 contin();
                 clear();
                 
-                g->p.setHp(playerStartingHp);
+                g->p.setHp(cv.playerStartingHp);
 
                 g->p.gainGold(e->getGold());
 
@@ -74,25 +76,26 @@ int turnBasedCombat (gameState *g, enemy *e) {
             contin();
 
 
-            turn = 1;
-        } else if (turn == 1) {
+            cv.turn = 1;
+        } else if (cv.turn == 1) {
             clear();
 
-            int playerHpBeforeAttack = g->p.getHp();
+            cv.playerHpBeforeAttack = g->p.getHp();
 
-            enemyTurnCount++;
-            std::cout << e->name << "\'s Turn" << " | " << enemyTurnCount << std::endl;
-            std::cout << e->name << "\'s HP: " << e->getHp() << " / " << enemyStartingHp << std::endl; // Display Enemy HP
-            contin();
+            cv.enemyTurnCount++;
+            std::cout << e->name << "\'s Turn" << " | " << cv.enemyTurnCount << std::endl;
+            std::cout << e->name << "\'s HP: " << e->getHp() << " / " << cv.enemyStartingHp << std::endl;
             
+            delayDots(3, 0, 400, true);
+
             horizontalBrokenLines();
             std::cout << e->name << " Attacks!" << std::endl;
             horizontalBrokenLines();
 
-            e->specialMove(enemyTurnCount);
+            e->specialMove(cv.enemyTurnCount);
 
             g->p.takeDamage(e->getAtk());
-            std::cout << g->p.name << " HP: " << playerHpBeforeAttack << " -> " << g->p.getHp() << std::endl;
+            std::cout << g->p.name << "\'s HP: " << cv.playerHpBeforeAttack << " -> " << g->p.getHp() << std::endl;
             horizontalBrokenLines();
 
             if (g->p.getDefend() == true) {
@@ -114,18 +117,18 @@ int turnBasedCombat (gameState *g, enemy *e) {
             }
             contin();
             
-            turn = 0;
+            cv.turn = 0;
         }
     }
     return -1;
 }
 
 // Players Options during Combat
-int playerCombatOptions (gameState *g, enemy *e, int playerStartingHp, int enemyHpBeforeAttack) {
+int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
     int combatDecision;
 
     while (1) {
-        std::cout << g->p.name << "\'s HP: " << g->p.getHp() << " / " << playerStartingHp << std::endl; // Display Player HP
+        std::cout << g->p.name << "\'s HP: " << g->p.getHp() << " / " << cv->playerStartingHp << std::endl; // Display Player HP
         std::cout << "[1] Attack" << std::endl;
         std::cout << "[2] Defend" << std::endl;
         std::cout << "[3] Try To Run" << std::endl;
@@ -141,7 +144,7 @@ int playerCombatOptions (gameState *g, enemy *e, int playerStartingHp, int enemy
             horizontalBrokenLines();
             std::cout << g->p.name << " Attacks!" << std::endl;
             horizontalBrokenLines();
-            std::cout << e->name << " HP: " << enemyHpBeforeAttack << " -> " << e->getHp() << std::endl;
+            std::cout << e->name << " HP: " << cv->enemyHpBeforeAttack << " -> " << e->getHp() << std::endl;
             horizontalBrokenLines();
             
             break;
@@ -167,7 +170,7 @@ int playerCombatOptions (gameState *g, enemy *e, int playerStartingHp, int enemy
                 horizontalBrokenLines();
                 contin();
 
-                g->p.setHp(playerStartingHp);
+                g->p.setHp(cv->playerStartingHp);
 
                 return 2; 
             } else {
@@ -217,3 +220,14 @@ void respawn (gameState *g) {
         }
     }
 }
+
+// TODO: Change this ---
+// void topCombatUI (gameState *g, enemy *e, int enemyTurnCount, int enemyStartingHp) {
+//     if (true) {
+//         std::cout << g->p.name << "\'s Turn" << " | " << enemyTurnCount << std::endl;
+//         std::cout << g->p.name << "\'s HP: " << g->p.getHp() << " / " << enemyStartingHp << std::endl;
+//     } else {
+//         std::cout << e->name << "\'s Turn" << " | " << enemyTurnCount << std::endl;
+//         std::cout << e->name << "\'s HP: " << e->getHp() << " / " << enemyStartingHp << std::endl;
+//     }
+// }

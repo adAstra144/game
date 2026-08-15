@@ -31,7 +31,7 @@ void game () {
             clear();
 
             std::cout << "Starting game";
-            delayDots(3, 1, 0);
+            delayDots(3, 0, 650, false);
 
             clear();
 
