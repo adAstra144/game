@@ -4,8 +4,7 @@
 #include "enemy/enemy.h"
 #include "../devTools.h"
 
-class kingGoblin : public enemy
-{
+class kingGoblin : public enemy {
     public:
         kingGoblin();
 

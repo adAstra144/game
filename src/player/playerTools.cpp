@@ -1,9 +1,6 @@
 #include "player/playerTools.h"
 
-// Player Tools
-// - - - - - - - - - - Player Tools - - - - - - - - - -
-void resetPlayerStats (gameState *g)
-{
+void resetPlayerStats (gameState *g) {
     g->p.setHp(100);
     g->p.setAtk(10);
     g->p.setSpeed(10);
@@ -11,8 +8,7 @@ void resetPlayerStats (gameState *g)
     g->p.setDefend(false);
 }
 
-void playerStats (gameState *g)
-{
+void playerStats (gameState *g) {
     clear();
     std::cout << g->p.name << "\'s Stats" << std::endl;
     std::cout << "Stats:    | Level:" << std::endl;
@@ -27,8 +23,7 @@ void playerStats (gameState *g)
     clear();
 }
 
-void enemyStats (enemy *e)
-{
+void enemyStats (enemy *e) {
     clear();
     std::cout << e->name << "\'s Stats:" << std::endl;
     std::cout << "HP: " << e->getHp() << std::endl;
@@ -42,16 +37,14 @@ void enemyStats (enemy *e)
     clear();
 }
 // Handles Increasing
-int statUp (gameState *g)
-{
+int statUp (gameState *g) {
     int move1;
     int amount;
     int basePrice = 10;
     int price;
     int result;
 
-    while (1)
-    {
+    while (1) {
         std::cout << "Select A Stat To Upgrade: " << std::endl;
         std::cout << "Current Gold: " << g->p.getGold() << std::endl;
         std::cout << "[1] HP" << std::endl;
@@ -62,23 +55,21 @@ int statUp (gameState *g)
         std::cin >> move1;
         
         // Only Requests An "Amount" Input If Picking A Stat Option
-        if (move1 == 1 || move1 == 2 || move1 == 3) 
-        {
+        if (move1 == 1 || move1 == 2 || move1 == 3) {
             std::cout << "Enter Amount: ";
             std::cin >> amount;
 
             price = basePrice * amount;
 
-            if (std::cin.fail())
-            {
+            if (std::cin.fail()) {
                 validnum();
                 contin();
                 statUp(g);
                 return -1;
             }
 
-            if (amount <= 0) // Prevents Zero & Negative Values
-            {
+            // Prevents Zero & Negative Values
+            if (amount <= 0) {
                 horizontalBrokenLines();
                 std::cout << "Amount Must Be At least 1" << std::endl;
                 horizontalBrokenLines();
@@ -91,86 +82,68 @@ int statUp (gameState *g)
             space();
         }
 
-        switch (move1)
-        {
-            case 1:
-            {
+        switch (move1) {
+            case 1: {
                 int hpBefore = g->p.getHp();
                 int lvlBefore = g->p.getLvlHp();
 
                 result = g->p.hpUp(amount, price);
 
-                if (result == 1)
-                {
+                if (result == 1) {
                     std::cout << "HP: " << hpBefore << " -> " << g->p.getHp() << std::endl;
                     std::cout << "Level: " << lvlBefore << " -> " << g->p.getLvlHp() << std::endl;
                     cinignore();
                     contin();
-                }
-                else
-                {
+                } else {
                     contin();
                 }
 
                 break;
             }
 
-            case 2:
-            {
+            case 2: {
                 int atkBefore = g->p.getAtk();
                 int lvlBefore = g->p.getLvlAtk();
 
                 result = g->p.atkUp(amount, price);
-                if (result == 1)
-                {
+                if (result == 1) {
                     std::cout << "ATK: " << atkBefore << " -> " << g->p.getAtk() << std::endl;
                     std::cout << "Level: " << lvlBefore << " -> " << g->p.getLvlAtk() << std::endl;
                     cinignore();
                     contin();
-                }
-                else
-                {
+                } else {
                     contin();
                 }
 
                 break;
             }
 
-            case 3:
-            {
+            case 3: {
                 int speedBefore = g->p.getSpeed();
                 int lvlBefore = g->p.getLvlSpeed();
 
                 result = g->p.speedUp(amount, price);
-                if (result == 1)
-                {
+                if (result == 1) {
                     std::cout << "SPD: " << speedBefore << " -> " << g->p.getSpeed() << std::endl;
                     std::cout << "Level: " << lvlBefore << " -> " << g->p.getLvlSpeed() << std::endl;
                     cinignore();
                     contin();
-                }
-                else 
-                {
+                } else {
                     contin();
                 }
 
                 break;
             }
 
-            case 4:
-            {
+            case 4: {
                 return 0; // Exit With Return 0
                 break;
             }
 
-            default:
-            {
-                if (std::cin.fail())
-                {
+            default: {
+                if (std::cin.fail()) {
                     validnum();
-                }
-                else
-                {
+                } else {
                     cinignore();
 
                     horizontalBrokenLines();
@@ -182,6 +155,5 @@ int statUp (gameState *g)
             }
         }
     }
-
     return -1;
 }

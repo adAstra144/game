@@ -4,6 +4,8 @@
 #include <limits>
 #include <string>
 #include <cstdlib>
+#include <thread>
+#include <chrono>
 
 // Error Tools
 void validnum (void);
@@ -21,3 +23,5 @@ std::string textSpacerHp (int amount);
 std::string textSpacerAtk (int amount);
 std::string textSpacerSpeed (int amount);
 void horizontalBrokenLines ();
+void delay (int seconds, int milliseconds);
+void delayDots (int amount, int seconds, int milliseconds);

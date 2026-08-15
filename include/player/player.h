@@ -6,8 +6,7 @@
 #include "../devTools.h"
 
 // Main Player 
-class player
-{
+class player {
     private:
         int hp;
         int atk;

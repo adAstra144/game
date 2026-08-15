@@ -6,8 +6,5 @@
 #include "../devTools.h"
 #include "../gameState.h"
 
-// - - - - - - - - - - Paths 1 - - - - - - - - - -
 void path1 (gameState *g); // Pre King Goblin Path
-
-
 void path1_2 (gameState *g); // King Goblin Path

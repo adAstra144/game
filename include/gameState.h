@@ -2,14 +2,12 @@
 
 #include "player/player.h"
 
-struct quest
-{
+struct quest {
     bool active;
     bool finished;
 };
 
-struct gameState
-{
+struct gameState {
     // Player
     player p;    
 

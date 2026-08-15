@@ -1,8 +1,7 @@
 #include "devTools.h"
 
-// Error Tools
-void validnum (void) // Fixes cin(input) if it's supposed to be a number
-{   
+// Fixes cin(input) if it's supposed to be a number   
+void validnum (void) { 
     std::cin.clear();
     cinignore();
     
@@ -10,23 +9,22 @@ void validnum (void) // Fixes cin(input) if it's supposed to be a number
     std::cout << "Not a number please try again" << std::endl;
     horizontalBrokenLines();
 }
-void cinignore (void)
-{
+
+void cinignore (void) {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-// Option Tools
-void yn (void)
-{
+// 1 => Yes | 2 => No
+void yn (void) {
     std::cout << "[1] Yes" << std::endl;
     std::cout << "[2] No" << std::endl;
     std::cout << "Next Move: ";
 }
 
-int accept (void) // Return 1 If Accept. 2 If Decline
-{
-    while (1)
-    {
+// Return 1 If Accept. 2 If Decline
+int accept (void) { 
+
+    while (1) {
         int decision;
         std::cout << "[1] Accept" << std::endl;
         std::cout << "[2] Decline" << std::endl;
@@ -34,79 +32,79 @@ int accept (void) // Return 1 If Accept. 2 If Decline
         std::cout << "Next Move: ";
         std::cin >> decision;
 
-        if (decision == 1)
-        {
+        if (decision == 1) {
             return 1;
-        }
-        else if (decision == 2)
-        {
+        } else if (decision == 2) {
             return 0;
-        }
-        else if (std::cin.fail())
-        {
+        } else if (std::cin.fail()) {
             validnum();
-        }
-        else 
-        {
+        } else {
             std::cout << "Invalid Number" << std::endl;
         }
     }
 }
 
-// Design Tools
-void space (void) // Create 1 line space
-{
+// Create 1 line space
+void space (void) {
     std::cout << "\n";
 }
 
-void contin (void) // Continue dialouge 
-{
+// Hit enter to continue with arrow
+void contin (void) {
     std::cout << "->";
     getchar();
 }
 
-void clear (void)
-{
+// Clear the terminal
+void clear (void) {
     std::system("clear");
 }
 
-std::string textSpacerHp (int amount)
-{
-    if (amount >= 100)
-    {
+std::string textSpacerHp (int amount) {
+    if (amount >= 100) {
         return "   ";
-    }
-    else
-    {
+    } else {
         return "    ";
     }
 }
 
-std::string textSpacerAtk (int amount)
-{
-    if (amount >= 100)
-    {
+std::string textSpacerAtk (int amount) {
+    if (amount >= 100) {
         return "  ";
-    }
-    else
-    {
+    } else {
         return "   ";
     }
 }
 
-std::string textSpacerSpeed (int amount)
-{
-    if (amount >= 100)
-    {
+std::string textSpacerSpeed (int amount) {
+    if (amount >= 100) {
         return "  ";
-    }
-    else
-    {
+    } else {
         return "   ";
     }
 }
 
-void horizontalBrokenLines ()
-{
+void horizontalBrokenLines () {
     std::cout << "- - - - - - - - - -" << std::endl;
+}
+
+void delay (int seconds, int milliseconds) {
+    std::this_thread::sleep_for(std::chrono::seconds(seconds));
+    std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
+}
+
+void delayDots (int amount, int seconds, int milliseconds) {
+    int i = 0;
+    
+    while (i != amount) {
+        if (i == 0) {
+            std::cout << "." << std::flush;
+            delay(seconds, milliseconds);
+            i++;
+            continue;
+        }
+        std::cout << " ." << std::flush;
+        delay(seconds, milliseconds);
+        i++;
+    }
 }

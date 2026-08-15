@@ -1,45 +1,36 @@
 #include "enemy/enemy.h"
 
 // Create Enemies By Using enemy(Name, HP, ATTACK, SPEED, GOLD)
-enemy::enemy(std::string n, int h, int a, int s, int g) 
-{
-    name = n;
-    hp = h;
-    atk = a;
-    speed = s;
-    gold = g;
+enemy::enemy(std::string name, int hp, int atk, int speed, int gold) {
+    this->name = name;
+    this->hp = hp;
+    this->atk = atk;
+    this->speed = speed;
+    this->gold = gold;
 }
 
-// Combat
-void enemy::takeDamage (int amount)
-{
+void enemy::takeDamage (int amount) {
     hp -= amount; 
 }
-void enemy::specialMove (int turnCount)
-{
+void enemy::specialMove (int turnCount) {
     
 }
 
-// Set Enemy Variables
-void enemy::setHp (int hp)
-{
+
+void enemy::setHp (int hp) {
     this->hp = hp;
 }
 
-// Get Enemy Variables
-int enemy::getHp ()
-{
+
+int enemy::getHp () {
     return hp;
 }
-int enemy::getAtk ()
-{
+int enemy::getAtk () {
     return atk;
 }
-int enemy::getSpeed()
-{
+int enemy::getSpeed() {
     return speed;
 }
-int enemy::getGold ()
-{
+int enemy::getGold () {
     return gold;
 }
