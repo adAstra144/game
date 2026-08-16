@@ -10,9 +10,7 @@ void validnum (void) {
     std::cin.clear();
     cinignore();
     
-    horizontalBrokenLines();
     std::cout << "Not a number please try again" << std::endl;
-    horizontalBrokenLines();
 }
 
 void cinignore (void) {
@@ -23,7 +21,7 @@ void cinignore (void) {
 void yn (void) {
     std::cout << "[1] Yes" << std::endl;
     std::cout << "[2] No" << std::endl;
-    std::cout << "Next Move: ";
+    voidPrompt();
 }
 
 // Return 1 If Accept. 2 If Decline
@@ -34,7 +32,7 @@ int accept (void) {
         std::cout << "[1] Accept" << std::endl;
         std::cout << "[2] Decline" << std::endl;
 
-        std::cout << "Next Move: ";
+        voidPrompt();
         std::cin >> decision;
 
         if (decision == 1) {
@@ -60,7 +58,6 @@ void contin (void) {
     getchar();
 }
 
-// Clear the terminal
 void clear (void) {
     std::system("clear");
 }
@@ -116,4 +113,8 @@ void delayDots (int amount, int seconds, int milliseconds, bool newLine) {
     if (newLine == true) {
         std::cout << std::endl;
     }
+}
+
+void voidPrompt () {
+    std::cout << " » ";
 }
