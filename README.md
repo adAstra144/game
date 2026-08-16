@@ -35,6 +35,7 @@ sudo apt install build-essential cmake
 2. Build it:
 
    ```bash
+   chmod +x ./build.sh
    ./build.sh
    ```
 
@@ -43,7 +44,7 @@ sudo apt install build-essential cmake
 3. Run it:
 
    ```bash
-   ./build/dungeon_crawler
+   ./build/game
    ```
 
    (Replace with your actual executable name if it differs — check the `add_executable(...)` line in `CMakeLists.txt`.)
