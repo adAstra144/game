@@ -56,7 +56,6 @@ void path1_2 (gameState *g) {
 
     horizontalBrokenLines();
     message(messageType::NARRATE, {"King Goblin has appeared!"});
-    std::cout << "# King Goblin Has Appeared!" << std::endl;
     horizontalBrokenLines();
     contin();
     

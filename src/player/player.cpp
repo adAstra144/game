@@ -104,6 +104,7 @@ int player::hpUp (int amount, int price) {
         return 0;
     }
 
+    clear();
     if (gold >= 0) {
         hp += 10 * amount;    
         lvlHp += amount;
@@ -134,6 +135,7 @@ int player::atkUp (int amount, int price) {
         return 0;
     }
 
+    clear();
     if (gold >= 0) {
         atk += 10 * amount;
         lvlAtk += amount;
@@ -165,6 +167,7 @@ int player::speedUp (int amount, int price) {
         return 0;
     }
 
+    clear();
     if (gold >= 0) {
         speed += 10 * amount;
         lvlSpeed += amount;

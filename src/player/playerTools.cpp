@@ -20,6 +20,7 @@ int statUp (gameState *g) {
     int result;
 
     while (1) {
+        clear();
         std::cout << "Select A Stat To Upgrade: " << std::endl;
         std::cout << "Current Gold: " << g->p.getGold() << std::endl;
         std::cout << "[1] HP" << std::endl;
@@ -31,7 +32,8 @@ int statUp (gameState *g) {
         
         // Only Requests An "Amount" Input If Picking A Stat Option
         if (move1 == 1 || move1 == 2 || move1 == 3) {
-            std::cout << "? Enter Amount: ";
+            message(messageType::INPUT, {"Enter amount :"});
+            voidPrompt();
             std::cin >> amount;
 
             price = basePrice * amount;
@@ -46,7 +48,7 @@ int statUp (gameState *g) {
             // Prevents Zero & Negative Values
             if (amount <= 0) {
                 horizontalBrokenLines();
-                std::cout << "! Amount Must Be At least 1" << std::endl;
+                message(messageType::ERROR, {"Amount must be atleast 1"});
                 horizontalBrokenLines();
 
                 statUp(g);
@@ -57,6 +59,7 @@ int statUp (gameState *g) {
             space();
         }
 
+        clear();
         switch (move1) {
             case 1: {
                 int hpBefore = g->p.getHp();
@@ -152,6 +155,7 @@ int statUp (gameState *g) {
                     cinignore();
 
                     horizontalBrokenLines();
+                    message(messageType::ERROR, {"Invalid number"});
                     std::cout << "! Invalid Number" << std::endl;
                     horizontalBrokenLines();
                 }

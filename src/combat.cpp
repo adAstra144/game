@@ -93,7 +93,8 @@ int turnBasedCombat (gameState *g, enemy *e) {
             std::cout << e->name << "\'s HP: " << e->getHp() << " / " << cv.enemyStartingHp << std::endl;
             
             delayDots(3, 0, 400, true);
-
+            
+            // TODO: Consider doing the same with this with what your planning for the player (clear -> print top UI -> print action)
             horizontalBrokenLines();
             message(messageType::ACTION, {e->name,"Attacks!"});
             horizontalBrokenLines();

@@ -513,7 +513,6 @@ void path1_2 (gameState *g) {
 
     horizontalBrokenLines();
     message(messageType::NARRATE, {"King Goblin has appeared!"});
-    std::cout << "# King Goblin Has Appeared!" << std::endl;
     horizontalBrokenLines();
     contin();
     
@@ -638,6 +637,7 @@ int player::hpUp (int amount, int price) {
         return 0;
     }
 
+    clear();
     if (gold >= 0) {
         hp += 10 * amount;    
         lvlHp += amount;
@@ -668,6 +668,7 @@ int player::atkUp (int amount, int price) {
         return 0;
     }
 
+    clear();
     if (gold >= 0) {
         atk += 10 * amount;
         lvlAtk += amount;
@@ -699,6 +700,7 @@ int player::speedUp (int amount, int price) {
         return 0;
     }
 
+    clear();
     if (gold >= 0) {
         speed += 10 * amount;
         lvlSpeed += amount;
@@ -744,6 +746,7 @@ int statUp (gameState *g) {
     int result;
 
     while (1) {
+        clear();
         std::cout << "Select A Stat To Upgrade: " << std::endl;
         std::cout << "Current Gold: " << g->p.getGold() << std::endl;
         std::cout << "[1] HP" << std::endl;
@@ -755,7 +758,8 @@ int statUp (gameState *g) {
         
         // Only Requests An "Amount" Input If Picking A Stat Option
         if (move1 == 1 || move1 == 2 || move1 == 3) {
-            std::cout << "? Enter Amount: ";
+            message(messageType::INPUT, {"Enter amount :"});
+            voidPrompt();
             std::cin >> amount;
 
             price = basePrice * amount;
@@ -770,7 +774,7 @@ int statUp (gameState *g) {
             // Prevents Zero & Negative Values
             if (amount <= 0) {
                 horizontalBrokenLines();
-                std::cout << "! Amount Must Be At least 1" << std::endl;
+                message(messageType::ERROR, {"Amount must be atleast 1"});
                 horizontalBrokenLines();
 
                 statUp(g);
@@ -781,6 +785,7 @@ int statUp (gameState *g) {
             space();
         }
 
+        clear();
         switch (move1) {
             case 1: {
                 int hpBefore = g->p.getHp();
@@ -876,6 +881,7 @@ int statUp (gameState *g) {
                     cinignore();
 
                     horizontalBrokenLines();
+                    message(messageType::ERROR, {"Invalid number"});
                     std::cout << "! Invalid Number" << std::endl;
                     horizontalBrokenLines();
                 }
@@ -910,6 +916,8 @@ void game () {
     while (1) {
         std::cout << "[1] Start Game" << std::endl;
         std::cout << "[2] Exit" << std::endl;
+
+        message(messageType::INPUT, {"Next move :"});
         voidPrompt();
         std::cin >> menuOptions;
 
@@ -984,7 +992,7 @@ void tutorial (gameState *g)
     std::cout << "Game symbols :" << std::endl;
     std::cout << " »  => Requests your decision" << std::endl;
     std::cout << " #  => Narration/Description" << std::endl;
-    std::cout << " *  => Player action" << std::endl;
+    std::cout << " *  => Player/NPC/Enemy action" << std::endl;
     std::cout << " !  => Error" << std::endl;
     std::cout << "[i] => System message" << std::endl;
     std::cout << "[n] => Menu/Choice n is the number" << std::endl;
@@ -1373,8 +1381,11 @@ void optionsPath2 (gameState *g) {
         if (g->qWizard.finished == true) {
             if (g->dialogue2_2 == true) {
                 g->dialogue2_2 = false;
-
+                
                 cinignore();
+
+                clear();
+                
                 dialouge("Wizard", "What do you need?", true);
                 dialouge(g->p.name, "So about the reward?", true);
                 dialouge("Wizard", "Done already?", true);
@@ -1384,6 +1395,7 @@ void optionsPath2 (gameState *g) {
                 dialouge("Wizard", "All I need is gold and I can magically enhance you", true);
                 dialouge("Wizard", "Try giving me some of that gold you got from killing those skeletons", false);
 
+                clear();
                 statUp(g);
 
                 optionsPath2(g);
@@ -1453,6 +1465,7 @@ void optionsPath2 (gameState *g) {
                         dialouge("Wizard", "I Can Enhance Your Stats In Exchange For Gold", true);
                         dialouge("Wizard", "Here try using the gold you have", true);
 
+                        clear();
                         statUp(g);
 
                         path2(g);
@@ -1586,7 +1599,8 @@ int turnBasedCombat (gameState *g, enemy *e) {
             std::cout << e->name << "\'s HP: " << e->getHp() << " / " << cv.enemyStartingHp << std::endl;
             
             delayDots(3, 0, 400, true);
-
+            
+            // TODO: Consider doing the same with this with what your planning for the player (clear -> print top UI -> print action)
             horizontalBrokenLines();
             message(messageType::ACTION, {e->name,"Attacks!"});
             horizontalBrokenLines();

@@ -265,8 +265,11 @@ void optionsPath2 (gameState *g) {
         if (g->qWizard.finished == true) {
             if (g->dialogue2_2 == true) {
                 g->dialogue2_2 = false;
-
+                
                 cinignore();
+
+                clear();
+                
                 dialouge("Wizard", "What do you need?", true);
                 dialouge(g->p.name, "So about the reward?", true);
                 dialouge("Wizard", "Done already?", true);
@@ -276,6 +279,7 @@ void optionsPath2 (gameState *g) {
                 dialouge("Wizard", "All I need is gold and I can magically enhance you", true);
                 dialouge("Wizard", "Try giving me some of that gold you got from killing those skeletons", false);
 
+                clear();
                 statUp(g);
 
                 optionsPath2(g);
@@ -345,6 +349,7 @@ void optionsPath2 (gameState *g) {
                         dialouge("Wizard", "I Can Enhance Your Stats In Exchange For Gold", true);
                         dialouge("Wizard", "Here try using the gold you have", true);
 
+                        clear();
                         statUp(g);
 
                         path2(g);

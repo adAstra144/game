@@ -19,6 +19,8 @@ void game () {
     while (1) {
         std::cout << "[1] Start Game" << std::endl;
         std::cout << "[2] Exit" << std::endl;
+
+        message(messageType::INPUT, {"Next move :"});
         voidPrompt();
         std::cin >> menuOptions;
 
@@ -93,7 +95,7 @@ void tutorial (gameState *g)
     std::cout << "Game symbols :" << std::endl;
     std::cout << " »  => Requests your decision" << std::endl;
     std::cout << " #  => Narration/Description" << std::endl;
-    std::cout << " *  => Player action" << std::endl;
+    std::cout << " *  => Player/NPC/Enemy action" << std::endl;
     std::cout << " !  => Error" << std::endl;
     std::cout << "[i] => System message" << std::endl;
     std::cout << "[n] => Menu/Choice n is the number" << std::endl;
