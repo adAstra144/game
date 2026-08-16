@@ -28,8 +28,8 @@ sudo apt install build-essential cmake
 1. Clone the repo:
 
    ```bash
-   git clone <your-repo-url>
-   cd <repo-name>
+   git clone https://github.com/adAstra144/game.git
+   cd game
    ```
 
 2. Build it:
