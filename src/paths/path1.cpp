@@ -1,5 +1,12 @@
 #include "paths/path1.hpp"
 
+#include <iostream>
+
+#include "paths/path0.hpp"
+#include "enemy/kingGoblin.hpp"
+#include "combat.hpp" 
+#include "devTools.hpp"
+
 // King Goblin Path
 void path1 (gameState *g) {
     std::cout << "Current Path: 1" << std::endl;

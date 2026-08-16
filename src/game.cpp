@@ -1,5 +1,11 @@
 #include "game.hpp"
 
+#include <iostream>
+
+#include "paths/path0.hpp"
+#include "devTools.hpp"
+#include "gameState.hpp"
+
 void game () {
 
     gameState g;

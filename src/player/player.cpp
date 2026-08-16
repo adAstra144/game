@@ -1,5 +1,8 @@
 #include "player/player.hpp"
 
+#include <iostream>
+#include "devTools.hpp"
+
 // Player Constructor For Base Player Stats
 player::player() {
     // Base Stats

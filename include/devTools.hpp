@@ -1,11 +1,7 @@
 #pragma once
 
-#include <iostream>
-#include <limits>
 #include <string>
 #include <cstdlib>
-#include <thread>
-#include <chrono>
 
 // Error Tools
 void validnum (void);

@@ -1,9 +1,6 @@
 #pragma once
 
 #include "enemy/enemy.hpp"
-#include "paths/path0.hpp"
-#include "player/playerTools.hpp"
-#include "devTools.hpp"
 #include "gameState.hpp"
 
 struct combatVariables {

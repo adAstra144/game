@@ -1,5 +1,14 @@
 #include "paths/path2.hpp"
 
+#include <iostream>
+
+#include "enemy/skeleton.hpp"
+#include "paths/path0.hpp"
+#include "player/player.hpp"
+#include "player/playerTools.hpp"
+#include "combat.hpp"
+#include "devTools.hpp"
+
 // Wizard Path (Increase ? Stat)
 void path2 (gameState *g) {   
     std::cout << "Current Path: 2" << std::endl;

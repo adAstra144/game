@@ -1,5 +1,8 @@
 #include "player/playerTools.hpp"
 
+#include <iostream>
+#include "devTools.hpp"
+
 void resetPlayerStats (gameState *g) {
     g->p.setHp(100);
     g->p.setAtk(10);

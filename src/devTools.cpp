@@ -1,5 +1,10 @@
 #include "devTools.hpp"
 
+#include <iostream>
+#include <limits>
+#include <thread>
+#include <chrono>
+
 // Fixes cin(input) if it's supposed to be a number   
 void validnum (void) { 
     std::cin.clear();

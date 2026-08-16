@@ -1,5 +1,11 @@
 #include "combat.hpp"
 
+#include <iostream>
+
+#include "paths/path0.hpp"
+#include "player/playerTools.hpp"
+#include "devTools.hpp"
+
 // Main Combat Mechanic
 int turnBasedCombat (gameState *g, enemy *e) {
     clear();

@@ -1,5 +1,12 @@
 #include "paths/path0.hpp"
 
+#include <iostream>
+
+#include "paths/path1.hpp"
+#include "paths/path2.hpp"
+#include "paths/path3.hpp"
+#include "devTools.hpp"
+
 void path0 (gameState *g) {
     while (1) {
         std::cout << "Current Path: 0" << std::endl;

@@ -1,9 +1,6 @@
 #pragma once
 
-#include <iostream>
 #include <string>
-#include "enemy/enemy.hpp"
-#include "../devTools.hpp"
 
 // Main Player 
 class player {

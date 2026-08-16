@@ -1,5 +1,7 @@
 #include "paths/path3.hpp"
 
+#include <iostream>
+
 void path3 (gameState *g) {
     std::cout << "Current Path: 3" <<std::endl;
 

@@ -1,5 +1,9 @@
 #include "enemy/kingGoblin.hpp"
 
+#include <iostream>
+
+#include "devTools.hpp"
+
 kingGoblin::kingGoblin() : enemy("King Goblin", 200, 50, 5, 200) {}
 
 void kingGoblin::specialMove (int turnCount) {
