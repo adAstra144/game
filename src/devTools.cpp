@@ -10,7 +10,7 @@ void validnum (void) {
     std::cin.clear();
     cinignore();
     
-    std::cout << "! Not a number please try again" << std::endl;
+    message(messageType::ERROR, {"Not a number please try again"});
 }
 
 void cinignore (void) {
@@ -42,6 +42,7 @@ int accept (void) {
         } else if (std::cin.fail()) {
             validnum();
         } else {
+            message(messageType::ERROR, {"Invalid number"});
             std::cout << "! Invalid Number" << std::endl;
         }
     }
@@ -131,4 +132,23 @@ void dialouge (std::string name, std::string dialogue, bool pause) {
     if (pause == true) {
         contin();
     }
+}
+
+void message (messageType type, std::initializer_list<std::string> message) {
+    if (type == messageType::SYS) {
+        std::cout << "[i] ";
+    } else if (type == messageType::NARRATE) {
+        std::cout << "# ";
+    } else if (type == messageType::ERROR) {
+        std::cout << "! ";
+    } else if (type == messageType::ACTION) {
+        std::cout << "* ";
+    } else if (type == messageType::INPUT) {
+        std::cout << "? ";
+    }
+
+    for (auto& str : message) {
+        std::cout << str << " ";
+    }
+    std::cout << std::endl;
 }

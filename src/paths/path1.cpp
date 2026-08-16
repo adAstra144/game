@@ -7,31 +7,31 @@
 #include "combat.hpp" 
 #include "devTools.hpp"
 
-// King Goblin Path
+//* King Goblin Path
 void path1 (gameState *g) {
     std::cout << "Current Path: 1" << std::endl;
 
-    std::cout << "# As you wander around you encounter a sign saying \"Danger ahead\"" << std::endl;    
+    message(messageType::NARRATE, {"As you wander around you encounter a sign saying \"Danger ahead\""});
 
     int move1;
     while (1) {
         std::cout << "[1] Continue To Path 1-2?" << std::endl;
         std::cout << "[2] Turn Back" << std::endl;
-        std::cout << "? Next Move :" << std::endl;
+        message(messageType::INPUT, {"Next Move :"});
         voidPrompt();
         std::cin >> move1;
 
         cinignore();
         if (move1 == 1) {
             clear();
-            std::cout << "* " << g->p.name << " Ignores the sign" << std::endl; 
+            message(messageType::ACTION, {g->p.name, "Ignores the sign"});
             contin();
             clear();
             path1_2(g);
             break;
         } else if (move1 == 2) {
             clear();
-            std::cout << "* " << g->p.name << " Trusts the sign" << std::endl;
+            message(messageType::ACTION, {g->p.name, "Trusts the sign"});
             contin();
 
             clear();
@@ -39,7 +39,7 @@ void path1 (gameState *g) {
         } else if (std::cin.fail()) {
             validnum();
         } else {
-            std::cout << "! Invalid Number";
+            message(messageType::ERROR, {"Invalid number"});
         }
     }
 }
@@ -55,6 +55,7 @@ void path1_2 (gameState *g) {
     dialouge(g->p.name, "! ! !", true);
 
     horizontalBrokenLines();
+    message(messageType::NARRATE, {"King Goblin has appeared!"});
     std::cout << "# King Goblin Has Appeared!" << std::endl;
     horizontalBrokenLines();
     contin();
@@ -64,10 +65,10 @@ void path1_2 (gameState *g) {
     if (result == 0) {
         // TODO: Add Path1_3 Here
         // TODO: What's Next After King Goblin?
-        std::cout << "You Won" << std::endl; 
+        std::cout << "Path 1-3?" << std::endl; 
     } else if (result == 2) {
         clear();
-        std::cout << "Back at the start..." << std::endl;
+        message(messageType::NARRATE, {"Back at the start..."});
         path0(g);
     }
 }

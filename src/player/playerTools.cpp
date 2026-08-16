@@ -65,8 +65,18 @@ int statUp (gameState *g) {
                 result = g->p.hpUp(amount, price);
 
                 if (result == 1) {
-                    std::cout << "[i] " << "HP: " << hpBefore << " -> " << g->p.getHp() << std::endl;
-                    std::cout << "[i] " << "Level: " << lvlBefore << " -> " << g->p.getLvlHp() << std::endl;
+                    message(messageType::SYS,{
+                        "HP:",
+                        std::to_string(hpBefore),
+                        "->",
+                        std::to_string(g->p.getHp()),    
+                    });
+                    message(messageType::SYS, {
+                        "Level:",
+                        std::to_string(lvlBefore),
+                        "->",
+                        std::to_string(g->p.getLvlHp()),
+                    });
                     cinignore();
                     contin();
                 } else {
@@ -82,8 +92,18 @@ int statUp (gameState *g) {
 
                 result = g->p.atkUp(amount, price);
                 if (result == 1) {
-                    std::cout << "[i] " << "ATK: " << atkBefore << " -> " << g->p.getAtk() << std::endl;
-                    std::cout << "[i] " << "Level: " << lvlBefore << " -> " << g->p.getLvlAtk() << std::endl;
+                    message(messageType::SYS,{
+                        "HP:",
+                        std::to_string(atkBefore),
+                        "->",
+                        std::to_string(g->p.getAtk()),    
+                    });
+                    message(messageType::SYS, {
+                        "Level:",
+                        std::to_string(lvlBefore),
+                        "->",
+                        std::to_string(g->p.getLvlAtk()),
+                    });
                     cinignore();
                     contin();
                 } else {
@@ -99,8 +119,18 @@ int statUp (gameState *g) {
 
                 result = g->p.speedUp(amount, price);
                 if (result == 1) {
-                    std::cout << "[i] " << "SPD: " << speedBefore << " -> " << g->p.getSpeed() << std::endl;
-                    std::cout << "[i] " << "Level: " << lvlBefore << " -> " << g->p.getLvlSpeed() << std::endl;
+                    message(messageType::SYS,{
+                        "HP:",
+                        std::to_string(speedBefore),
+                        "->",
+                        std::to_string(g->p.getSpeed()),    
+                    });
+                    message(messageType::SYS, {
+                        "Level:",
+                        std::to_string(lvlBefore),
+                        "->",
+                        std::to_string(g->p.getLvlSpeed()),
+                    });
                     cinignore();
                     contin();
                 } else {

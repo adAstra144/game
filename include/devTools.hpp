@@ -2,6 +2,15 @@
 
 #include <string>
 #include <cstdlib>
+#include <initializer_list>
+
+enum class messageType {
+    ACTION,
+    ERROR,
+    INPUT,
+    NARRATE,
+    SYS,
+};
 
 // Error Tools
 void validnum (void);
@@ -23,3 +32,4 @@ void delay (int seconds, int milliseconds);
 void delayDots (int amount, int seconds, int milliseconds, bool newLine);
 void voidPrompt ();
 void dialouge (std::string name, std::string dialogue, bool pause);
+void message (messageType type, std::initializer_list<std::string> message);

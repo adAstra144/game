@@ -28,35 +28,33 @@ void game () {
         if (menuOptions == 1) {
             std::string name;
 
-            std::cout << "? Enter player name :" << std::endl;
+            message(messageType::INPUT, {"Enter player name :"});
             voidPrompt();
             std::cin >> name;
-            
             g.p.name = name;
 
             tutorial(&g);
             
             clear();
-
-            std::cout << "[i] Starting game";
+            message(messageType::SYS, {"Starting game"});
             delayDots(3, 0, 600, false);
 
             clear();
+            message(messageType::NARRATE, {"Presented before you are 3 paths"});
 
-            std::cout << "# Presented before you are 3 paths" << std::endl;
             path0(&g);
 
             break;
 
         } else if (menuOptions == 2) {
-            std::cout << "[i] Goodbye!" << std::endl;
+            message(messageType::SYS, {"Goodbye!"});
             break;
 
         } else if (menuOptions == 3) { 
-            // Quick Start. Defaulted Player Name To Astra
+            //* Quick Start. Defaulted Player Name To Astra
             g.p.name = "Astra";       
             
-            std::cout << "# Presented before you are 3 paths" << std::endl;
+            message(messageType::NARRATE, {"Presented before you are 3 paths"});
             
             path0(&g);
 
@@ -66,7 +64,7 @@ void game () {
             validnum();
 
         } else {
-            std::cout << "! Invalid Number" << std::endl;
+            message(messageType::ERROR, {"Invalid number"});
         }    
     } 
 }
@@ -77,7 +75,7 @@ void tutorial (gameState *g)
     
     int skipTutorial;
     while (true) {
-        std::cout << "? Skip tutorial :" << std::endl;
+        message(messageType::INPUT, {"Skip tutorial :"});
         yn();   
         std::cin >> skipTutorial;
     
@@ -124,19 +122,19 @@ void tutorial (gameState *g)
         cinignore();
         if (move1 == 1) {
             clear();
-            std::cout << "# A storm is approaching..." << std::endl;
+            message(messageType::NARRATE, {"A storm is approaching..."});
             contin();
         } else if (move1 == 2) {
             clear();
-            std::cout << "* " << g->p.name << " is scratching their head" << std::endl;
+            message(messageType::ACTION, {g->p.name, "is scratching their head"});
             contin();
         } else if (move1 == 3) {
             clear();
-            std::cout << "! Invalid move!" << std::endl;
+            message(messageType::ERROR, {"Invalid move"});
             contin();
         } else if (move1 == 4) { 
             clear();
-            std::cout << "[i] Quest completed!" << std::endl;
+            message(messageType::SYS, {"Quest completed!"});
             contin();
         } else if (move1 == 5) {
             break;
@@ -145,7 +143,7 @@ void tutorial (gameState *g)
             validnum();
             contin();
         } else {
-            std::cout << "! Invalid number" << std::endl;
+            message(messageType::ERROR, {"Invalid number"});
         }
     }
 }

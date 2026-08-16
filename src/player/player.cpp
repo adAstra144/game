@@ -76,8 +76,9 @@ int player::getLvlSpeed () {
 int player::continueStatUp (int price) {
     int decision;
 
-    std::cout << "[i] Will Cost: " << price << " Gold" << std::endl;
-    std::cout << "? Continue (y/n):" << std::endl; 
+    message(messageType::SYS, {"Will cost:", std::to_string(price), "gold"});
+
+    message(messageType::INPUT, {"Continue :"});
     yn();
     std::cin >> decision;
 
@@ -85,7 +86,7 @@ int player::continueStatUp (int price) {
         return 1;
     } else {
         horizontalBrokenLines();
-        std::cout << "[i] " << "Stat Level Up Canceled" << std::endl;
+        message(messageType::SYS, {"Stat level up cancelled"});
         horizontalBrokenLines();
         
         return 0;
@@ -108,13 +109,13 @@ int player::hpUp (int amount, int price) {
         lvlHp += amount;
 
         horizontalBrokenLines();
-        std::cout << "[i] " << "Upgrade Succesful!" << std::endl;
+        message(messageType::SYS, {"Upgrade succesful!"});
         horizontalBrokenLines();
 
         return 1; // Transac Success
     } else {
         horizontalBrokenLines();
-        std::cout << "[i] " << "Not Enough Gold!" << std::endl;
+        message(messageType::ERROR, {"Not enough gold"});
         horizontalBrokenLines();
 
         gold = beforeGold;
@@ -138,13 +139,13 @@ int player::atkUp (int amount, int price) {
         lvlAtk += amount;
 
         horizontalBrokenLines();
-        std::cout << "[i] " << "Upgrade Succesful!" << std::endl;
+        message(messageType::SYS, {"Upgrade succesful!"});
         horizontalBrokenLines();
 
         return 1; // Transac Success
     } else {
         horizontalBrokenLines();
-        std::cout << "[i] " << "Not Enough Gold" << std::endl;
+        message(messageType::ERROR, {"Not enough gold"});
         horizontalBrokenLines();
 
         gold = beforeGold;
@@ -169,14 +170,14 @@ int player::speedUp (int amount, int price) {
         lvlSpeed += amount;
 
         horizontalBrokenLines();
-        std::cout << "[i] " << "Upgrade Succesful!" << std::endl;
+        message(messageType::SYS, {"Upgrade succesful!"});
         horizontalBrokenLines();
 
         return 1; // Transac Success
     }
     else {
         horizontalBrokenLines();
-        std::cout << "[i] " << "Not Enough Gold" << std::endl;
+        message(messageType::ERROR, {"Not enough gold"});
         horizontalBrokenLines();
 
         gold = beforeGold;
