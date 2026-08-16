@@ -1,4 +1,4 @@
-#include "devTools.h"
+#include "devTools.hpp"
 
 // Fixes cin(input) if it's supposed to be a number   
 void validnum (void) { 

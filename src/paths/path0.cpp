@@ -1,4 +1,4 @@
-#include "paths/path0.h"
+#include "paths/path0.hpp"
 
 void path0 (gameState *g) {
     while (1) {

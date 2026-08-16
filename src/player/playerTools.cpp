@@ -1,4 +1,4 @@
-#include "player/playerTools.h"
+#include "player/playerTools.hpp"
 
 void resetPlayerStats (gameState *g) {
     g->p.setHp(100);

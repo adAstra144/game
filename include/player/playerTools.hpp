@@ -1,8 +1,8 @@
 #pragma once
 
-#include "enemy/enemy.h"
-#include "../devTools.h"
-#include "../gameState.h"
+#include "enemy/enemy.hpp"
+#include "../devTools.hpp"
+#include "../gameState.hpp"
 
 // Player Tools
 void resetPlayerStats (gameState *g);

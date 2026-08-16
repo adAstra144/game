@@ -1,4 +1,4 @@
-#include "combat.h"
+#include "combat.hpp"
 
 // Main Combat Mechanic
 int turnBasedCombat (gameState *g, enemy *e) {

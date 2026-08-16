@@ -2,8 +2,8 @@
 
 #include <iostream>
 #include <string>
-#include "enemy/enemy.h"
-#include "../devTools.h"
+#include "enemy/enemy.hpp"
+#include "../devTools.hpp"
 
 // Main Player 
 class player {

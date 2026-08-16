@@ -1,6 +1,6 @@
 #pragma once
 
-#include "player/player.h"
+#include "player/player.hpp"
 
 struct quest {
     bool active;

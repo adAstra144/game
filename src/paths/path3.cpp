@@ -1,4 +1,4 @@
-#include "paths/path3.h"
+#include "paths/path3.hpp"
 
 void path3 (gameState *g) {
     std::cout << "Current Path: 3" <<std::endl;

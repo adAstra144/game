@@ -1,4 +1,4 @@
-#include "gameState.h"
+#include "gameState.hpp"
 
 // Add All Dialogues and Quests Here
 void resetGame (gameState *g) {

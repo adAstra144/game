@@ -1,10 +1,10 @@
 #pragma once
 
-#include "enemy/enemy.h"
-#include "paths/path0.h"
-#include "player/playerTools.h"
-#include "devTools.h"
-#include "gameState.h"
+#include "enemy/enemy.hpp"
+#include "paths/path0.hpp"
+#include "player/playerTools.hpp"
+#include "devTools.hpp"
+#include "gameState.hpp"
 
 struct combatVariables {
     int playerStartingHp;

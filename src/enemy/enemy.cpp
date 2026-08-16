@@ -1,4 +1,4 @@
-#include "enemy/enemy.h"
+#include "enemy/enemy.hpp"
 
 // Create Enemies By Using enemy(Name, HP, ATTACK, SPEED, GOLD)
 enemy::enemy(std::string name, int hp, int atk, int speed, int gold) {

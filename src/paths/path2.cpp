@@ -1,4 +1,4 @@
-#include "paths/path2.h"
+#include "paths/path2.hpp"
 
 // Wizard Path (Increase ? Stat)
 void path2 (gameState *g) {   

@@ -1,4 +1,4 @@
-#include "paths/path1.h"
+#include "paths/path1.hpp"
 
 // King Goblin Path
 void path1 (gameState *g) {
