@@ -302,34 +302,6 @@ void enemyStats (enemy *e);
 void respawn (gameState *g);
 </file>
 
-<file path="include/devTools.hpp">
-#pragma once
-
-#include <string>
-#include <cstdlib>
-
-// Error Tools
-void validnum (void);
-void cinignore (void);
-
-// Option Tools 
-void yn (void);
-int accept (void);
-
-// Design Tools
-void space (void);
-void contin (void);
-void clear (void);
-std::string textSpacerHp (int amount);
-std::string textSpacerAtk (int amount);
-std::string textSpacerSpeed (int amount);
-void horizontalBrokenLines ();
-void delay (int seconds, int milliseconds);
-void delayDots (int amount, int seconds, int milliseconds, bool newLine);
-void voidPrompt ();
-void dialouge (std::string name, std::string dialogue, bool pause);
-</file>
-
 <file path="include/game.hpp">
 #pragma once
 
@@ -415,19 +387,6 @@ void kingGoblin::specialMove (int turnCount) {
 }
 </file>
 
-<file path="src/paths/path3.cpp">
-#include "paths/path3.hpp"
-
-#include <iostream>
-
-void path3 (gameState *g) {
-    std::cout << "Current Path: 3" <<std::endl;
-
-    std::cout << "Welcome to path 3" << std::endl;
-    // TODO: Add something here :)
-}
-</file>
-
 <file path="src/gameState.cpp">
 #include "gameState.hpp"
 
@@ -444,6 +403,57 @@ void resetGame (gameState *g) {
 }
 </file>
 
+<file path="include/devTools.hpp">
+#pragma once
+
+#include <string>
+#include <cstdlib>
+#include <initializer_list>
+
+enum class messageType {
+    ACTION,
+    ERROR,
+    INPUT,
+    NARRATE,
+    SYS,
+};
+
+// Error Tools
+void validnum (void);
+void cinignore (void);
+
+// Option Tools 
+void yn (void);
+int accept (void);
+
+// Design Tools
+void space (void);
+void contin (void);
+void clear (void);
+std::string textSpacerHp (int amount);
+std::string textSpacerAtk (int amount);
+std::string textSpacerSpeed (int amount);
+void horizontalBrokenLines ();
+void delay (int seconds, int milliseconds);
+void delayDots (int amount, int seconds, int milliseconds, bool newLine);
+void voidPrompt ();
+void dialouge (std::string name, std::string dialogue, bool pause);
+void message (messageType type, std::initializer_list<std::string> message);
+</file>
+
+<file path="src/paths/path3.cpp">
+#include "paths/path3.hpp"
+
+#include <iostream>
+
+void path3 (gameState *g) {
+    std::cout << "~ Current Path: 3" <<std::endl;
+
+    std::cout << "Welcome to path 3" << std::endl;
+    // TODO: Add something here :)
+}
+</file>
+
 <file path="src/paths/path1.cpp">
 #include "paths/path1.hpp"
 
@@ -454,31 +464,31 @@ void resetGame (gameState *g) {
 #include "combat.hpp" 
 #include "devTools.hpp"
 
-// King Goblin Path
+//* King Goblin Path
 void path1 (gameState *g) {
     std::cout << "Current Path: 1" << std::endl;
 
-    std::cout << "# As you wander around you encounter a sign saying \"Danger ahead\"" << std::endl;    
+    message(messageType::NARRATE, {"As you wander around you encounter a sign saying \"Danger ahead\""});
 
     int move1;
     while (1) {
         std::cout << "[1] Continue To Path 1-2?" << std::endl;
         std::cout << "[2] Turn Back" << std::endl;
-        std::cout << "? Next Move :" << std::endl;
+        message(messageType::INPUT, {"Next Move :"});
         voidPrompt();
         std::cin >> move1;
 
         cinignore();
         if (move1 == 1) {
             clear();
-            std::cout << "* " << g->p.name << " Ignores the sign" << std::endl; 
+            message(messageType::ACTION, {g->p.name, "Ignores the sign"});
             contin();
             clear();
             path1_2(g);
             break;
         } else if (move1 == 2) {
             clear();
-            std::cout << "* " << g->p.name << " Trusts the sign" << std::endl;
+            message(messageType::ACTION, {g->p.name, "Trusts the sign"});
             contin();
 
             clear();
@@ -486,7 +496,7 @@ void path1 (gameState *g) {
         } else if (std::cin.fail()) {
             validnum();
         } else {
-            std::cout << "! Invalid Number";
+            message(messageType::ERROR, {"Invalid number"});
         }
     }
 }
@@ -502,6 +512,7 @@ void path1_2 (gameState *g) {
     dialouge(g->p.name, "! ! !", true);
 
     horizontalBrokenLines();
+    message(messageType::NARRATE, {"King Goblin has appeared!"});
     std::cout << "# King Goblin Has Appeared!" << std::endl;
     horizontalBrokenLines();
     contin();
@@ -511,10 +522,10 @@ void path1_2 (gameState *g) {
     if (result == 0) {
         // TODO: Add Path1_3 Here
         // TODO: What's Next After King Goblin?
-        std::cout << "You Won" << std::endl; 
+        std::cout << "Path 1-3?" << std::endl; 
     } else if (result == 2) {
         clear();
-        std::cout << "Back at the start..." << std::endl;
+        message(messageType::NARRATE, {"Back at the start..."});
         path0(g);
     }
 }
@@ -599,8 +610,9 @@ int player::getLvlSpeed () {
 int player::continueStatUp (int price) {
     int decision;
 
-    std::cout << "[i] Will Cost: " << price << " Gold" << std::endl;
-    std::cout << "? Continue (y/n):" << std::endl; 
+    message(messageType::SYS, {"Will cost:", std::to_string(price), "gold"});
+
+    message(messageType::INPUT, {"Continue :"});
     yn();
     std::cin >> decision;
 
@@ -608,7 +620,7 @@ int player::continueStatUp (int price) {
         return 1;
     } else {
         horizontalBrokenLines();
-        std::cout << "[i] " << "Stat Level Up Canceled" << std::endl;
+        message(messageType::SYS, {"Stat level up cancelled"});
         horizontalBrokenLines();
         
         return 0;
@@ -631,13 +643,13 @@ int player::hpUp (int amount, int price) {
         lvlHp += amount;
 
         horizontalBrokenLines();
-        std::cout << "[i] " << "Upgrade Succesful!" << std::endl;
+        message(messageType::SYS, {"Upgrade succesful!"});
         horizontalBrokenLines();
 
         return 1; // Transac Success
     } else {
         horizontalBrokenLines();
-        std::cout << "[i] " << "Not Enough Gold!" << std::endl;
+        message(messageType::ERROR, {"Not enough gold"});
         horizontalBrokenLines();
 
         gold = beforeGold;
@@ -661,13 +673,13 @@ int player::atkUp (int amount, int price) {
         lvlAtk += amount;
 
         horizontalBrokenLines();
-        std::cout << "[i] " << "Upgrade Succesful!" << std::endl;
+        message(messageType::SYS, {"Upgrade succesful!"});
         horizontalBrokenLines();
 
         return 1; // Transac Success
     } else {
         horizontalBrokenLines();
-        std::cout << "[i] " << "Not Enough Gold" << std::endl;
+        message(messageType::ERROR, {"Not enough gold"});
         horizontalBrokenLines();
 
         gold = beforeGold;
@@ -692,14 +704,14 @@ int player::speedUp (int amount, int price) {
         lvlSpeed += amount;
 
         horizontalBrokenLines();
-        std::cout << "[i] " << "Upgrade Succesful!" << std::endl;
+        message(messageType::SYS, {"Upgrade succesful!"});
         horizontalBrokenLines();
 
         return 1; // Transac Success
     }
     else {
         horizontalBrokenLines();
-        std::cout << "[i] " << "Not Enough Gold" << std::endl;
+        message(messageType::ERROR, {"Not enough gold"});
         horizontalBrokenLines();
 
         gold = beforeGold;
@@ -777,8 +789,18 @@ int statUp (gameState *g) {
                 result = g->p.hpUp(amount, price);
 
                 if (result == 1) {
-                    std::cout << "[i] " << "HP: " << hpBefore << " -> " << g->p.getHp() << std::endl;
-                    std::cout << "[i] " << "Level: " << lvlBefore << " -> " << g->p.getLvlHp() << std::endl;
+                    message(messageType::SYS,{
+                        "HP:",
+                        std::to_string(hpBefore),
+                        "->",
+                        std::to_string(g->p.getHp()),    
+                    });
+                    message(messageType::SYS, {
+                        "Level:",
+                        std::to_string(lvlBefore),
+                        "->",
+                        std::to_string(g->p.getLvlHp()),
+                    });
                     cinignore();
                     contin();
                 } else {
@@ -794,8 +816,18 @@ int statUp (gameState *g) {
 
                 result = g->p.atkUp(amount, price);
                 if (result == 1) {
-                    std::cout << "[i] " << "ATK: " << atkBefore << " -> " << g->p.getAtk() << std::endl;
-                    std::cout << "[i] " << "Level: " << lvlBefore << " -> " << g->p.getLvlAtk() << std::endl;
+                    message(messageType::SYS,{
+                        "HP:",
+                        std::to_string(atkBefore),
+                        "->",
+                        std::to_string(g->p.getAtk()),    
+                    });
+                    message(messageType::SYS, {
+                        "Level:",
+                        std::to_string(lvlBefore),
+                        "->",
+                        std::to_string(g->p.getLvlAtk()),
+                    });
                     cinignore();
                     contin();
                 } else {
@@ -811,8 +843,18 @@ int statUp (gameState *g) {
 
                 result = g->p.speedUp(amount, price);
                 if (result == 1) {
-                    std::cout << "[i] " << "SPD: " << speedBefore << " -> " << g->p.getSpeed() << std::endl;
-                    std::cout << "[i] " << "Level: " << lvlBefore << " -> " << g->p.getLvlSpeed() << std::endl;
+                    message(messageType::SYS,{
+                        "HP:",
+                        std::to_string(speedBefore),
+                        "->",
+                        std::to_string(g->p.getSpeed()),    
+                    });
+                    message(messageType::SYS, {
+                        "Level:",
+                        std::to_string(lvlBefore),
+                        "->",
+                        std::to_string(g->p.getLvlSpeed()),
+                    });
                     cinignore();
                     contin();
                 } else {
@@ -877,35 +919,33 @@ void game () {
         if (menuOptions == 1) {
             std::string name;
 
-            std::cout << "? Enter player name :" << std::endl;
+            message(messageType::INPUT, {"Enter player name :"});
             voidPrompt();
             std::cin >> name;
-            
             g.p.name = name;
 
             tutorial(&g);
             
             clear();
-
-            std::cout << "[i] Starting game";
+            message(messageType::SYS, {"Starting game"});
             delayDots(3, 0, 600, false);
 
             clear();
+            message(messageType::NARRATE, {"Presented before you are 3 paths"});
 
-            std::cout << "# Presented before you are 3 paths" << std::endl;
             path0(&g);
 
             break;
 
         } else if (menuOptions == 2) {
-            std::cout << "[i] Goodbye!" << std::endl;
+            message(messageType::SYS, {"Goodbye!"});
             break;
 
         } else if (menuOptions == 3) { 
-            // Quick Start. Defaulted Player Name To Astra
+            //* Quick Start. Defaulted Player Name To Astra
             g.p.name = "Astra";       
             
-            std::cout << "# Presented before you are 3 paths" << std::endl;
+            message(messageType::NARRATE, {"Presented before you are 3 paths"});
             
             path0(&g);
 
@@ -915,7 +955,7 @@ void game () {
             validnum();
 
         } else {
-            std::cout << "! Invalid Number" << std::endl;
+            message(messageType::ERROR, {"Invalid number"});
         }    
     } 
 }
@@ -926,7 +966,7 @@ void tutorial (gameState *g)
     
     int skipTutorial;
     while (true) {
-        std::cout << "? Skip tutorial :" << std::endl;
+        message(messageType::INPUT, {"Skip tutorial :"});
         yn();   
         std::cin >> skipTutorial;
     
@@ -973,19 +1013,19 @@ void tutorial (gameState *g)
         cinignore();
         if (move1 == 1) {
             clear();
-            std::cout << "# A storm is approaching..." << std::endl;
+            message(messageType::NARRATE, {"A storm is approaching..."});
             contin();
         } else if (move1 == 2) {
             clear();
-            std::cout << "* " << g->p.name << " is scratching their head" << std::endl;
+            message(messageType::ACTION, {g->p.name, "is scratching their head"});
             contin();
         } else if (move1 == 3) {
             clear();
-            std::cout << "! Invalid move!" << std::endl;
+            message(messageType::ERROR, {"Invalid move"});
             contin();
         } else if (move1 == 4) { 
             clear();
-            std::cout << "[i] Quest completed!" << std::endl;
+            message(messageType::SYS, {"Quest completed!"});
             contin();
         } else if (move1 == 5) {
             break;
@@ -994,7 +1034,7 @@ void tutorial (gameState *g)
             validnum();
             contin();
         } else {
-            std::cout << "! Invalid number" << std::endl;
+            message(messageType::ERROR, {"Invalid number"});
         }
     }
 }
@@ -1017,8 +1057,8 @@ void path0 (gameState *g) {
         std::cout << "[1] Enter Path 1" << std::endl;
         std::cout << "[2] Enter Path 2" << std::endl;
         std::cout << "[3] Enter Path 3" << std::endl;
-    
-        std::cout << "? Next Move :" << std::endl;
+        
+        message(messageType::INPUT, {"Next move :"});
         voidPrompt();
         std::cin >> move1;
 
@@ -1037,7 +1077,7 @@ void path0 (gameState *g) {
                 path2(g);
                 break;
             } else {
-                std::cout << "! Error" << std::endl;
+                message(messageType::ERROR, {"Error"});
                 break;
             }
         } else if (move1 == 3) {
@@ -1048,10 +1088,21 @@ void path0 (gameState *g) {
         } else if (std::cin.fail()) {
             validnum();
         } else {
-            std::cout << "! Invalid Number" << std::endl;
+            message(messageType::ERROR, {"Invalid number"});
         }
     }
 }
+</file>
+
+<file path="notes.md">
+# Plans
+
+- Path 1-3 (After King Goblin)
+- Path 3 (Ninja Path)
+- Actions "Go back" and "run away" should point to the last or nearest path (Use a data structure)
+- Make optional tutorial in "game"
+- Make the use of symbols for different cases (ex. story "#") consistent across sections
+- Add background music and sfx (using SFML audio :O)
 </file>
 
 <file path="src/paths/path2.cpp">
@@ -1115,10 +1166,8 @@ void path2 (gameState *g) {
             g->qWizard.active = false;
             
             clear();
-            std::cout << "< Wizard >" << std::endl;
-            std::cout << "\"Eh? Your loss then\"" << std::endl;
-            std::cout << "\"Come to me again if you ever change your mind\"" << std::endl;
-            contin();
+            dialouge("Wizard", "Eh? Your loss then", true);
+            dialouge("Wizard", "Come to me again if you ever change your mind", true);
             
             clear();
             optionsPath2(g);
@@ -1134,10 +1183,10 @@ void path2_2 (gameState *g) {
     std::cout << "~ Current Path: 2-2" << std::endl;
 
     if (g->qWizard.active == true) {
-        std::cout << "[i] Wizard Quest: Active" << std::endl;
+        message(messageType::SYS, {"Wizrad Quest: Active"});
     }
     else if (g->qWizard.active == false) {
-        std::cout << "[i] Wizard Quest: Inactive" << std::endl;
+        message(messageType::SYS, {"Wizard Quest: Inactive"});
     }
 
     contin();
@@ -1146,7 +1195,11 @@ void path2_2 (gameState *g) {
 
     if (g->numOfSkeletons > 0) {
         dialouge(skeleton.name, "(Bones crackling)", true);
-        std::cout << "# You See " << g->numOfSkeletons << " Skeleton Scattered In The Wizards Garden" << std::endl;
+        message(messageType::NARRATE, {
+            "You see",
+            std::to_string(g->numOfSkeletons), 
+            "Skeleton Scattered In The Wizards Garden"
+        });
     }
 
     int move1;
@@ -1181,7 +1234,7 @@ void path2_2 (gameState *g) {
             std::cout << "[1] Turn Back" << std::endl;
         }
 
-        std::cout << "? Next Move :" << std::endl;
+        message(messageType::INPUT, {"Next move :"});
         voidPrompt();
         std::cin >> move1;
 
@@ -1191,7 +1244,7 @@ void path2_2 (gameState *g) {
         //* Adaptive Choices (Changes Everytime A Skeleton Is Killed)
         if (g->numOfSkeletons == 3) {
             if (move1 == 1) {
-                std::cout << "* Attacking Skeleton 1" << std::endl; 
+                message(messageType::ACTION, {"Attacking skeleton 1"});
                 result = turnBasedCombat(g, &skeleton);
 
                 if (result == 0) {
@@ -1201,7 +1254,7 @@ void path2_2 (gameState *g) {
                     std::cout << "! Error" << std::endl;
                 }
             } else if (move1 == 2) {
-                std::cout << "* Attacking Skeleton 2" << std::endl;
+                message(messageType::ACTION, {"Attacking skeleton 2"});
                 result = turnBasedCombat(g, &skeleton);
 
                 if (result == 0) {
@@ -1211,7 +1264,7 @@ void path2_2 (gameState *g) {
                     std::cout << "! Error" << std::endl;
                 }
             } else if (move1 == 3) {
-                std::cout << "* Attacking Skeleton 3" << std::endl;
+                message(messageType::ACTION, {"Attacking skeleton 3"});
                 result = turnBasedCombat(g, &skeleton);
 
                 if (result == 0) {
@@ -1220,7 +1273,7 @@ void path2_2 (gameState *g) {
                 }
             } else if (move1 == 4) {
                 contin(); 
-                std::cout << "* Turning Back. . ." << std::endl;
+                message(messageType::ACTION, {"Turning back..."});
                 contin();
 
                 g->dialogue2 = false;
@@ -1230,28 +1283,30 @@ void path2_2 (gameState *g) {
         } else if (g->numOfSkeletons == 2)
         {
             if (move1 == 1) {
-                std::cout << "* Attacking Skeleton 1" << std::endl; 
+                message(messageType::ACTION, {"Attacking skeleton 1"});
                 result = turnBasedCombat(g, &skeleton);
 
                 if (result == 0) {
                     g->numOfSkeletons--;
                     skeleton.resetStats();
                 } else {
+                    message(messageType::ERROR, {"Error"});
                     std::cout << "! Error" << std::endl;
                 }
             } else if (move1 == 2) {
-                std::cout << "* Attacking Skeleton 2" << std::endl;
+                message(messageType::ACTION, {"Attacking skeleton 2"});
                 result = turnBasedCombat(g, &skeleton);
 
                 if (result == 0) {
                     g->numOfSkeletons--;
                     skeleton.resetStats();
                 } else {
-                    std::cout << "! Error" << std::endl;
+                    message(messageType::ERROR, {"Error"});
                 }
             } else if (move1 == 3) {
                 contin(); 
-                std::cout << "* Turning Back. . ." << std::endl;
+
+                message(messageType::ACTION, {"Turning back..."});
                 contin();
 
                 g->dialogue2 = false;
@@ -1260,18 +1315,18 @@ void path2_2 (gameState *g) {
             }
         } else if (g->numOfSkeletons == 1) {
             if (move1 == 1) {
-                std::cout << "* Attacking Skeleton 1" << std::endl; 
+                message(messageType::ACTION, {"Attacking skeleton 1"}); 
                 result = turnBasedCombat(g, &skeleton);
 
                 if (result == 0) {
                     g->numOfSkeletons--;
                     skeleton.resetStats();
                 } else {
-                    std::cout << "! Error" << std::endl;
+                    message(messageType::ERROR, {"Error"});
                 }
             } else if (move1 == 2) {
                 contin(); 
-                std::cout << "* Turning Back. . ." << std::endl;
+                message(messageType::ACTION, {"Turning back..."});
                 contin();
 
                 g->dialogue2 = false;
@@ -1280,14 +1335,14 @@ void path2_2 (gameState *g) {
             }
         } else {
             if (move1 == 1) {
-                std::cout << "* Turning Back. . ." << std::endl;
+                message(messageType::ACTION, {"Turning back..."});
                 contin();
                 clear();
                 g->dialogue2 = false;
                 path2(g);
                 break;
             } else {
-                std::cout << "! Error" << std::endl;
+                message(messageType::ERROR, {"Error"});
             }
         }
     }
@@ -1303,14 +1358,14 @@ void optionsPath2 (gameState *g) {
     std::cout << "[2] Talk to Wizard" << std::endl;
     std::cout << "[3] Go back" << std::endl;
     
-    std::cout << "? Next Move :" << std::endl;
+    message(messageType::INPUT, {"Next move :"});
     voidPrompt();
     std::cin >> move1;
     
     if (move1 == 1) {
         cinignore();
         clear();
-        std::cout << "* Entering next room. . ." << std::endl;
+        message(messageType::ACTION, {"Entering next room..."});
         contin();
 
         path2_2(g);
@@ -1343,8 +1398,8 @@ void optionsPath2 (gameState *g) {
                     std::cout << "[1] Level Up Stats" << std::endl;
                     std::cout << "[2] Talk" << std::endl;
                     std::cout << "[3] Nevermind" << std::endl;
-    
-                    std::cout << "? Next Move :" << std::endl;
+                    
+                    message(messageType::INPUT, {"Next move :"});
                     voidPrompt();
                     std::cin >> move2;
     
@@ -1352,9 +1407,7 @@ void optionsPath2 (gameState *g) {
                         statUp(g);
                         break;
                     } else if (move2 == 2) {
-                        std::cout << "< Wizard >" << std::endl;
-                        std::cout << "My senses are telling me that a fortune awaits for you in the farthest path" << std::endl;
-                        contin();
+                        dialouge("Wizard", "My senses are telling me that a fortune awaits for you in the farthest path", true);
                         
                         path2(g);
                         break;
@@ -1364,7 +1417,7 @@ void optionsPath2 (gameState *g) {
                     } else if (std::cin.fail()) {
                         validnum();
                     } else {
-                        std::cout << "Invalid number" << std::endl;
+                        message(messageType::ERROR, {"Invalid number"});
                     }
                 }
             }       
@@ -1374,7 +1427,7 @@ void optionsPath2 (gameState *g) {
             cinignore();
 
             clear();
-            std::cout << "* Approaching the Wizard" << std::endl;
+            message(messageType::ACTION, {"Approaching the wizard"});
             contin();
 
             clear();
@@ -1404,7 +1457,7 @@ void optionsPath2 (gameState *g) {
 
                         path2(g);
                     } else {
-                        std::cout << "* Entering Next Room. . ." << std::endl;
+                        message(messageType::ACTION, {"Entering next room..."});
                         contin();
     
                         g->qWizard.active = true; // Activates Quest
@@ -1421,18 +1474,18 @@ void optionsPath2 (gameState *g) {
                 } else if (std::cin.fail()) {
                     validnum();
                 } else {
-                    std::cout << "! Invalid Number" << std::endl;
+                    message(messageType::ERROR, {"Invalid number"});
                 }
             }
         }
     }                                                           
     else if (move1 == 3) {
-        std::cout << "# Here we are again. . ." << std::endl;
+        message(messageType::NARRATE, {"Here we go again..."});
         path0(g);
     } else if (std::cin.fail()) {
         validnum();    
     } else {
-        std::cout << "! Invalid Number" << std::endl;
+        message(messageType::ERROR, {"Invalid number"});
     }   
 }
 </file>
@@ -1460,18 +1513,18 @@ int turnBasedCombat (gameState *g, enemy *e) {
     cv.playerTurnCount = 0;
     cv.enemyTurnCount = 0;
 
-    std::cout << "[i] Combat Start!" << std::endl;
+    message(messageType::SYS, {"Combat start!"});
     contin();
 
     // Determine who goes first based on speed stat
     if (g->p.getSpeed() > e->getSpeed()) {   
         // Player Start
         cv.turn = 0;
-        std::cout << "[i] " << g->p.name << " Starts First" << std::endl;
+        message(messageType::SYS, {g->p.name, "Starts first"});
     } else {   
         // Enemy Start
         cv.turn = 1;
-        std::cout << "[i] " << e->name << " Starts First" << std::endl;
+        message(messageType::SYS, {e->name, "Starts first"});
     }
     contin();
 
@@ -1503,7 +1556,7 @@ int turnBasedCombat (gameState *g, enemy *e) {
                 g->p.gainGold(e->getGold());
 
                 horizontalBrokenLines();
-                std::cout << "[i] You Win!" << std::endl;
+                message(messageType::SYS, {"You win!"});
                 horizontalBrokenLines();
                 std::cout << "Received Gold: " << e->getGold() << std::endl;
                 std::cout << "Current Gold: " << g->p.getGold() << std::endl;
@@ -1535,7 +1588,7 @@ int turnBasedCombat (gameState *g, enemy *e) {
             delayDots(3, 0, 400, true);
 
             horizontalBrokenLines();
-            std::cout << e->name << " Attacks!" << std::endl;
+            message(messageType::ACTION, {e->name,"Attacks!"});
             horizontalBrokenLines();
 
             e->specialMove(cv.enemyTurnCount);
@@ -1547,7 +1600,7 @@ int turnBasedCombat (gameState *g, enemy *e) {
             if (g->p.getDefend() == true) {
                 contin();
                 horizontalBrokenLines();
-                std::cout << "* " << g->p.name << " Defended, Reduced Damage Taken" << std::endl;
+                message(messageType::ACTION, {g->p.name, "Defended | Reduced damage taken"});
                 horizontalBrokenLines();
             }
 
@@ -1555,7 +1608,7 @@ int turnBasedCombat (gameState *g, enemy *e) {
                 contin();
                 clear();
                 horizontalBrokenLines();
-                std::cout << "[i] You Died!" << std::endl;
+                message(messageType::SYS, {"You died!"});
                 horizontalBrokenLines();
 
                 respawn(g);
@@ -1588,7 +1641,7 @@ int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
             e->takeDamage(g->p.getAtk());
             
             horizontalBrokenLines();
-            std::cout << "* " << g->p.name << " Attacks!" << std::endl;
+            message(messageType::ACTION, {g->p.name, "Attacks!"});
             horizontalBrokenLines();
             std::cout << e->name << " HP: " << cv->enemyHpBeforeAttack << " -> " << e->getHp() << std::endl;
             horizontalBrokenLines();
@@ -1598,7 +1651,7 @@ int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
             g->p.setDefend(true);
 
             horizontalBrokenLines();
-            std::cout << "* " << g->p.name << " Defends!" << std::endl;
+            message(messageType::ACTION, {g->p.name, "Defends!"});
             horizontalBrokenLines();
 
             break;
@@ -1606,13 +1659,12 @@ int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
             cinignore();
             std::cin.clear();
 
-            std::cout << "< " << g->p.name << " >" << std::endl;
-            std::cout << "Time to run!" << std::endl;
+            dialouge(g->p.name, "Time to run!", false);
+            contin();
 
             if (g->p.getSpeed() > e->getSpeed()) {
-                contin();
                 horizontalBrokenLines();
-                std::cout << "* " << g->p.name << " Succesfully Ran Away" << std::endl;
+                message(messageType::ACTION, {g->p.name, "Successfully ran away"});
                 horizontalBrokenLines();
                 contin();
 
@@ -1620,9 +1672,8 @@ int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
 
                 return 2; 
             } else {
-                contin();
                 horizontalBrokenLines();
-                std::cout << "* " << g->p.name << " Failed To Run away" << std::endl;
+                message(messageType::ACTION, {g->p.name, "Failed to run away"});
                 horizontalBrokenLines();
 
                 return 3;
@@ -1634,7 +1685,7 @@ int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
         } else if (std::cin.fail()) {
             validnum();
         } else {
-            std::cout << "! Invalid Number" << std::endl;
+            message(messageType::ERROR, {"Invalid number"});
         }
     }
     return -1;
@@ -1670,8 +1721,7 @@ void enemyStats (enemy *e) {
 void respawn (gameState *g) {
     while (1) {
         int respawnDecision;
-        std::cout << "[i] Respawn?: " << std::endl;
-        
+        message(messageType::INPUT, {"Respawn :"});    
         yn();
         std::cin >> respawnDecision;
 
@@ -1679,17 +1729,17 @@ void respawn (gameState *g) {
             resetPlayerStats(g);
             resetGame(g);
             clear();
-            std::cout << "# Here we go again. . ." << std::endl;
+            message(messageType::NARRATE, {"Here we go again..."});
             path0(g);
             break;
         } else if (respawnDecision == 2) {
-            std::cout << "[i] Goobye!" << std::endl;
+            message(messageType::SYS, {"Goodbye!"});
             
             break;
         } else if (std::cin.fail()) {
             validnum();
         } else {
-            std::cout << "! Invalid Number" << std::endl;
+            message(messageType::ERROR, {"Invalid number"});
         }
     }
 }
@@ -1719,7 +1769,7 @@ void validnum (void) {
     std::cin.clear();
     cinignore();
     
-    std::cout << "! Not a number please try again" << std::endl;
+    message(messageType::ERROR, {"Not a number please try again"});
 }
 
 void cinignore (void) {
@@ -1751,6 +1801,7 @@ int accept (void) {
         } else if (std::cin.fail()) {
             validnum();
         } else {
+            message(messageType::ERROR, {"Invalid number"});
             std::cout << "! Invalid Number" << std::endl;
         }
     }
@@ -1841,17 +1892,25 @@ void dialouge (std::string name, std::string dialogue, bool pause) {
         contin();
     }
 }
-</file>
 
-<file path="notes.md">
-# Plans
+void message (messageType type, std::initializer_list<std::string> message) {
+    if (type == messageType::SYS) {
+        std::cout << "[i] ";
+    } else if (type == messageType::NARRATE) {
+        std::cout << "# ";
+    } else if (type == messageType::ERROR) {
+        std::cout << "! ";
+    } else if (type == messageType::ACTION) {
+        std::cout << "* ";
+    } else if (type == messageType::INPUT) {
+        std::cout << "? ";
+    }
 
-- Path 1-3 (After King Goblin)
-- Path 3 (Ninja Path)
-- Actions "Go back" and "run away" should point to the last or nearest path (Use a data structure)
-- Make optional tutorial in "game"
-- Make the use of symbols for different cases (ex. story "#") consistent across sections
-- Add background music and sfx (using SFML audio :O)
+    for (auto& str : message) {
+        std::cout << str << " ";
+    }
+    std::cout << std::endl;
+}
 </file>
 
 <file path="main.cpp">
