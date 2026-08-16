@@ -76,8 +76,8 @@ int player::getLvlSpeed () {
 int player::continueStatUp (int price) {
     int decision;
 
-    std::cout << "Will Cost: " << price << " Gold" << std::endl;
-    std::cout << "Continue? (y/n):" << std::endl; 
+    std::cout << "[i] Will Cost: " << price << " Gold" << std::endl;
+    std::cout << "? Continue (y/n):" << std::endl; 
     yn();
     std::cin >> decision;
 
@@ -85,7 +85,7 @@ int player::continueStatUp (int price) {
         return 1;
     } else {
         horizontalBrokenLines();
-        std::cout << "Stat Level Up Canceled" << std::endl;
+        std::cout << "[i] " << "Stat Level Up Canceled" << std::endl;
         horizontalBrokenLines();
         
         return 0;
@@ -108,13 +108,13 @@ int player::hpUp (int amount, int price) {
         lvlHp += amount;
 
         horizontalBrokenLines();
-        std::cout << "Upgrade Succesful!" << std::endl;
+        std::cout << "[i] " << "Upgrade Succesful!" << std::endl;
         horizontalBrokenLines();
 
         return 1; // Transac Success
     } else {
         horizontalBrokenLines();
-        std::cout << "Not Enough Gold!" << std::endl;
+        std::cout << "[i] " << "Not Enough Gold!" << std::endl;
         horizontalBrokenLines();
 
         gold = beforeGold;
@@ -138,13 +138,13 @@ int player::atkUp (int amount, int price) {
         lvlAtk += amount;
 
         horizontalBrokenLines();
-        std::cout << "Upgrade Succesful!" << std::endl;
+        std::cout << "[i] " << "Upgrade Succesful!" << std::endl;
         horizontalBrokenLines();
 
         return 1; // Transac Success
     } else {
         horizontalBrokenLines();
-        std::cout << "Not Enough Gold" << std::endl;
+        std::cout << "[i] " << "Not Enough Gold" << std::endl;
         horizontalBrokenLines();
 
         gold = beforeGold;
@@ -169,14 +169,14 @@ int player::speedUp (int amount, int price) {
         lvlSpeed += amount;
 
         horizontalBrokenLines();
-        std::cout << "Upgrade Succesful!" << std::endl;
+        std::cout << "[i] " << "Upgrade Succesful!" << std::endl;
         horizontalBrokenLines();
 
         return 1; // Transac Success
     }
     else {
         horizontalBrokenLines();
-        std::cout << "Not Enough Gold" << std::endl;
+        std::cout << "[i] " << "Not Enough Gold" << std::endl;
         horizontalBrokenLines();
 
         gold = beforeGold;

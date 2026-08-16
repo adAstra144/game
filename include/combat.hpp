@@ -15,11 +15,8 @@ struct combatVariables {
     int enemyHpBeforeAttack;
 };
 
-// Main Combat Mechanics (Basic Turn Based)
 int turnBasedCombat (gameState *g, enemy *e);
-
-// Players Options during Combat
 int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv);
-
-// Handles Player Respawns
+void playerStats (gameState *g);
+void enemyStats (enemy *e);
 void respawn (gameState *g);

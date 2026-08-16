@@ -38,8 +38,8 @@ void game () {
             
             clear();
 
-            std::cout << "Starting game";
-            delayDots(3, 0, 650, false);
+            std::cout << "[i] Starting game";
+            delayDots(3, 0, 600, false);
 
             clear();
 

@@ -10,61 +10,64 @@
 // King Goblin Path
 void path1 (gameState *g) {
     std::cout << "Current Path: 1" << std::endl;
-    int move1;
 
+    std::cout << "# As you wander around you encounter a sign saying \"Danger ahead\"" << std::endl;    
+
+    int move1;
     while (1) {
         std::cout << "[1] Continue To Path 1-2?" << std::endl;
         std::cout << "[2] Turn Back" << std::endl;
-        std::cout << "Next Move: ";
+        std::cout << "? Next Move :" << std::endl;
+        voidPrompt();
         std::cin >> move1;
 
+        cinignore();
         if (move1 == 1) {
             clear();
-            std::cout << "*" << g->p.name << " Continues" << std::endl; 
+            std::cout << "* " << g->p.name << " Ignores the sign" << std::endl; 
+            contin();
+            clear();
             path1_2(g);
             break;
         } else if (move1 == 2) {
             clear();
-            std::cout << "*" << g->p.name << " Turn's Back" << std::endl;
+            std::cout << "* " << g->p.name << " Trusts the sign" << std::endl;
+            contin();
+
+            clear();
             path0(g);
         } else if (std::cin.fail()) {
             validnum();
         } else {
-            std::cout << "Invalid Number";
+            std::cout << "! Invalid Number";
         }
     }
 }
 
 void path1_2 (gameState *g) {
-    cinignore();
 
     kingGoblin kingGoblin;
 
-    std::cout << "Current Path: 1-2" << std::endl;
+    std::cout << "~ Current Path: 1-2" << std::endl;
 
-    std::cout << "< " << g->p.name << " >" << std::endl;
-    std::cout << "Something doesn't feel right" << std::endl;
-    contin();
+    dialouge(g->p.name, "Someting doesn't feel right", true);
 
-    std::cout << "< " << g->p.name << " >" << std::endl;
-    std::cout << "! ! !" << std::endl;
-    contin();
+    dialouge(g->p.name, "! ! !", true);
 
     horizontalBrokenLines();
-    std::cout << "King Goblin Has Appeared!" << std::endl;
+    std::cout << "# King Goblin Has Appeared!" << std::endl;
     horizontalBrokenLines();
     contin();
     
     int result = turnBasedCombat(g, &kingGoblin);
 
     if (result == 0) {
-        // Add Path1_3 Here
-        // What's Next After King Goblin?
+        // TODO: Add Path1_3 Here
+        // TODO: What's Next After King Goblin?
         std::cout << "You Won" << std::endl; 
     } else if (result == 2) {
-        // If Succesfully Ran Away
         clear();
-        std::cout << "Back at the start. . ." << std::endl;
+        std::cout << "Back at the start..." << std::endl;
         path0(g);
     }
 }

@@ -22,3 +22,4 @@ void horizontalBrokenLines ();
 void delay (int seconds, int milliseconds);
 void delayDots (int amount, int seconds, int milliseconds, bool newLine);
 void voidPrompt ();
+void dialouge (std::string name, std::string dialogue, bool pause);

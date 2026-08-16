@@ -10,7 +10,7 @@ void validnum (void) {
     std::cin.clear();
     cinignore();
     
-    std::cout << "Not a number please try again" << std::endl;
+    std::cout << "! Not a number please try again" << std::endl;
 }
 
 void cinignore (void) {
@@ -42,7 +42,7 @@ int accept (void) {
         } else if (std::cin.fail()) {
             validnum();
         } else {
-            std::cout << "Invalid Number" << std::endl;
+            std::cout << "! Invalid Number" << std::endl;
         }
     }
 }
@@ -117,4 +117,18 @@ void delayDots (int amount, int seconds, int milliseconds, bool newLine) {
 
 void voidPrompt () {
     std::cout << " » ";
+}
+
+void dialouge (std::string name, std::string dialogue, bool pause) {
+    std::cout << "< " << name << " >" << std::endl;
+
+    if (dialogue == "") {
+        //* No dialogue
+    } else {
+        std::cout << dialogue << std::endl;
+    }
+    
+    if (pause == true) {
+        contin();
+    }
 }

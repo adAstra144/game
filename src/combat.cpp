@@ -20,18 +20,18 @@ int turnBasedCombat (gameState *g, enemy *e) {
     cv.playerTurnCount = 0;
     cv.enemyTurnCount = 0;
 
-    std::cout << "! Combat Start!" << std::endl;
+    std::cout << "[i] Combat Start!" << std::endl;
     contin();
 
     // Determine who goes first based on speed stat
     if (g->p.getSpeed() > e->getSpeed()) {   
         // Player Start
         cv.turn = 0;
-        std::cout << g->p.name << " Starts First" << std::endl;
+        std::cout << "[i] " << g->p.name << " Starts First" << std::endl;
     } else {   
         // Enemy Start
         cv.turn = 1;
-        std::cout << e->name << " Starts First" << std::endl;
+        std::cout << "[i] " << e->name << " Starts First" << std::endl;
     }
     contin();
 
@@ -63,10 +63,10 @@ int turnBasedCombat (gameState *g, enemy *e) {
                 g->p.gainGold(e->getGold());
 
                 horizontalBrokenLines();
-                std::cout << "! You Win!" << std::endl;
+                std::cout << "[i] You Win!" << std::endl;
                 horizontalBrokenLines();
-                std::cout << "! Received Gold: " << e->getGold() << std::endl;
-                std::cout << "! Current Gold: " << g->p.getGold() << std::endl;
+                std::cout << "Received Gold: " << e->getGold() << std::endl;
+                std::cout << "Current Gold: " << g->p.getGold() << std::endl;
                 horizontalBrokenLines();
 
                 contin();
@@ -115,7 +115,7 @@ int turnBasedCombat (gameState *g, enemy *e) {
                 contin();
                 clear();
                 horizontalBrokenLines();
-                std::cout << "! You Died!" << std::endl;
+                std::cout << "[i] You Died!" << std::endl;
                 horizontalBrokenLines();
 
                 respawn(g);
@@ -141,7 +141,7 @@ int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
         std::cout << "[4] Show Player Stats" << std::endl;
         std::cout << "[5] Show Enemy Stats" << std::endl; 
 
-        std::cout << "Next Move: ";
+        voidPrompt();
         std::cin >> combatDecision;
 
         if (combatDecision == 1) { 
@@ -200,10 +200,37 @@ int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
     return -1;
 }
 
+void playerStats (gameState *g) {
+    clear();
+    std::cout << g->p.name << " Stats" << std::endl;
+    std::cout << "Stats:    | Level:" << std::endl;
+    std::cout << "HP:" << textSpacerHp(g->p.getHp()) << g->p.getHp() << " | " << g->p.getLvlHp() << std::endl;
+    std::cout << "ATK:" << textSpacerAtk(g->p.getAtk()) << g->p.getAtk() << " | " << g->p.getLvlAtk() << std::endl;
+    std::cout << "SPD:" << textSpacerSpeed(g->p.getSpeed()) << g->p.getSpeed() << " | " << g->p.getLvlSpeed() << std::endl;
+    std::cout << "GOLD: " << g->p.getGold() << std::endl;
+
+    cinignore();
+    contin();
+    clear();
+}
+
+void enemyStats (enemy *e) {
+    clear();
+    std::cout << e->name << " Stats" << std::endl;
+    std::cout << "HP:" << textSpacerHp(e->getHp()) << e->getHp() << std::endl;
+    std::cout << "ATK:" << textSpacerAtk(e->getAtk()) << e->getAtk() << std::endl;
+    std::cout << "SPD:" << textSpacerSpeed(e->getSpeed()) << e->getSpeed() << std::endl;
+    std::cout << "GOLD: " << e->getGold() << std::endl;
+
+    cinignore();
+    contin();
+    clear();
+}
+
 void respawn (gameState *g) {
     while (1) {
         int respawnDecision;
-        std::cout << "! Respawn?: " << std::endl;
+        std::cout << "[i] Respawn?: " << std::endl;
         
         yn();
         std::cin >> respawnDecision;
@@ -216,7 +243,7 @@ void respawn (gameState *g) {
             path0(g);
             break;
         } else if (respawnDecision == 2) {
-            std::cout << "! Goobye!" << std::endl;
+            std::cout << "[i] Goobye!" << std::endl;
             
             break;
         } else if (std::cin.fail()) {

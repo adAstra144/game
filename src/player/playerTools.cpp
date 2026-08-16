@@ -11,34 +11,6 @@ void resetPlayerStats (gameState *g) {
     g->p.setDefend(false);
 }
 
-void playerStats (gameState *g) {
-    clear();
-    std::cout << g->p.name << "\'s Stats" << std::endl;
-    std::cout << "Stats:    | Level:" << std::endl;
-    std::cout << "HP:" << textSpacerHp(g->p.getHp()) << g->p.getHp() << " | " << g->p.getLvlHp() << std::endl;
-    std::cout << "ATK:" << textSpacerAtk(g->p.getAtk()) << g->p.getAtk() << " | " << g->p.getLvlAtk() << std::endl;
-    std::cout << "SPD:" << textSpacerSpeed(g->p.getSpeed()) << g->p.getSpeed() << " | " << g->p.getLvlSpeed() << std::endl;
-    std::cout << "GOLD: " << g->p.getGold() << std::endl;
-
-    cinignore();
-    std::cout << "Press Enter To Exit. . .";
-    getchar();
-    clear();
-}
-
-void enemyStats (enemy *e) {
-    clear();
-    std::cout << e->name << "\'s Stats:" << std::endl;
-    std::cout << "HP: " << e->getHp() << std::endl;
-    std::cout << "ATK: " << e->getAtk() << std::endl;
-    std::cout << "SPEED: " << e->getSpeed() << std::endl;
-    std::cout << "GOLD: " << e->getGold() << std::endl;
-
-    cinignore();
-    std::cout << "Press Enter To Exit. . .";
-    getchar();
-    clear();
-}
 // Handles Increasing
 int statUp (gameState *g) {
     int move1;
@@ -59,7 +31,7 @@ int statUp (gameState *g) {
         
         // Only Requests An "Amount" Input If Picking A Stat Option
         if (move1 == 1 || move1 == 2 || move1 == 3) {
-            std::cout << "Enter Amount: ";
+            std::cout << "? Enter Amount: ";
             std::cin >> amount;
 
             price = basePrice * amount;
@@ -74,7 +46,7 @@ int statUp (gameState *g) {
             // Prevents Zero & Negative Values
             if (amount <= 0) {
                 horizontalBrokenLines();
-                std::cout << "Amount Must Be At least 1" << std::endl;
+                std::cout << "! Amount Must Be At least 1" << std::endl;
                 horizontalBrokenLines();
 
                 statUp(g);
@@ -93,8 +65,8 @@ int statUp (gameState *g) {
                 result = g->p.hpUp(amount, price);
 
                 if (result == 1) {
-                    std::cout << "HP: " << hpBefore << " -> " << g->p.getHp() << std::endl;
-                    std::cout << "Level: " << lvlBefore << " -> " << g->p.getLvlHp() << std::endl;
+                    std::cout << "[i] " << "HP: " << hpBefore << " -> " << g->p.getHp() << std::endl;
+                    std::cout << "[i] " << "Level: " << lvlBefore << " -> " << g->p.getLvlHp() << std::endl;
                     cinignore();
                     contin();
                 } else {
@@ -110,8 +82,8 @@ int statUp (gameState *g) {
 
                 result = g->p.atkUp(amount, price);
                 if (result == 1) {
-                    std::cout << "ATK: " << atkBefore << " -> " << g->p.getAtk() << std::endl;
-                    std::cout << "Level: " << lvlBefore << " -> " << g->p.getLvlAtk() << std::endl;
+                    std::cout << "[i] " << "ATK: " << atkBefore << " -> " << g->p.getAtk() << std::endl;
+                    std::cout << "[i] " << "Level: " << lvlBefore << " -> " << g->p.getLvlAtk() << std::endl;
                     cinignore();
                     contin();
                 } else {
@@ -127,8 +99,8 @@ int statUp (gameState *g) {
 
                 result = g->p.speedUp(amount, price);
                 if (result == 1) {
-                    std::cout << "SPD: " << speedBefore << " -> " << g->p.getSpeed() << std::endl;
-                    std::cout << "Level: " << lvlBefore << " -> " << g->p.getLvlSpeed() << std::endl;
+                    std::cout << "[i] " << "SPD: " << speedBefore << " -> " << g->p.getSpeed() << std::endl;
+                    std::cout << "[i] " << "Level: " << lvlBefore << " -> " << g->p.getLvlSpeed() << std::endl;
                     cinignore();
                     contin();
                 } else {
@@ -150,7 +122,7 @@ int statUp (gameState *g) {
                     cinignore();
 
                     horizontalBrokenLines();
-                    std::cout << "Invalid Number" << std::endl;
+                    std::cout << "! Invalid Number" << std::endl;
                     horizontalBrokenLines();
                 }
                 contin();
