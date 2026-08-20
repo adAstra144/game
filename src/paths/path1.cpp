@@ -15,7 +15,7 @@ void path1 (gameState *g) {
 
     int move1;
     while (1) {
-        std::cout << "[1] Continue To Path 1-2?" << std::endl;
+        std::cout << "[1] Continue To Path 1-2" << std::endl;
         std::cout << "[2] Turn Back" << std::endl;
         message(messageType::INPUT, {"Next Move :"});
         voidPrompt();
