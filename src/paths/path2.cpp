@@ -83,6 +83,7 @@ void path2_2 (gameState *g) {
 
     skeleton skeleton;
 
+    clear();
     if (g->numOfSkeletons > 0) {
         dialouge(skeleton.name, "(Bones crackling)", true);
     }
@@ -97,11 +98,21 @@ void path2_2 (gameState *g) {
             }
         }
 
-        message(messageType::NARRATE, {
-            "You see",
-            std::to_string(g->numOfSkeletons), 
-            "Skeleton Scattered In The Wizards Garden"
-        });
+        if (g->numOfSkeletons > 1) {
+            message(messageType::NARRATE, {
+                "You see",
+                std::to_string(g->numOfSkeletons), 
+                "Skeleton Scattered In The Wizards Garden"
+            });
+        } else if (g->numOfSkeletons == 1) {
+            message(messageType::NARRATE, {
+                "You see",
+                std::to_string(g->numOfSkeletons), 
+                "Skeleton In The Wizards Garden"
+            });   
+        } else {
+            message(messageType::NARRATE, {"The wizards garden looks clean"} );
+        }
 
         if (g->numOfSkeletons == 3) {
 
