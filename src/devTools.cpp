@@ -144,7 +144,7 @@ void dialouge (std::string name, std::string dialogue, bool pause) {
     if (dialogue == "") {
         //* No dialogue
     } else {
-        delayString(dialogue, 0, 100);
+        delayString(dialogue, 0, 50);
         std::cout << std::endl;
     }
     
