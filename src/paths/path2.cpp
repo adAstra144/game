@@ -24,8 +24,8 @@ void path2 (gameState *g) {
         dialouge("Wizard", "Instead I can offer some services if you do me a favor", true);
         dialouge(g->p.name, "What favor?", true);
         dialouge("Wizard", "In the room the next of this one", true);
-        dialouge("Wizard", "There's a pesky skeleton ruining my garden", true);
-        dialouge("Wizard", "Kill it in exchange for a reward", true);
+        dialouge("Wizard", "There are some skeletons that are ruining my garden", true);
+        dialouge("Wizard", "Kill them in exchange for a something", true);
 
         dialouge(g->p.name, "", false);
         int move1 = accept();
@@ -46,11 +46,8 @@ void path2 (gameState *g) {
             dialouge("Wizard", "I knew I could count on you!", true);
 
             clear();
-            
-            std::cout << "Entering The Next Room";
-            delayDots(3, 0, 600, true);
-
-            path2_2(g); 
+            std::cout << "~ Current Path: 2" << std::endl;
+            optionsPath2(g);
         } else if (move1 == 0) {
             //* Declined Wizard Offer
             cinignore();
@@ -62,6 +59,7 @@ void path2 (gameState *g) {
             dialouge("Wizard", "Come to me again if you ever change your mind", true);
             
             clear();
+            std::cout << "~ Current Path: 2" << std::endl;
             optionsPath2(g);
         }
     } else if (g->dialogue2 == false) { 
@@ -75,7 +73,7 @@ void path2_2 (gameState *g) {
     std::cout << "~ Current Path: 2-2" << std::endl;
 
     if (g->qWizard.active == true) {
-        message(messageType::SYS, {"Wizrad Quest: Active"});
+        message(messageType::SYS, {"Wizard Quest: Active"});
     }
     else if (g->qWizard.active == false) {
         message(messageType::SYS, {"Wizard Quest: Inactive"});
@@ -87,11 +85,6 @@ void path2_2 (gameState *g) {
 
     if (g->numOfSkeletons > 0) {
         dialouge(skeleton.name, "(Bones crackling)", true);
-        message(messageType::NARRATE, {
-            "You see",
-            std::to_string(g->numOfSkeletons), 
-            "Skeleton Scattered In The Wizards Garden"
-        });
     }
 
     int move1;
@@ -103,6 +96,12 @@ void path2_2 (gameState *g) {
                 g->qWizard.finished = true;
             }
         }
+
+        message(messageType::NARRATE, {
+            "You see",
+            std::to_string(g->numOfSkeletons), 
+            "Skeleton Scattered In The Wizards Garden"
+        });
 
         if (g->numOfSkeletons == 3) {
 
@@ -143,7 +142,7 @@ void path2_2 (gameState *g) {
                     g->numOfSkeletons--;
                     skeleton.resetStats();
                 } else {
-                    std::cout << "! Error" << std::endl;
+                    message(messageType::ERROR, {"Error"});
                 }
             } else if (move1 == 2) {
                 message(messageType::ACTION, {"Attacking skeleton 2"});
@@ -153,7 +152,7 @@ void path2_2 (gameState *g) {
                     g->numOfSkeletons--;
                     skeleton.resetStats();
                 } else {
-                    std::cout << "! Error" << std::endl;
+                    message(messageType::ERROR, {"Error"});
                 }
             } else if (move1 == 3) {
                 message(messageType::ACTION, {"Attacking skeleton 3"});
@@ -164,10 +163,11 @@ void path2_2 (gameState *g) {
                     skeleton.resetStats();
                 }
             } else if (move1 == 4) {
-                contin(); 
+                clear(); 
                 message(messageType::ACTION, {"Turning back..."});
                 contin();
 
+                clear();
                 g->dialogue2 = false;
                 path2(g);
                 break;
@@ -183,7 +183,6 @@ void path2_2 (gameState *g) {
                     skeleton.resetStats();
                 } else {
                     message(messageType::ERROR, {"Error"});
-                    std::cout << "! Error" << std::endl;
                 }
             } else if (move1 == 2) {
                 message(messageType::ACTION, {"Attacking skeleton 2"});
@@ -195,12 +194,12 @@ void path2_2 (gameState *g) {
                 } else {
                     message(messageType::ERROR, {"Error"});
                 }
-            } else if (move1 == 3) {
-                contin(); 
-
+            } else if (move1 == 3) { 
+                clear();
                 message(messageType::ACTION, {"Turning back..."});
                 contin();
 
+                clear();
                 g->dialogue2 = false;
                 path2(g);
                 break;
@@ -217,18 +216,21 @@ void path2_2 (gameState *g) {
                     message(messageType::ERROR, {"Error"});
                 }
             } else if (move1 == 2) {
-                contin(); 
+                clear(); 
                 message(messageType::ACTION, {"Turning back..."});
                 contin();
 
+                clear();
                 g->dialogue2 = false;
                 path2(g);
                 break;
             }
         } else {
             if (move1 == 1) {
+                clear();
                 message(messageType::ACTION, {"Turning back..."});
                 contin();
+
                 clear();
                 g->dialogue2 = false;
                 path2(g);
@@ -241,9 +243,6 @@ void path2_2 (gameState *g) {
 }
 
 void optionsPath2 (gameState *g) {
-    if (g->dialogue2 == true) {
-        std::cout << "~ Current Path: 2" << std::endl;
-    }
 
     int move1;
     std::cout << "[1] Continue to next room " << std::endl;
@@ -328,9 +327,9 @@ void optionsPath2 (gameState *g) {
 
             clear();
             if (g->qWizard.active == true) {
-                cinignore();
                 dialouge("Wizard", "Stop wasting time, you have skeletons to kill!", true);
 
+                clear();
                 path2(g);
             } else if (g->qWizard.active == false) {
                 dialouge("Wizard", "Ready To Take My Offer?", false);
@@ -340,6 +339,7 @@ void optionsPath2 (gameState *g) {
                 if (move2 == 1) {
                     cinignore();
 
+                    clear();
                     dialouge("Wizard", "Nice! Now Go Slay Me Some Skeletons", true);
 
                     if (g->numOfSkeletons <= 0) {
@@ -354,12 +354,10 @@ void optionsPath2 (gameState *g) {
 
                         path2(g);
                     } else {
-                        message(messageType::ACTION, {"Entering next room..."});
-                        contin();
-    
                         g->qWizard.active = true; // Activates Quest
-    
-                        path2_2(g);
+                        
+                        clear();
+                        path2(g);
                     }
                 } else if (move2 == 2) {
                     clear();
@@ -377,7 +375,8 @@ void optionsPath2 (gameState *g) {
         }
     }                                                           
     else if (move1 == 3) {
-        message(messageType::NARRATE, {"Here we go again..."});
+        clear();
+        message(messageType::NARRATE, {"Here again..."});
         path0(g);
     } else if (std::cin.fail()) {
         validnum();    
