@@ -4,6 +4,8 @@
 #include <limits>
 #include <thread>
 #include <chrono>
+#include <vector>
+#include <sstream>
 
 // Fixes cin(input) if it's supposed to be a number   
 void validnum (void) { 
@@ -21,6 +23,7 @@ void cinignore (void) {
 void yn (void) {
     std::cout << "[1] Yes" << std::endl;
     std::cout << "[2] No" << std::endl;
+    message(messageType::INPUT, {"Next move :"});
     voidPrompt();
 }
 
@@ -116,6 +119,21 @@ void delayDots (int amount, int seconds, int milliseconds, bool newLine) {
     }
 }
 
+void delayString (std::string textInput, int seconds, int milliseconds) {
+    std::stringstream ss(textInput);
+    std::string token;
+    std::vector<std::string> text;
+
+    while (std::getline(ss, token, ' ')) {
+        text.push_back(token);
+    }
+
+    for (size_t i = 0; i < text.size(); i++) {
+        std::cout << text[i] << " " << std::flush;
+        delay(seconds, milliseconds);
+    }
+}
+
 void voidPrompt () {
     std::cout << " » ";
 }
@@ -126,7 +144,8 @@ void dialouge (std::string name, std::string dialogue, bool pause) {
     if (dialogue == "") {
         //* No dialogue
     } else {
-        std::cout << dialogue << std::endl;
+        delayString(dialogue, 0, 100);
+        std::cout << std::endl;
     }
     
     if (pause == true) {

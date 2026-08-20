@@ -30,6 +30,7 @@ std::string textSpacerSpeed (int amount);
 void horizontalBrokenLines ();
 void delay (int seconds, int milliseconds);
 void delayDots (int amount, int seconds, int milliseconds, bool newLine);
+void delayString (std::string textInput, int seconds, int milliseconds);
 void voidPrompt ();
 void dialouge (std::string name, std::string dialogue, bool pause);
 void message (messageType type, std::initializer_list<std::string> message);
