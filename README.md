@@ -1,4 +1,4 @@
-# Dungeon Crawler CLI
+# Text Based Dungeon CLI Game
 
 A turn-based dungeon crawler that runs entirely in the terminal. Navigate branching paths, fight enemies with a turn-based combat system, collect gold, and spend it to level up your stats.
 
