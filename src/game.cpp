@@ -13,6 +13,7 @@ void game () {
 
     int menuOptions;
     
+    clear();
     std::cout << "Welcome to Astra's short game" << std::endl;
     std::cout << "Type the respective number of the decision you want to make" << std::endl;
 
@@ -28,12 +29,7 @@ void game () {
 
         // Return To 1 After Development
         if (menuOptions == 1) {
-            std::string name;
-
-            message(messageType::INPUT, {"Enter player name :"});
-            voidPrompt();
-            std::cin >> name;
-            g.p.name = name;
+            setUserName(&g);
 
             tutorial(&g);
             
@@ -71,20 +67,47 @@ void game () {
     } 
 }
 
+void setUserName (gameState *g) {
+    while (true) {
+        std::string name;
+
+        message(messageType::INPUT, {"Enter player name :"});
+        voidPrompt();
+        std::cin >> name;
+        
+        int sure;
+        message(messageType::INPUT, {"Are you sure you want |", name, "| as your username :"});
+        yn();
+        std::cin >> sure;
+        
+        if (sure == 1) {
+            g->p.name = name;
+            break;
+        } else if (sure == 2) {
+            clear();
+            continue;
+        } else if (std::cin.fail()) {
+            message(messageType::ERROR, {"Not a number"});
+        } else {
+            message(messageType::ERROR, {"Invalid number"});
+        }
+    }
+}
+
 void tutorial (gameState *g)
 {
     clear();
     
-    int skipTutorial;
+    int tutorial;
     while (true) {
-        message(messageType::INPUT, {"Skip tutorial :"});
+        message(messageType::INPUT, {"Do you want a tutorial :"});
         yn();   
-        std::cin >> skipTutorial;
+        std::cin >> tutorial;
     
-        if (skipTutorial == 1) {
-            return;
-        } else if (skipTutorial == 2) {
+        if (tutorial == 1) {
             break;
+        } else if (tutorial == 2) {
+            return;
         }
     }
 
