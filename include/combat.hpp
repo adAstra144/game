@@ -1,7 +1,7 @@
 #pragma once
 
 #include "enemy/Enemy.hpp"
-#include "gameState.hpp"
+#include "GameState.hpp"
 
 struct CombatVariables {
     int playerStartingHp;
@@ -21,8 +21,8 @@ enum class CombatResult {
     RAN_AWAY
 };
 
-CombatResult turnBasedCombat (gameState *g, Enemy *e);
-int playerCombatOptions (gameState *g, Enemy *e, CombatVariables *cv);
-void playerStats (gameState *g);
+CombatResult turnBasedCombat (GameState *g, Enemy *e);
+int playerCombatOptions (GameState *g, Enemy *e, CombatVariables *cv);
+void playerStats (GameState *g);
 void enemyStats (Enemy *e);
-void respawn (gameState *g);
+void respawn (GameState *g);

@@ -2,12 +2,12 @@
 
 #include <iostream>
 
-#include "paths/path_0.hpp"
+#include "paths/path0.hpp"
 #include "devTools.hpp"
 
 void game () {
 
-    gameState g;
+    GameState g;
 
     resetGame(&g);
 
@@ -67,7 +67,7 @@ void game () {
     } 
 }
 
-void setUserName (gameState *g) {
+void setUserName (GameState *g) {
     while (true) {
         std::string name;
 
@@ -94,7 +94,7 @@ void setUserName (gameState *g) {
     }
 }
 
-void tutorial (gameState *g)
+void tutorial (GameState *g)
 {
     clear();
     
