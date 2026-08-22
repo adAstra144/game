@@ -1,4 +1,4 @@
-#include "player/playerTools.hpp"
+#include "player/PlayerTools.hpp"
 
 #include <iostream>
 #include "devTools.hpp"
@@ -17,7 +17,7 @@ int statUp (GameState *g) {
     int amount;
     int basePrice = 10;
     int price;
-    int result;
+    UpgradeResult result;
 
     while (1) {
         clear();
@@ -67,7 +67,7 @@ int statUp (GameState *g) {
 
                 result = g->p.hpUp(amount, price);
 
-                if (result == 1) {
+                if (result == UpgradeResult::SUCCESS) {
                     message(MessageType::SYS,{
                         "HP:",
                         std::to_string(hpBefore),
@@ -94,7 +94,7 @@ int statUp (GameState *g) {
                 int lvlBefore = g->p.getLvlAtk();
 
                 result = g->p.atkUp(amount, price);
-                if (result == 1) {
+                if (result == UpgradeResult::SUCCESS) {
                     message(MessageType::SYS,{
                         "HP:",
                         std::to_string(atkBefore),
@@ -121,7 +121,7 @@ int statUp (GameState *g) {
                 int lvlBefore = g->p.getLvlSpeed();
 
                 result = g->p.speedUp(amount, price);
-                if (result == 1) {
+                if (result == UpgradeResult::SUCCESS) {
                     message(MessageType::SYS,{
                         "HP:",
                         std::to_string(speedBefore),

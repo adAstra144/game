@@ -2,8 +2,14 @@
 
 #include <string>
 
+enum class UpgradeResult {
+    SUCCESS,
+    CANCELLED,
+    INSUFFICIENT_GOLD
+};
+
 // Main Player 
-class player {
+class Player {
     private:
         int hp;
         int atk;
@@ -18,7 +24,7 @@ class player {
         std::string name;
 
         // Player Constructor
-        player();
+        Player();
 
         // Combat Methods
         void takeDamage(int amount);
@@ -33,19 +39,20 @@ class player {
         void setDefend (bool defend);
 
         // Get Player Variables Methods
-        int getHp ();
-        int getAtk ();
-        int getSpeed ();
-        int getGold ();
-        bool getDefend ();
-        int getLvlHp ();
-        int getLvlAtk ();
-        int getLvlSpeed ();
+        int getHp () const;
+        int getAtk () const;
+        int getSpeed () const;
+        int getGold () const;
+        bool getDefend () const;
+        int getLvlHp () const;
+        int getLvlAtk () const;
+        int getLvlSpeed () const;
 
         // Methods For Increasing/Upgrading Player Stats
         int continueStatUp (int price);
-        int hpUp (int amount, int price);
-        int atkUp (int amount, int price);
-        int speedUp (int amount, int price);
+        UpgradeResult applyStatUp (int &stat, int &lvl, int amount, int price);
+        UpgradeResult hpUp (int amount, int price);
+        UpgradeResult atkUp (int amount, int price);
+        UpgradeResult speedUp (int amount, int price);
 };
 

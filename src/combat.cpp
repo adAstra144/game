@@ -4,7 +4,7 @@
 #include <cassert>
 
 #include "paths/path0.hpp"
-#include "player/playerTools.hpp"
+#include "player/PlayerTools.hpp"
 #include "devTools.hpp"
 
 // Main Combat Mechanic

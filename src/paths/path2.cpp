@@ -4,8 +4,8 @@
 
 #include "enemy/skeleton.hpp"
 #include "paths/path0.hpp"
-#include "player/player.hpp"
-#include "player/playerTools.hpp"
+#include "player/Player.hpp"
+#include "player/PlayerTools.hpp"
 #include "combat.hpp"
 #include "devTools.hpp"
 

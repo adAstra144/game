@@ -1,6 +1,6 @@
 #pragma once
 
-#include "player/player.hpp"
+#include "player/Player.hpp"
 
 struct Quest {
     bool active;
@@ -9,7 +9,7 @@ struct Quest {
 
 struct GameState {
     // Player
-    player p;    
+    Player p;    
 
     // Quests
     Quest qWizard;
