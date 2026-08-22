@@ -59,13 +59,13 @@ void path1_2 (gameState *g) {
     horizontalBrokenLines();
     contin();
     
-    int result = turnBasedCombat(g, &kingGoblin);
+    CombatResult result = turnBasedCombat(g, &kingGoblin);
 
-    if (result == 0) {
+    if (result == CombatResult::WON) {
         // TODO: Add Path1_3 Here
         // TODO: What's Next After King Goblin?
         std::cout << "Path 1-3?" << std::endl; 
-    } else if (result == 2) {
+    } else if (result == CombatResult::RAN_AWAY) {
         clear();
         message(messageType::NARRATE, {"Back at the start..."});
         path0(g);

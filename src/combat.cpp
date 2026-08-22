@@ -1,13 +1,14 @@
 #include "combat.hpp"
 
 #include <iostream>
+#include <cassert>
 
 #include "paths/path0.hpp"
 #include "player/playerTools.hpp"
 #include "devTools.hpp"
 
 // Main Combat Mechanic
-int turnBasedCombat (gameState *g, enemy *e) {
+CombatResult turnBasedCombat (gameState *g, enemy *e) {
     clear();
 
     combatVariables cv;
@@ -48,9 +49,8 @@ int turnBasedCombat (gameState *g, enemy *e) {
             g->p.setDefend(false); // Resets Defending to false 
             int decision = playerCombatOptions(g, e, &cv); 
 
-            // If Successfully Ran Away. Return To 2 Caller. 
             if (decision == 2) { 
-                return 2;
+                return CombatResult::RAN_AWAY;
             }
 
             if (e->getHp() <= 0) {
@@ -73,7 +73,7 @@ int turnBasedCombat (gameState *g, enemy *e) {
 
                 clear();
 
-                return 0; // Returns 0 If The Player Won
+                return CombatResult::WON; //* Returns 0 If The Player Won
             }
             
             if (decision != 3) {
@@ -120,14 +120,14 @@ int turnBasedCombat (gameState *g, enemy *e) {
                 horizontalBrokenLines();
 
                 respawn(g);
-                return 1; 
+                return CombatResult::LOST; 
             }
             contin();
             
             cv.turn = 0;
         }
     }
-    return -1;
+    assert(false && "Combat Error");
 }
 
 // Players Options during Combat

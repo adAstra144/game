@@ -140,7 +140,7 @@ void path2_2 (gameState *g) {
         voidPrompt();
         std::cin >> move1;
 
-        int result;
+        CombatResult result;
 
         cinignore();
         //* Adaptive Choices (Changes Everytime A Skeleton Is Killed)
@@ -149,7 +149,7 @@ void path2_2 (gameState *g) {
                 message(messageType::ACTION, {"Attacking skeleton 1"});
                 result = turnBasedCombat(g, &skeleton);
 
-                if (result == 0) {
+                if (result == CombatResult::WON) {
                     g->numOfSkeletons--;
                     skeleton.resetStats();
                 } else {
@@ -159,7 +159,7 @@ void path2_2 (gameState *g) {
                 message(messageType::ACTION, {"Attacking skeleton 2"});
                 result = turnBasedCombat(g, &skeleton);
 
-                if (result == 0) {
+                if (result == CombatResult::WON) {
                     g->numOfSkeletons--;
                     skeleton.resetStats();
                 } else {
@@ -169,7 +169,7 @@ void path2_2 (gameState *g) {
                 message(messageType::ACTION, {"Attacking skeleton 3"});
                 result = turnBasedCombat(g, &skeleton);
 
-                if (result == 0) {
+                if (result == CombatResult::WON) {
                     g->numOfSkeletons--;
                     skeleton.resetStats();
                 }
@@ -189,7 +189,7 @@ void path2_2 (gameState *g) {
                 message(messageType::ACTION, {"Attacking skeleton 1"});
                 result = turnBasedCombat(g, &skeleton);
 
-                if (result == 0) {
+                if (result == CombatResult::WON) {
                     g->numOfSkeletons--;
                     skeleton.resetStats();
                 } else {
@@ -199,7 +199,7 @@ void path2_2 (gameState *g) {
                 message(messageType::ACTION, {"Attacking skeleton 2"});
                 result = turnBasedCombat(g, &skeleton);
 
-                if (result == 0) {
+                if (result == CombatResult::WON) {
                     g->numOfSkeletons--;
                     skeleton.resetStats();
                 } else {
@@ -220,7 +220,7 @@ void path2_2 (gameState *g) {
                 message(messageType::ACTION, {"Attacking skeleton 1"}); 
                 result = turnBasedCombat(g, &skeleton);
 
-                if (result == 0) {
+                if (result == CombatResult::WON) {
                     g->numOfSkeletons--;
                     skeleton.resetStats();
                 } else {
