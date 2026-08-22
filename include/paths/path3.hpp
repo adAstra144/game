@@ -1,5 +1,5 @@
 #pragma once
 
-#include "../gameState.hpp"
+#include "../GameState.hpp"
 
-void path3 (gameState *g);
+void path3 (GameState *g);

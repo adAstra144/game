@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../gameState.hpp"
+#include "../GameState.hpp"
 
 // Player Tools
-void resetPlayerStats (gameState *g);
-int statUp (gameState *g);
+void resetPlayerStats (GameState *g);
+int statUp (GameState *g);

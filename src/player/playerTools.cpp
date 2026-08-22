@@ -3,7 +3,7 @@
 #include <iostream>
 #include "devTools.hpp"
 
-void resetPlayerStats (gameState *g) {
+void resetPlayerStats (GameState *g) {
     g->p.setHp(100);
     g->p.setAtk(10);
     g->p.setSpeed(10);
@@ -12,7 +12,7 @@ void resetPlayerStats (gameState *g) {
 }
 
 // Handles Increasing
-int statUp (gameState *g) {
+int statUp (GameState *g) {
     int move1;
     int amount;
     int basePrice = 10;

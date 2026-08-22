@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../gameState.hpp"
+#include "../GameState.hpp"
 
-void path1 (gameState *g); // Pre King Goblin Path
-void path1_2 (gameState *g); // King Goblin Path
+void path1 (GameState *g); // Pre King Goblin Path
+void path1_2 (GameState *g); // King Goblin Path

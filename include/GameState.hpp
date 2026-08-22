@@ -2,17 +2,17 @@
 
 #include "player/player.hpp"
 
-struct quest {
+struct Quest {
     bool active;
     bool finished;
 };
 
-struct gameState {
+struct GameState {
     // Player
     player p;    
 
     // Quests
-    quest qWizard;
+    Quest qWizard;
     int numOfSkeletons;
     
     // Dialogues (Format Dialogue(n)<- Path)
@@ -21,4 +21,4 @@ struct gameState {
 };
 
 // Add All Dialogues and Quests Here
-void resetGame (gameState *g); 
+void resetGame (GameState *g); 

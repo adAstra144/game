@@ -8,7 +8,7 @@
 #include "devTools.hpp"
 
 //* King Goblin Path
-void path1 (gameState *g) {
+void path1 (GameState *g) {
     std::cout << "Current Path: 1" << std::endl;
 
     message(MessageType::NARRATE, {"As you wander around you encounter a sign saying \"Danger ahead\""});
@@ -44,7 +44,7 @@ void path1 (gameState *g) {
     }
 }
 
-void path1_2 (gameState *g) {
+void path1_2 (GameState *g) {
 
     kingGoblin kingGoblin;
 

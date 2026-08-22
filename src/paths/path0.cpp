@@ -7,7 +7,7 @@
 #include "paths/path3.hpp"
 #include "devTools.hpp"
 
-void path0 (gameState *g) {
+void path0 (GameState *g) {
     while (1) {
         std::cout << "~ Current Path: 0" << std::endl;
         int move1;

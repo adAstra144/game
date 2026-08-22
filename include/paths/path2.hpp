@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../gameState.hpp"
+#include "../GameState.hpp"
 
-void path2 (gameState *g); 
-void path2_2 (gameState *g);
+void path2 (GameState *g); 
+void path2_2 (GameState *g);
 
-void optionsPath2 (gameState *g);
+void optionsPath2 (GameState *g);
