@@ -1,7 +1,7 @@
-#include "enemy/enemy.hpp"
+#include "enemy/Enemy.hpp"
 
 // Create Enemies By Using enemy(Name, HP, ATTACK, SPEED, GOLD)
-enemy::enemy(std::string name, int hp, int atk, int speed, int gold) {
+Enemy::Enemy(std::string name, int hp, int atk, int speed, int gold) {
     this->name = name;
     this->hp = hp;
     this->atk = atk;
@@ -9,28 +9,28 @@ enemy::enemy(std::string name, int hp, int atk, int speed, int gold) {
     this->gold = gold;
 }
 
-void enemy::takeDamage (int amount) {
+void Enemy::takeDamage (int amount) {
     hp -= amount; 
 }
-void enemy::specialMove (int turnCount) {
+void Enemy::specialMove (int turnCount) {
     
 }
 
 
-void enemy::setHp (int hp) {
+void Enemy::setHp (int hp) {
     this->hp = hp;
 }
 
 
-int enemy::getHp () {
+int Enemy::getHp () {
     return hp;
 }
-int enemy::getAtk () {
+int Enemy::getAtk () {
     return atk;
 }
-int enemy::getSpeed() {
+int Enemy::getSpeed() {
     return speed;
 }
-int enemy::getGold () {
+int Enemy::getGold () {
     return gold;
 }

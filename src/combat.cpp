@@ -3,12 +3,12 @@
 #include <iostream>
 #include <cassert>
 
-#include "paths/path0.hpp"
-#include "player/PlayerTools.hpp"
+#include "paths/path_0.hpp"
+#include "player/playerTools.hpp"
 #include "devTools.hpp"
 
 // Main Combat Mechanic
-CombatResult turnBasedCombat (GameState *g, enemy *e) {
+CombatResult turnBasedCombat (gameState *g, Enemy *e) {
     clear();
 
     CombatVariables cv;
@@ -131,7 +131,7 @@ CombatResult turnBasedCombat (GameState *g, enemy *e) {
 }
 
 // Players Options during Combat
-int playerCombatOptions (GameState *g, enemy *e, CombatVariables *cv) {
+int playerCombatOptions (gameState *g, Enemy *e, CombatVariables *cv) {
     int combatDecision;
 
     while (1) {
@@ -199,7 +199,7 @@ int playerCombatOptions (GameState *g, enemy *e, CombatVariables *cv) {
     return -1;
 }
 
-void playerStats (GameState *g) {
+void playerStats (gameState *g) {
     clear();
     std::cout << g->p.name << " Stats" << std::endl;
     std::cout << "Stats:    | Level:" << std::endl;
@@ -213,7 +213,7 @@ void playerStats (GameState *g) {
     clear();
 }
 
-void enemyStats (enemy *e) {
+void enemyStats (Enemy *e) {
     clear();
     std::cout << e->name << " Stats" << std::endl;
     std::cout << "HP:" << textSpacerHp(e->getHp()) << e->getHp() << std::endl;
@@ -226,7 +226,7 @@ void enemyStats (enemy *e) {
     clear();
 }
 
-void respawn (GameState *g) {
+void respawn (gameState *g) {
     while (1) {
         int respawnDecision;
         message(MessageType::INPUT, {"Respawn :"});    
@@ -253,7 +253,7 @@ void respawn (GameState *g) {
 }
 
 // TODO: Change this ---
-// void topCombatUI (GameState *g, enemy *e, int enemyTurnCount, int enemyStartingHp) {
+// void topCombatUI (gameState *g, enemy *e, int enemyTurnCount, int enemyStartingHp) {
 //     if (true) {
 //         std::cout << g->p.name << "\'s Turn" << " | " << enemyTurnCount << std::endl;
 //         std::cout << g->p.name << "\'s HP: " << g->p.getHp() << " / " << enemyStartingHp << std::endl;

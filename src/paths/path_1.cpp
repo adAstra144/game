@@ -1,14 +1,14 @@
-#include "paths/path1.hpp"
+#include "paths/path_1.hpp"
 
 #include <iostream>
 
-#include "paths/path0.hpp"
-#include "enemy/kingGoblin.hpp"
+#include "paths/path_0.hpp"
+#include "enemy/KingGoblin.hpp"
 #include "combat.hpp" 
 #include "devTools.hpp"
 
 //* King Goblin Path
-void path1 (GameState *g) {
+void path1 (gameState *g) {
     std::cout << "Current Path: 1" << std::endl;
 
     message(MessageType::NARRATE, {"As you wander around you encounter a sign saying \"Danger ahead\""});
@@ -44,9 +44,9 @@ void path1 (GameState *g) {
     }
 }
 
-void path1_2 (GameState *g) {
+void path1_2 (gameState *g) {
 
-    kingGoblin kingGoblin;
+    KingGoblin kingGoblin;
 
     std::cout << "~ Current Path: 1-2" << std::endl;
 

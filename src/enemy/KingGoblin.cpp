@@ -1,12 +1,12 @@
-#include "enemy/kingGoblin.hpp"
+#include "enemy/KingGoblin.hpp"
 
 #include <iostream>
 
 #include "devTools.hpp"
 
-kingGoblin::kingGoblin() : enemy("King Goblin", 200, 50, 5, 200) {}
+KingGoblin::KingGoblin() : Enemy("King Goblin", 200, 50, 5, 200) {}
 
-void kingGoblin::specialMove (int turnCount) {
+void KingGoblin::specialMove (int turnCount) {
     if (turnCount % 3 == 0) {
         hp += hp * 0.05;
 

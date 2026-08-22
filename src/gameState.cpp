@@ -1,7 +1,7 @@
-#include "GameState.hpp"
+#include "gameState.hpp"
 
 // Add All Dialogues and Quests Here
-void resetGame (GameState *g) {
+void resetGame (gameState *g) {
     // Dialogues
     g->dialogue2 = true;
     g->dialogue2_2 = true;

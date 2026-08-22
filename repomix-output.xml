@@ -56,7 +56,7 @@ include/
   combat.hpp
   devTools.hpp
   game.hpp
-  GameState.hpp
+  gameState.hpp
 src/
   enemy/
     enemy.cpp
@@ -73,7 +73,7 @@ src/
   combat.cpp
   devTools.cpp
   game.cpp
-  GameState.cpp
+  gameState.cpp
 build.sh
 CMakeLists.txt
 main.cpp
@@ -135,12 +135,12 @@ class skeleton : public enemy {
 <file path="include/paths/path3.hpp">
 #pragma once
 
-#include "../GameState.hpp"
+#include "../gameState.hpp"
 
-void path3 (GameState *g);
+void path3 (gameState *g);
 </file>
 
-<file path="include/GameState.hpp">
+<file path="include/gameState.hpp">
 #pragma once
 
 #include "player/player.hpp"
@@ -150,7 +150,7 @@ struct quest {
     bool finished;
 };
 
-struct GameState {
+struct gameState {
     // Player
     player p;    
 
@@ -164,7 +164,7 @@ struct GameState {
 };
 
 // Add All Dialogues and Quests Here
-void resetGame (GameState *g);
+void resetGame (gameState *g);
 </file>
 
 <file path="build.sh">
@@ -211,29 +211,29 @@ class kingGoblin : public enemy {
 <file path="include/paths/path0.hpp">
 #pragma once
 
-#include "../GameState.hpp"
+#include "../gameState.hpp"
 
-void path0 (GameState *g);
+void path0 (gameState *g);
 </file>
 
 <file path="include/paths/path1.hpp">
 #pragma once
 
-#include "../GameState.hpp"
+#include "../gameState.hpp"
 
-void path1 (GameState *g); // Pre King Goblin Path
-void path1_2 (GameState *g); // King Goblin Path
+void path1 (gameState *g); // Pre King Goblin Path
+void path1_2 (gameState *g); // King Goblin Path
 </file>
 
 <file path="include/paths/path2.hpp">
 #pragma once
 
-#include "../GameState.hpp"
+#include "../gameState.hpp"
 
-void path2 (GameState *g); 
-void path2_2 (GameState *g);
+void path2 (gameState *g); 
+void path2_2 (gameState *g);
 
-void optionsPath2 (GameState *g);
+void optionsPath2 (gameState *g);
 </file>
 
 <file path="include/player/player.hpp">
@@ -292,11 +292,11 @@ class player {
 <file path="include/player/playerTools.hpp">
 #pragma once
 
-#include "../GameState.hpp"
+#include "../gameState.hpp"
 
 // Player Tools
-void resetPlayerStats (GameState *g);
-int statUp (GameState *g);
+void resetPlayerStats (gameState *g);
+int statUp (gameState *g);
 </file>
 
 <file path="src/enemy/enemy.cpp">
@@ -371,7 +371,7 @@ add_executable(game ${SOURCES}
 #pragma once
 
 #include "enemy/enemy.hpp"
-#include "GameState.hpp"
+#include "gameState.hpp"
 
 struct combatVariables {
     int playerStartingHp;
@@ -391,21 +391,21 @@ enum class CombatResult {
     RAN_AWAY
 };
 
-CombatResult turnBasedCombat (GameState *g, enemy *e);
-int playerCombatOptions (GameState *g, enemy *e, combatVariables *cv);
-void playerStats (GameState *g);
+CombatResult turnBasedCombat (gameState *g, enemy *e);
+int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv);
+void playerStats (gameState *g);
 void enemyStats (enemy *e);
-void respawn (GameState *g);
+void respawn (gameState *g);
 </file>
 
 <file path="include/game.hpp">
 #pragma once
 
-#include "GameState.hpp"
+#include "gameState.hpp"
 
 void game ();
-void setUserName (GameState *g);
-void tutorial (GameState *g);
+void setUserName (gameState *g);
+void tutorial (gameState *g);
 </file>
 
 <file path="src/enemy/kingGoblin.cpp">
@@ -432,11 +432,11 @@ void kingGoblin::specialMove (int turnCount) {
 }
 </file>
 
-<file path="src/GameState.cpp">
-#include "GameState.hpp"
+<file path="src/gameState.cpp">
+#include "gameState.hpp"
 
 // Add All Dialogues and Quests Here
-void resetGame (GameState *g) {
+void resetGame (gameState *g) {
     // Dialogues
     g->dialogue2 = true;
     g->dialogue2_2 = true;
@@ -570,7 +570,7 @@ void message (MessageType type, std::initializer_list<std::string> message);
 
 #include <iostream>
 
-void path3 (GameState *g) {
+void path3 (gameState *g) {
     std::cout << "~ Current Path: 3" <<std::endl;
 
     std::cout << "Welcome to path 3" << std::endl;
@@ -588,7 +588,7 @@ void path3 (GameState *g) {
 #include "paths/path3.hpp"
 #include "devTools.hpp"
 
-void path0 (GameState *g) {
+void path0 (gameState *g) {
     while (1) {
         std::cout << "~ Current Path: 0" << std::endl;
         int move1;
@@ -831,7 +831,7 @@ int player::speedUp (int amount, int price) {
 #include <iostream>
 #include "devTools.hpp"
 
-void resetPlayerStats (GameState *g) {
+void resetPlayerStats (gameState *g) {
     g->p.setHp(100);
     g->p.setAtk(10);
     g->p.setSpeed(10);
@@ -840,7 +840,7 @@ void resetPlayerStats (GameState *g) {
 }
 
 // Handles Increasing
-int statUp (GameState *g) {
+int statUp (gameState *g) {
     int move1;
     int amount;
     int basePrice = 10;
@@ -1006,7 +1006,7 @@ int statUp (GameState *g) {
 
 void game () {
 
-    GameState g;
+    gameState g;
 
     resetGame(&g);
 
@@ -1066,7 +1066,7 @@ void game () {
     } 
 }
 
-void setUserName (GameState *g) {
+void setUserName (gameState *g) {
     while (true) {
         std::string name;
 
@@ -1093,7 +1093,7 @@ void setUserName (GameState *g) {
     }
 }
 
-void tutorial (GameState *g)
+void tutorial (gameState *g)
 {
     clear();
     
@@ -1193,7 +1193,7 @@ void tutorial (GameState *g)
 #include "devTools.hpp"
 
 //* King Goblin Path
-void path1 (GameState *g) {
+void path1 (gameState *g) {
     std::cout << "Current Path: 1" << std::endl;
 
     message(MessageType::NARRATE, {"As you wander around you encounter a sign saying \"Danger ahead\""});
@@ -1229,7 +1229,7 @@ void path1 (GameState *g) {
     }
 }
 
-void path1_2 (GameState *g) {
+void path1_2 (gameState *g) {
 
     kingGoblin kingGoblin;
 
@@ -1269,7 +1269,7 @@ void path1_2 (GameState *g) {
 #include "devTools.hpp"
 
 // Main Combat Mechanic
-CombatResult turnBasedCombat (GameState *g, enemy *e) {
+CombatResult turnBasedCombat (gameState *g, enemy *e) {
     clear();
 
     combatVariables cv;
@@ -1392,7 +1392,7 @@ CombatResult turnBasedCombat (GameState *g, enemy *e) {
 }
 
 // Players Options during Combat
-int playerCombatOptions (GameState *g, enemy *e, combatVariables *cv) {
+int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
     int combatDecision;
 
     while (1) {
@@ -1460,7 +1460,7 @@ int playerCombatOptions (GameState *g, enemy *e, combatVariables *cv) {
     return -1;
 }
 
-void playerStats (GameState *g) {
+void playerStats (gameState *g) {
     clear();
     std::cout << g->p.name << " Stats" << std::endl;
     std::cout << "Stats:    | Level:" << std::endl;
@@ -1487,7 +1487,7 @@ void enemyStats (enemy *e) {
     clear();
 }
 
-void respawn (GameState *g) {
+void respawn (gameState *g) {
     while (1) {
         int respawnDecision;
         message(MessageType::INPUT, {"Respawn :"});    
@@ -1514,7 +1514,7 @@ void respawn (GameState *g) {
 }
 
 // TODO: Change this ---
-// void topCombatUI (GameState *g, enemy *e, int enemyTurnCount, int enemyStartingHp) {
+// void topCombatUI (gameState *g, enemy *e, int enemyTurnCount, int enemyStartingHp) {
 //     if (true) {
 //         std::cout << g->p.name << "\'s Turn" << " | " << enemyTurnCount << std::endl;
 //         std::cout << g->p.name << "\'s HP: " << g->p.getHp() << " / " << enemyStartingHp << std::endl;
@@ -1723,7 +1723,7 @@ int main (){
 #include "devTools.hpp"
 
 //* Wizard Path (Increase ? Stat)
-void path2 (GameState *g) {   
+void path2 (gameState *g) {   
     std::cout << "~ Current Path: 2" << std::endl;
 
     if (g->dialogue2 == true) {
@@ -1780,7 +1780,7 @@ void path2 (GameState *g) {
     }
 }
 
-void path2_2 (GameState *g) {
+void path2_2 (gameState *g) {
     clear();
 
     std::cout << "~ Current Path: 2-2" << std::endl;
@@ -1966,7 +1966,7 @@ void path2_2 (GameState *g) {
     }
 }
 
-void optionsPath2 (GameState *g) {
+void optionsPath2 (gameState *g) {
 
     int move1;
     std::cout << "[1] Continue to next room " << std::endl;

@@ -1,16 +1,16 @@
-#include "paths/path2.hpp"
+#include "paths/path_2.hpp"
 
 #include <iostream>
 
-#include "enemy/skeleton.hpp"
-#include "paths/path0.hpp"
+#include "enemy/Skeleton.hpp"
+#include "paths/path_0.hpp"
 #include "player/Player.hpp"
-#include "player/PlayerTools.hpp"
+#include "player/playerTools.hpp"
 #include "combat.hpp"
 #include "devTools.hpp"
 
 //* Wizard Path (Increase ? Stat)
-void path2 (GameState *g) {   
+void path2 (gameState *g) {   
     std::cout << "~ Current Path: 2" << std::endl;
 
     if (g->dialogue2 == true) {
@@ -67,7 +67,7 @@ void path2 (GameState *g) {
     }
 }
 
-void path2_2 (GameState *g) {
+void path2_2 (gameState *g) {
     clear();
 
     std::cout << "~ Current Path: 2-2" << std::endl;
@@ -81,7 +81,7 @@ void path2_2 (GameState *g) {
 
     contin();
 
-    skeleton skeleton;
+    Skeleton skeleton;
 
     clear();
     if (g->numOfSkeletons > 0) {
@@ -253,7 +253,7 @@ void path2_2 (GameState *g) {
     }
 }
 
-void optionsPath2 (GameState *g) {
+void optionsPath2 (gameState *g) {
 
     int move1;
     std::cout << "[1] Continue to next room " << std::endl;

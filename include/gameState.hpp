@@ -7,7 +7,7 @@ struct Quest {
     bool finished;
 };
 
-struct GameState {
+struct gameState {
     // Player
     Player p;    
 
@@ -21,4 +21,4 @@ struct GameState {
 };
 
 // Add All Dialogues and Quests Here
-void resetGame (GameState *g); 
+void resetGame (gameState *g); 

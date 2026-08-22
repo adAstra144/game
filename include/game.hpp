@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GameState.hpp"
+#include "gameState.hpp"
 
 void game ();
-void setUserName (GameState *g);
-void tutorial (GameState *g);
+void setUserName (gameState *g);
+void tutorial (gameState *g);

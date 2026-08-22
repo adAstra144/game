@@ -1,9 +1,9 @@
-#include "player/PlayerTools.hpp"
+#include "player/playerTools.hpp"
 
 #include <iostream>
 #include "devTools.hpp"
 
-void resetPlayerStats (GameState *g) {
+void resetPlayerStats (gameState *g) {
     g->p.setHp(100);
     g->p.setAtk(10);
     g->p.setSpeed(10);
@@ -12,7 +12,7 @@ void resetPlayerStats (GameState *g) {
 }
 
 // Handles Increasing
-int statUp (GameState *g) {
+int statUp (gameState *g) {
     int move1;
     int amount;
     int basePrice = 10;

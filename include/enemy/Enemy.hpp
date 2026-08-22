@@ -2,7 +2,7 @@
 
 #include <string>
 
-class enemy {
+class Enemy {
     protected:
         int hp;
         int atk;
@@ -13,7 +13,7 @@ class enemy {
         std::string name;
 
         // Create Enemies By Using enemy(Name, HP, ATTACK, SPEED, GOLD)
-        enemy(std::string name, int hp, int atk, int speed, int gold); 
+        Enemy(std::string name, int hp, int atk, int speed, int gold); 
 
         // Combat
         void takeDamage (int amount);
