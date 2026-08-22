@@ -11,35 +11,35 @@
 void path1 (gameState *g) {
     std::cout << "Current Path: 1" << std::endl;
 
-    message(messageType::NARRATE, {"As you wander around you encounter a sign saying \"Danger ahead\""});
+    message(MessageType::NARRATE, {"As you wander around you encounter a sign saying \"Danger ahead\""});
 
     int move1;
     while (1) {
         std::cout << "[1] Continue To Path 1-2" << std::endl;
         std::cout << "[2] Turn Back" << std::endl;
-        message(messageType::INPUT, {"Next Move :"});
+        message(MessageType::INPUT, {"Next Move :"});
         voidPrompt();
         std::cin >> move1;
 
-        cinignore();
+        cinIgnore();
         if (move1 == 1) {
             clear();
-            message(messageType::ACTION, {g->p.name, "Ignores the sign"});
+            message(MessageType::ACTION, {g->p.name, "Ignores the sign"});
             contin();
             clear();
             path1_2(g);
             break;
         } else if (move1 == 2) {
             clear();
-            message(messageType::ACTION, {g->p.name, "Trusts the sign"});
+            message(MessageType::ACTION, {g->p.name, "Trusts the sign"});
             contin();
 
             clear();
             path0(g);
         } else if (std::cin.fail()) {
-            validnum();
+            validNum();
         } else {
-            message(messageType::ERROR, {"Invalid number"});
+            message(MessageType::ERROR, {"Invalid number"});
         }
     }
 }
@@ -55,7 +55,7 @@ void path1_2 (gameState *g) {
     dialouge(g->p.name, "! ! !", true);
 
     horizontalBrokenLines();
-    message(messageType::NARRATE, {"King Goblin has appeared!"});
+    message(MessageType::NARRATE, {"King Goblin has appeared!"});
     horizontalBrokenLines();
     contin();
     
@@ -67,7 +67,7 @@ void path1_2 (gameState *g) {
         std::cout << "Path 1-3?" << std::endl; 
     } else if (result == CombatResult::RAN_AWAY) {
         clear();
-        message(messageType::NARRATE, {"Back at the start..."});
+        message(MessageType::NARRATE, {"Back at the start..."});
         path0(g);
     }
 }

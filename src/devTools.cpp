@@ -8,14 +8,14 @@
 #include <sstream>
 
 // Fixes cin(input) if it's supposed to be a number   
-void validnum (void) { 
+void validNum (void) { 
     std::cin.clear();
-    cinignore();
+    cinIgnore();
     
-    message(messageType::ERROR, {"Not a number please try again"});
+    message(MessageType::ERROR, {"Not a number please try again"});
 }
 
-void cinignore (void) {
+void cinIgnore (void) {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
@@ -23,7 +23,7 @@ void cinignore (void) {
 void yn (void) {
     std::cout << "[1] Yes" << std::endl;
     std::cout << "[2] No" << std::endl;
-    message(messageType::INPUT, {"Next move :"});
+    message(MessageType::INPUT, {"Next move :"});
     voidPrompt();
 }
 
@@ -43,9 +43,9 @@ int accept (void) {
         } else if (decision == 2) {
             return 0;
         } else if (std::cin.fail()) {
-            validnum();
+            validNum();
         } else {
-            message(messageType::ERROR, {"Invalid number"});
+            message(MessageType::ERROR, {"Invalid number"});
             std::cout << "! Invalid Number" << std::endl;
         }
     }
@@ -153,16 +153,16 @@ void dialouge (std::string name, std::string dialogue, bool pause) {
     }
 }
 
-void message (messageType type, std::initializer_list<std::string> message) {
-    if (type == messageType::SYS) {
+void message (MessageType type, std::initializer_list<std::string> message) {
+    if (type == MessageType::SYS) {
         std::cout << "[i] ";
-    } else if (type == messageType::NARRATE) {
+    } else if (type == MessageType::NARRATE) {
         std::cout << "# ";
-    } else if (type == messageType::ERROR) {
+    } else if (type == MessageType::ERROR) {
         std::cout << "! ";
-    } else if (type == messageType::ACTION) {
+    } else if (type == MessageType::ACTION) {
         std::cout << "* ";
-    } else if (type == messageType::INPUT) {
+    } else if (type == MessageType::INPUT) {
         std::cout << "? ";
     }
 

@@ -32,14 +32,14 @@ int statUp (gameState *g) {
         
         // Only Requests An "Amount" Input If Picking A Stat Option
         if (move1 == 1 || move1 == 2 || move1 == 3) {
-            message(messageType::INPUT, {"Enter amount :"});
+            message(MessageType::INPUT, {"Enter amount :"});
             voidPrompt();
             std::cin >> amount;
 
             price = basePrice * amount;
 
             if (std::cin.fail()) {
-                validnum();
+                validNum();
                 contin();
                 statUp(g);
                 return -1;
@@ -48,7 +48,7 @@ int statUp (gameState *g) {
             // Prevents Zero & Negative Values
             if (amount <= 0) {
                 horizontalBrokenLines();
-                message(messageType::ERROR, {"Amount must be atleast 1"});
+                message(MessageType::ERROR, {"Amount must be atleast 1"});
                 horizontalBrokenLines();
 
                 statUp(g);
@@ -68,19 +68,19 @@ int statUp (gameState *g) {
                 result = g->p.hpUp(amount, price);
 
                 if (result == 1) {
-                    message(messageType::SYS,{
+                    message(MessageType::SYS,{
                         "HP:",
                         std::to_string(hpBefore),
                         "->",
                         std::to_string(g->p.getHp()),    
                     });
-                    message(messageType::SYS, {
+                    message(MessageType::SYS, {
                         "Level:",
                         std::to_string(lvlBefore),
                         "->",
                         std::to_string(g->p.getLvlHp()),
                     });
-                    cinignore();
+                    cinIgnore();
                     contin();
                 } else {
                     contin();
@@ -95,19 +95,19 @@ int statUp (gameState *g) {
 
                 result = g->p.atkUp(amount, price);
                 if (result == 1) {
-                    message(messageType::SYS,{
+                    message(MessageType::SYS,{
                         "HP:",
                         std::to_string(atkBefore),
                         "->",
                         std::to_string(g->p.getAtk()),    
                     });
-                    message(messageType::SYS, {
+                    message(MessageType::SYS, {
                         "Level:",
                         std::to_string(lvlBefore),
                         "->",
                         std::to_string(g->p.getLvlAtk()),
                     });
-                    cinignore();
+                    cinIgnore();
                     contin();
                 } else {
                     contin();
@@ -122,19 +122,19 @@ int statUp (gameState *g) {
 
                 result = g->p.speedUp(amount, price);
                 if (result == 1) {
-                    message(messageType::SYS,{
+                    message(MessageType::SYS,{
                         "HP:",
                         std::to_string(speedBefore),
                         "->",
                         std::to_string(g->p.getSpeed()),    
                     });
-                    message(messageType::SYS, {
+                    message(MessageType::SYS, {
                         "Level:",
                         std::to_string(lvlBefore),
                         "->",
                         std::to_string(g->p.getLvlSpeed()),
                     });
-                    cinignore();
+                    cinIgnore();
                     contin();
                 } else {
                     contin();
@@ -150,12 +150,12 @@ int statUp (gameState *g) {
 
             default: {
                 if (std::cin.fail()) {
-                    validnum();
+                    validNum();
                 } else {
-                    cinignore();
+                    cinIgnore();
 
                     horizontalBrokenLines();
-                    message(messageType::ERROR, {"Invalid number"});
+                    message(MessageType::ERROR, {"Invalid number"});
                     std::cout << "! Invalid Number" << std::endl;
                     horizontalBrokenLines();
                 }

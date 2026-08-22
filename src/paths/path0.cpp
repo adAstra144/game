@@ -15,7 +15,7 @@ void path0 (gameState *g) {
         std::cout << "[2] Enter Path 2" << std::endl;
         std::cout << "[3] Enter Path 3" << std::endl;
         
-        message(messageType::INPUT, {"Next move :"});
+        message(MessageType::INPUT, {"Next move :"});
         voidPrompt();
         std::cin >> move1;
 
@@ -34,7 +34,7 @@ void path0 (gameState *g) {
                 path2(g);
                 break;
             } else {
-                message(messageType::ERROR, {"Error"});
+                message(MessageType::ERROR, {"Error"});
                 break;
             }
         } else if (move1 == 3) {
@@ -43,9 +43,9 @@ void path0 (gameState *g) {
             path3(g);
             break;
         } else if (std::cin.fail()) {
-            validnum();
+            validNum();
         } else {
-            message(messageType::ERROR, {"Invalid number"});
+            message(MessageType::ERROR, {"Invalid number"});
         }
     }
 }

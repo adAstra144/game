@@ -17,11 +17,11 @@ void game () {
     std::cout << "Welcome to Astra's short game" << std::endl;
     std::cout << "Type the respective number of the decision you want to make" << std::endl;
 
-    while (1) {
+    while (true) {
         std::cout << "[1] Start Game" << std::endl;
         std::cout << "[2] Exit" << std::endl;
 
-        message(messageType::INPUT, {"Next move :"});
+        message(MessageType::INPUT, {"Next move :"});
         voidPrompt();
         std::cin >> menuOptions;
 
@@ -34,35 +34,35 @@ void game () {
             tutorial(&g);
             
             clear();
-            message(messageType::SYS, {"Starting game"});
+            message(MessageType::SYS, {"Starting game"});
             delayDots(3, 0, 600, false);
 
             clear();
-            message(messageType::NARRATE, {"Presented before you are 3 paths"});
+            message(MessageType::NARRATE, {"Presented before you are 3 paths"});
 
             path0(&g);
 
             break;
 
         } else if (menuOptions == 2) {
-            message(messageType::SYS, {"Goodbye!"});
+            message(MessageType::SYS, {"Goodbye!"});
             break;
 
         } else if (menuOptions == 3) { 
             //* Quick Start. Defaulted Player Name To Astra
             g.p.name = "Astra";       
             
-            message(messageType::NARRATE, {"Presented before you are 3 paths"});
+            message(MessageType::NARRATE, {"Presented before you are 3 paths"});
             
             path0(&g);
 
             break;
 
         } else if (std::cin.fail()) {
-            validnum();
+            validNum();
 
         } else {
-            message(messageType::ERROR, {"Invalid number"});
+            message(MessageType::ERROR, {"Invalid number"});
         }    
     } 
 }
@@ -71,12 +71,12 @@ void setUserName (gameState *g) {
     while (true) {
         std::string name;
 
-        message(messageType::INPUT, {"Enter player name :"});
+        message(MessageType::INPUT, {"Enter player name :"});
         voidPrompt();
         std::cin >> name;
         
         int sure;
-        message(messageType::INPUT, {"Are you sure you want |", name, "| as your username :"});
+        message(MessageType::INPUT, {"Are you sure you want |", name, "| as your username :"});
         yn();
         std::cin >> sure;
         
@@ -87,9 +87,9 @@ void setUserName (gameState *g) {
             clear();
             continue;
         } else if (std::cin.fail()) {
-            message(messageType::ERROR, {"Not a number"});
+            message(MessageType::ERROR, {"Not a number"});
         } else {
-            message(messageType::ERROR, {"Invalid number"});
+            message(MessageType::ERROR, {"Invalid number"});
         }
     }
 }
@@ -100,7 +100,7 @@ void tutorial (gameState *g)
     
     int tutorial;
     while (true) {
-        message(messageType::INPUT, {"Do you want a tutorial :"});
+        message(MessageType::INPUT, {"Do you want a tutorial :"});
         yn();   
         std::cin >> tutorial;
     
@@ -126,7 +126,7 @@ void tutorial (gameState *g)
 
     space();
 
-    cinignore();
+    cinIgnore();
     contin();
 
     while (true) {
@@ -144,31 +144,31 @@ void tutorial (gameState *g)
         voidPrompt();
         std::cin >> move1;
         
-        cinignore();
+        cinIgnore();
         if (move1 == 1) {
             clear();
-            message(messageType::NARRATE, {"A storm is approaching..."});
+            message(MessageType::NARRATE, {"A storm is approaching..."});
             contin();
         } else if (move1 == 2) {
             clear();
-            message(messageType::ACTION, {g->p.name, "is scratching their head"});
+            message(MessageType::ACTION, {g->p.name, "is scratching their head"});
             contin();
         } else if (move1 == 3) {
             clear();
-            message(messageType::ERROR, {"Invalid move"});
+            message(MessageType::ERROR, {"Invalid move"});
             contin();
         } else if (move1 == 4) { 
             clear();
-            message(messageType::SYS, {"Quest completed!"});
+            message(MessageType::SYS, {"Quest completed!"});
             contin();
         } else if (move1 == 5) {
             break;
         } else if (std::cin.fail()) {
             clear();
-            validnum();
+            validNum();
             contin();
         } else {
-            message(messageType::ERROR, {"Invalid number"});
+            message(MessageType::ERROR, {"Invalid number"});
         }
     }
 }

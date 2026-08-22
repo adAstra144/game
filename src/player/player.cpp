@@ -76,9 +76,9 @@ int player::getLvlSpeed () {
 int player::continueStatUp (int price) {
     int decision;
 
-    message(messageType::SYS, {"Will cost:", std::to_string(price), "gold"});
+    message(MessageType::SYS, {"Will cost:", std::to_string(price), "gold"});
 
-    message(messageType::INPUT, {"Continue :"});
+    message(MessageType::INPUT, {"Continue :"});
     yn();
     std::cin >> decision;
 
@@ -86,7 +86,7 @@ int player::continueStatUp (int price) {
         return 1;
     } else {
         horizontalBrokenLines();
-        message(messageType::SYS, {"Stat level up cancelled"});
+        message(MessageType::SYS, {"Stat level up cancelled"});
         horizontalBrokenLines();
         
         return 0;
@@ -110,13 +110,13 @@ int player::hpUp (int amount, int price) {
         lvlHp += amount;
 
         horizontalBrokenLines();
-        message(messageType::SYS, {"Upgrade succesful!"});
+        message(MessageType::SYS, {"Upgrade succesful!"});
         horizontalBrokenLines();
 
         return 1; // Transac Success
     } else {
         horizontalBrokenLines();
-        message(messageType::ERROR, {"Not enough gold"});
+        message(MessageType::ERROR, {"Not enough gold"});
         horizontalBrokenLines();
 
         gold = beforeGold;
@@ -141,13 +141,13 @@ int player::atkUp (int amount, int price) {
         lvlAtk += amount;
 
         horizontalBrokenLines();
-        message(messageType::SYS, {"Upgrade succesful!"});
+        message(MessageType::SYS, {"Upgrade succesful!"});
         horizontalBrokenLines();
 
         return 1; // Transac Success
     } else {
         horizontalBrokenLines();
-        message(messageType::ERROR, {"Not enough gold"});
+        message(MessageType::ERROR, {"Not enough gold"});
         horizontalBrokenLines();
 
         gold = beforeGold;
@@ -173,14 +173,14 @@ int player::speedUp (int amount, int price) {
         lvlSpeed += amount;
 
         horizontalBrokenLines();
-        message(messageType::SYS, {"Upgrade succesful!"});
+        message(MessageType::SYS, {"Upgrade succesful!"});
         horizontalBrokenLines();
 
         return 1; // Transac Success
     }
     else {
         horizontalBrokenLines();
-        message(messageType::ERROR, {"Not enough gold"});
+        message(MessageType::ERROR, {"Not enough gold"});
         horizontalBrokenLines();
 
         gold = beforeGold;

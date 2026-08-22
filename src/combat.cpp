@@ -21,18 +21,18 @@ CombatResult turnBasedCombat (gameState *g, enemy *e) {
     cv.playerTurnCount = 0;
     cv.enemyTurnCount = 0;
 
-    message(messageType::SYS, {"Combat start!"});
+    message(MessageType::SYS, {"Combat start!"});
     contin();
 
     // Determine who goes first based on speed stat
     if (g->p.getSpeed() > e->getSpeed()) {   
         // Player Start
         cv.turn = 0;
-        message(messageType::SYS, {g->p.name, "Starts first"});
+        message(MessageType::SYS, {g->p.name, "Starts first"});
     } else {   
         // Enemy Start
         cv.turn = 1;
-        message(messageType::SYS, {e->name, "Starts first"});
+        message(MessageType::SYS, {e->name, "Starts first"});
     }
     contin();
 
@@ -54,7 +54,7 @@ CombatResult turnBasedCombat (gameState *g, enemy *e) {
             }
 
             if (e->getHp() <= 0) {
-                cinignore();
+                cinIgnore();
                 contin();
                 clear();
                 
@@ -63,7 +63,7 @@ CombatResult turnBasedCombat (gameState *g, enemy *e) {
                 g->p.gainGold(e->getGold());
 
                 horizontalBrokenLines();
-                message(messageType::SYS, {"You win!"});
+                message(MessageType::SYS, {"You win!"});
                 horizontalBrokenLines();
                 std::cout << "Received Gold: " << e->getGold() << std::endl;
                 std::cout << "Current Gold: " << g->p.getGold() << std::endl;
@@ -77,7 +77,7 @@ CombatResult turnBasedCombat (gameState *g, enemy *e) {
             }
             
             if (decision != 3) {
-                cinignore();
+                cinIgnore();
             }
             contin();
 
@@ -96,7 +96,7 @@ CombatResult turnBasedCombat (gameState *g, enemy *e) {
             
             // TODO: Consider doing the same with this with what your planning for the player (clear -> print top UI -> print action)
             horizontalBrokenLines();
-            message(messageType::ACTION, {e->name,"Attacks!"});
+            message(MessageType::ACTION, {e->name,"Attacks!"});
             horizontalBrokenLines();
 
             e->specialMove(cv.enemyTurnCount);
@@ -108,7 +108,7 @@ CombatResult turnBasedCombat (gameState *g, enemy *e) {
             if (g->p.getDefend() == true) {
                 contin();
                 horizontalBrokenLines();
-                message(messageType::ACTION, {g->p.name, "Defended | Reduced damage taken"});
+                message(MessageType::ACTION, {g->p.name, "Defended | Reduced damage taken"});
                 horizontalBrokenLines();
             }
 
@@ -116,7 +116,7 @@ CombatResult turnBasedCombat (gameState *g, enemy *e) {
                 contin();
                 clear();
                 horizontalBrokenLines();
-                message(messageType::SYS, {"You died!"});
+                message(MessageType::SYS, {"You died!"});
                 horizontalBrokenLines();
 
                 respawn(g);
@@ -149,7 +149,7 @@ int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
             e->takeDamage(g->p.getAtk());
             
             horizontalBrokenLines();
-            message(messageType::ACTION, {g->p.name, "Attacks!"});
+            message(MessageType::ACTION, {g->p.name, "Attacks!"});
             horizontalBrokenLines();
             std::cout << e->name << " HP: " << cv->enemyHpBeforeAttack << " -> " << e->getHp() << std::endl;
             horizontalBrokenLines();
@@ -159,12 +159,12 @@ int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
             g->p.setDefend(true);
 
             horizontalBrokenLines();
-            message(messageType::ACTION, {g->p.name, "Defends!"});
+            message(MessageType::ACTION, {g->p.name, "Defends!"});
             horizontalBrokenLines();
 
             break;
         } else if (combatDecision == 3) {
-            cinignore();
+            cinIgnore();
             std::cin.clear();
 
             dialouge(g->p.name, "Time to run!", false);
@@ -172,7 +172,7 @@ int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
 
             if (g->p.getSpeed() > e->getSpeed()) {
                 horizontalBrokenLines();
-                message(messageType::ACTION, {g->p.name, "Successfully ran away"});
+                message(MessageType::ACTION, {g->p.name, "Successfully ran away"});
                 horizontalBrokenLines();
                 contin();
 
@@ -181,7 +181,7 @@ int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
                 return 2; 
             } else {
                 horizontalBrokenLines();
-                message(messageType::ACTION, {g->p.name, "Failed to run away"});
+                message(MessageType::ACTION, {g->p.name, "Failed to run away"});
                 horizontalBrokenLines();
 
                 return 3;
@@ -191,9 +191,9 @@ int playerCombatOptions (gameState *g, enemy *e, combatVariables *cv) {
         } else if (combatDecision == 5) {
             enemyStats(e);
         } else if (std::cin.fail()) {
-            validnum();
+            validNum();
         } else {
-            message(messageType::ERROR, {"Invalid number"});
+            message(MessageType::ERROR, {"Invalid number"});
         }
     }
     return -1;
@@ -208,7 +208,7 @@ void playerStats (gameState *g) {
     std::cout << "SPD:" << textSpacerSpeed(g->p.getSpeed()) << g->p.getSpeed() << " | " << g->p.getLvlSpeed() << std::endl;
     std::cout << "GOLD: " << g->p.getGold() << std::endl;
 
-    cinignore();
+    cinIgnore();
     contin();
     clear();
 }
@@ -221,7 +221,7 @@ void enemyStats (enemy *e) {
     std::cout << "SPD:" << textSpacerSpeed(e->getSpeed()) << e->getSpeed() << std::endl;
     std::cout << "GOLD: " << e->getGold() << std::endl;
 
-    cinignore();
+    cinIgnore();
     contin();
     clear();
 }
@@ -229,7 +229,7 @@ void enemyStats (enemy *e) {
 void respawn (gameState *g) {
     while (1) {
         int respawnDecision;
-        message(messageType::INPUT, {"Respawn :"});    
+        message(MessageType::INPUT, {"Respawn :"});    
         yn();
         std::cin >> respawnDecision;
 
@@ -237,17 +237,17 @@ void respawn (gameState *g) {
             resetPlayerStats(g);
             resetGame(g);
             clear();
-            message(messageType::NARRATE, {"Here we go again..."});
+            message(MessageType::NARRATE, {"Here we go again..."});
             path0(g);
             break;
         } else if (respawnDecision == 2) {
-            message(messageType::SYS, {"Goodbye!"});
+            message(MessageType::SYS, {"Goodbye!"});
             
             break;
         } else if (std::cin.fail()) {
-            validnum();
+            validNum();
         } else {
-            message(messageType::ERROR, {"Invalid number"});
+            message(MessageType::ERROR, {"Invalid number"});
         }
     }
 }

@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <initializer_list>
 
-enum class messageType {
+enum class MessageType {
     ACTION,
     ERROR,
     INPUT,
@@ -13,8 +13,8 @@ enum class messageType {
 };
 
 // Error Tools
-void validnum (void);
-void cinignore (void);
+void validNum (void);
+void cinIgnore (void);
 
 // Option Tools 
 void yn (void);
@@ -33,4 +33,4 @@ void delayDots (int amount, int seconds, int milliseconds, bool newLine);
 void delayString (std::string textInput, int seconds, int milliseconds);
 void voidPrompt ();
 void dialouge (std::string name, std::string dialogue, bool pause);
-void message (messageType type, std::initializer_list<std::string> message);
+void message (MessageType type, std::initializer_list<std::string> message);
