@@ -296,9 +296,9 @@ void optionsPath2 (gameState *g) {
             } else {
                 int move2;
 
+                clear();
                 dialouge("Wizard", "Mmmhh...", true);
                 cinignore();
-                contin();
 
                 while (true) {
                     std::cout << "[1] Level Up Stats" << std::endl;
@@ -315,8 +315,7 @@ void optionsPath2 (gameState *g) {
                     } else if (move2 == 2) {
                         dialouge("Wizard", "My senses are telling me that a fortune awaits for you in the farthest path", true);
                         
-                        path2(g);
-                        break;
+                        continue;
                     } else if (move2 == 3) {
                         path2(g);
                         break;
@@ -348,12 +347,16 @@ void optionsPath2 (gameState *g) {
                 std::cin >> move2;
 
                 if (move2 == 1) {
+                    g->qWizard.active = true;
+                    g->dialogue2_2 = false; //* Prevent double dialogue when talking to the wizard again
+
                     cinignore();
 
                     clear();
                     dialouge("Wizard", "Nice! Now Go Slay Me Some Skeletons", true);
 
                     if (g->numOfSkeletons <= 0) {
+                        g->qWizard.finished = true; 
                         dialouge("Wizard", "What?", true);
                         dialouge("Wizard", "You already killed them?", true);
                         dialouge("Wizard", "Alright then", true);
@@ -364,9 +367,7 @@ void optionsPath2 (gameState *g) {
                         statUp(g);
 
                         path2(g);
-                    } else {
-                        g->qWizard.active = true; // Activates Quest
-                        
+                    } else {                        
                         clear();
                         path2(g);
                     }
