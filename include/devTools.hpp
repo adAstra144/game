@@ -34,3 +34,5 @@ void delayString (std::string textInput, int seconds, int milliseconds);
 void voidPrompt ();
 void dialouge (std::string name, std::string dialogue, bool pause);
 void message (MessageType type, std::initializer_list<std::string> message);
+void hideCursor();
+void showCursor();
