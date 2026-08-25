@@ -24,9 +24,9 @@ class Enemy {
         void setHp (int hp);
 
         // Get Enemy Variables
-        int getHp ();
-        int getAtk ();
-        int getSpeed();
-        int getGold ();
+        int getHp () const;
+        int getAtk () const;
+        int getSpeed() const;
+        int getGold () const;
 
 };
