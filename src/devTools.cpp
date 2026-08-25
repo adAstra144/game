@@ -171,3 +171,11 @@ void message (MessageType type, std::initializer_list<std::string> message) {
     }
     std::cout << std::endl;
 }
+
+void hideCursor() {
+    std::cout << "\033[?25l" << std::flush;
+}
+
+void showCursor() {
+    std::cout << "\033[?25h" << std::flush;
+}
