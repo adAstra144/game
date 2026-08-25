@@ -11,3 +11,7 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 
 add_executable(game ${SOURCES}
     main.cpp)
+
+find_package(SFML 2.5 COMPONENTS graphics window system audio REQUIRED)
+
+target_link_libraries(game PRIVATE sfml-graphics sfml-window sfml-system sfml-audio)
