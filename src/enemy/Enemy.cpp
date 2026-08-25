@@ -22,15 +22,15 @@ void Enemy::setHp (int hp) {
 }
 
 
-int Enemy::getHp () {
+int Enemy::getHp () const {
     return hp;
 }
-int Enemy::getAtk () {
+int Enemy::getAtk () const {
     return atk;
 }
-int Enemy::getSpeed() {
+int Enemy::getSpeed() const {
     return speed;
 }
-int Enemy::getGold () {
+int Enemy::getGold () const {
     return gold;
 }
