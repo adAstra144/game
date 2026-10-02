@@ -11,8 +11,10 @@ void game () {
 
     resetGame(&g);
 
+    g.musicMgr.play(Track::MENU);
+
     int menuOptions;
-    
+
     clear();
     std::cout << "Welcome to Astra's short game" << std::endl;
     std::cout << "Type the respective number of the decision you want to make" << std::endl;
@@ -32,7 +34,7 @@ void game () {
             setUserName(&g);
 
             tutorial(&g);
-            
+
             clear();
             message(MessageType::SYS, {"Starting game"});
             delayDots(3, 0, 600, false);
@@ -48,12 +50,12 @@ void game () {
             message(MessageType::SYS, {"Goodbye!"});
             break;
 
-        } else if (menuOptions == 3) { 
+        } else if (menuOptions == 3) {
             //* Quick Start. Defaulted Player Name To Astra
-            g.p.name = "Astra";       
-            
+            g.p.name = "Astra";
+
             message(MessageType::NARRATE, {"Presented before you are 3 paths"});
-            
+
             path0(&g);
 
             break;
@@ -63,8 +65,8 @@ void game () {
 
         } else {
             message(MessageType::ERROR, {"Invalid number"});
-        }    
-    } 
+        }
+    }
 }
 
 void setUserName (GameState *g) {
@@ -74,12 +76,12 @@ void setUserName (GameState *g) {
         message(MessageType::INPUT, {"Enter player name :"});
         voidPrompt();
         std::cin >> name;
-        
+
         int sure;
         message(MessageType::INPUT, {"Are you sure you want |", name, "| as your username :"});
         yn();
         std::cin >> sure;
-        
+
         if (sure == 1) {
             g->p.name = name;
             break;
@@ -97,13 +99,13 @@ void setUserName (GameState *g) {
 void tutorial (GameState *g)
 {
     clear();
-    
+
     int tutorial;
     while (true) {
         message(MessageType::INPUT, {"Do you want a tutorial :"});
-        yn();   
+        yn();
         std::cin >> tutorial;
-    
+
         if (tutorial == 1) {
             break;
         } else if (tutorial == 2) {
@@ -143,7 +145,7 @@ void tutorial (GameState *g)
         int move1;
         voidPrompt();
         std::cin >> move1;
-        
+
         cinIgnore();
         if (move1 == 1) {
             clear();
@@ -157,7 +159,7 @@ void tutorial (GameState *g)
             clear();
             message(MessageType::ERROR, {"Invalid move"});
             contin();
-        } else if (move1 == 4) { 
+        } else if (move1 == 4) {
             clear();
             message(MessageType::SYS, {"Quest completed!"});
             contin();

@@ -10,7 +10,9 @@
 #include "devTools.hpp"
 
 //* Wizard Path (Increase ? Stat)
-void path2 (GameState *g) {   
+void path2 (GameState *g) {
+    g->musicMgr.play(Track::WIZARD);
+
     std::cout << "~ Current Path: 2" << std::endl;
 
     if (g->dialogue2 == true) {
@@ -29,12 +31,12 @@ void path2 (GameState *g) {
 
         dialouge(g->p.name, "", false);
         int move1 = accept();
-        
+
         space();
 
         g->dialogue2 = false;
 
-        
+
         if (move1 == 1) {
             //* Accepted Wizards Offer
             cinIgnore();
@@ -53,17 +55,17 @@ void path2 (GameState *g) {
             cinIgnore();
 
             g->qWizard.active = false;
-            
+
             clear();
             dialouge("Wizard", "Eh? Your loss then", true);
             dialouge("Wizard", "Come to me again if you ever change your mind", true);
-            
+
             clear();
             std::cout << "~ Current Path: 2" << std::endl;
             optionsPath2(g);
         }
-    } else if (g->dialogue2 == false) { 
-        optionsPath2(g);  
+    } else if (g->dialogue2 == false) {
+        optionsPath2(g);
     }
 }
 
@@ -101,15 +103,15 @@ void path2_2 (GameState *g) {
         if (g->numOfSkeletons > 1) {
             message(MessageType::NARRATE, {
                 "You see",
-                std::to_string(g->numOfSkeletons), 
+                std::to_string(g->numOfSkeletons),
                 "Skeleton Scattered In The Wizards Garden"
             });
         } else if (g->numOfSkeletons == 1) {
             message(MessageType::NARRATE, {
                 "You see",
-                std::to_string(g->numOfSkeletons), 
+                std::to_string(g->numOfSkeletons),
                 "Skeleton In The Wizards Garden"
-            });   
+            });
         } else {
             message(MessageType::NARRATE, {"The wizards garden looks clean"} );
         }
@@ -118,7 +120,7 @@ void path2_2 (GameState *g) {
 
             std::cout << "[1] Attack Skeleton 1" << std::endl;
             std::cout << "[2] Attack Skeleton 2" << std::endl;
-            std::cout << "[3] Attack Skeleton 3" << std::endl;            
+            std::cout << "[3] Attack Skeleton 3" << std::endl;
             std::cout << "[4] Turn Back" << std::endl;
 
         } else if (g->numOfSkeletons == 2) {
@@ -174,7 +176,7 @@ void path2_2 (GameState *g) {
                     skeleton.resetStats();
                 }
             } else if (move1 == 4) {
-                clear(); 
+                clear();
                 message(MessageType::ACTION, {"Turning back..."});
                 contin();
 
@@ -205,7 +207,7 @@ void path2_2 (GameState *g) {
                 } else {
                     message(MessageType::ERROR, {"Error"});
                 }
-            } else if (move1 == 3) { 
+            } else if (move1 == 3) {
                 clear();
                 message(MessageType::ACTION, {"Turning back..."});
                 contin();
@@ -217,7 +219,7 @@ void path2_2 (GameState *g) {
             }
         } else if (g->numOfSkeletons == 1) {
             if (move1 == 1) {
-                message(MessageType::ACTION, {"Attacking skeleton 1"}); 
+                message(MessageType::ACTION, {"Attacking skeleton 1"});
                 result = turnBasedCombat(g, &skeleton);
 
                 if (result == CombatResult::WON) {
@@ -227,7 +229,7 @@ void path2_2 (GameState *g) {
                     message(MessageType::ERROR, {"Error"});
                 }
             } else if (move1 == 2) {
-                clear(); 
+                clear();
                 message(MessageType::ACTION, {"Turning back..."});
                 contin();
 
@@ -259,11 +261,11 @@ void optionsPath2 (GameState *g) {
     std::cout << "[1] Continue to next room " << std::endl;
     std::cout << "[2] Talk to Wizard" << std::endl;
     std::cout << "[3] Go back" << std::endl;
-    
+
     message(MessageType::INPUT, {"Next move :"});
     voidPrompt();
     std::cin >> move1;
-    
+
     if (move1 == 1) {
         cinIgnore();
         clear();
@@ -275,11 +277,11 @@ void optionsPath2 (GameState *g) {
         if (g->qWizard.finished == true) {
             if (g->dialogue2_2 == true) {
                 g->dialogue2_2 = false;
-                
+
                 cinIgnore();
 
                 clear();
-                
+
                 dialouge("Wizard", "What do you need?", true);
                 dialouge(g->p.name, "So about the reward?", true);
                 dialouge("Wizard", "Done already?", true);
@@ -304,17 +306,17 @@ void optionsPath2 (GameState *g) {
                     std::cout << "[1] Level Up Stats" << std::endl;
                     std::cout << "[2] Talk" << std::endl;
                     std::cout << "[3] Nevermind" << std::endl;
-                    
+
                     message(MessageType::INPUT, {"Next move :"});
                     voidPrompt();
                     std::cin >> move2;
-    
+
                     if (move2 == 1) {
                         statUp(g);
                         break;
                     } else if (move2 == 2) {
                         dialouge("Wizard", "My senses are telling me that a fortune awaits for you in the farthest path", true);
-                        
+
                         continue;
                     } else if (move2 == 3) {
                         path2(g);
@@ -325,7 +327,7 @@ void optionsPath2 (GameState *g) {
                         message(MessageType::ERROR, {"Invalid number"});
                     }
                 }
-            }       
+            }
         } else {
             int move2;
 
@@ -356,7 +358,7 @@ void optionsPath2 (GameState *g) {
                     dialouge("Wizard", "Nice! Now Go Slay Me Some Skeletons", true);
 
                     if (g->numOfSkeletons <= 0) {
-                        g->qWizard.finished = true; 
+                        g->qWizard.finished = true;
                         dialouge("Wizard", "What?", true);
                         dialouge("Wizard", "You already killed them?", true);
                         dialouge("Wizard", "Alright then", true);
@@ -367,7 +369,7 @@ void optionsPath2 (GameState *g) {
                         statUp(g);
 
                         path2(g);
-                    } else {                        
+                    } else {
                         clear();
                         path2(g);
                     }
@@ -375,7 +377,7 @@ void optionsPath2 (GameState *g) {
                     clear();
                     cinIgnore();
                     dialouge("Wizard", "Stop wasting my time then!", true);
-                    
+
                     clear();
                     path2(g);
                 } else if (std::cin.fail()) {
@@ -385,14 +387,14 @@ void optionsPath2 (GameState *g) {
                 }
             }
         }
-    }                                                           
+    }
     else if (move1 == 3) {
         clear();
         message(MessageType::NARRATE, {"Here again..."});
         path0(g);
     } else if (std::cin.fail()) {
-        validNum();    
+        validNum();
     } else {
         message(MessageType::ERROR, {"Invalid number"});
-    }   
+    }
 }

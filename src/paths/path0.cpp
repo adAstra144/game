@@ -8,13 +8,15 @@
 #include "devTools.hpp"
 
 void path0 (GameState *g) {
+    g->musicMgr.play(Track::DUNGEON);
+
     while (1) {
         std::cout << "~ Current Path: 0" << std::endl;
         int move1;
         std::cout << "[1] Enter Path 1" << std::endl;
         std::cout << "[2] Enter Path 2" << std::endl;
         std::cout << "[3] Enter Path 3" << std::endl;
-        
+
         message(MessageType::INPUT, {"Next move :"});
         voidPrompt();
         std::cin >> move1;
@@ -39,7 +41,7 @@ void path0 (GameState *g) {
             }
         } else if (move1 == 3) {
             clear();
-            
+
             path3(g);
             break;
         } else if (std::cin.fail()) {
