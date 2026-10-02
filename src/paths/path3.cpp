@@ -1,4 +1,5 @@
 #include "paths/path3.hpp"
+#include "devTools.hpp"
 
 #include <iostream>
 
@@ -7,4 +8,6 @@ void path3 (GameState *g) {
 
     std::cout << "Welcome to path 3" << std::endl;
     // TODO: Add something here :)
+
+    clear();
 }
