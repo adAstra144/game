@@ -18,7 +18,8 @@ enum class Track {
 
 class MusicManager {
     private:
-        static constexpr float MAX_VOLUME   = 20.0f;
+        // TODO: Make this adjustable in a possible settings menu
+        static constexpr float MAX_VOLUME   = 5.0f;
         static constexpr int   FADE_OUT_MS  = 900;
         static constexpr int   FADE_IN_MS   = 1400;
         static constexpr int   FADE_STEP_MS = 30;
