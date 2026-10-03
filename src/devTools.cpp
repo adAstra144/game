@@ -7,11 +7,38 @@
 #include <vector>
 #include <sstream>
 
-// Fixes cin(input) if it's supposed to be a number   
-void validNum (void) { 
+// Prompts until the user enters an int; Clears bad input.
+int readInt () {
+    int value;
+
+    while (true) {
+        voidPrompt();
+
+        if (std::cin >> value) {
+            cinIgnore();
+            return value;
+        }
+
+        validNum();
+    }
+}
+
+// Prompts until the user enters an int in [min, max]; Clears bad input.
+int readIntInRange(int min, int max) {
+    while (true) {
+        int value = readInt();
+
+        if (value >= min && value <= max) return value;
+
+        message(MessageType::ERROR, {"Invalid Number"});
+    }
+}
+
+// Fixes cin(input) if it's supposed to be a number
+void validNum (void) {
     std::cin.clear();
     cinIgnore();
-    
+
     message(MessageType::ERROR, {"Not a number please try again"});
 }
 
@@ -27,8 +54,8 @@ void yn (void) {
     voidPrompt();
 }
 
-// Return 1 If Accept. 2 If Decline
-int accept (void) { 
+// Return 1 If Accept. 0 If Decline
+int accept (void) {
 
     while (1) {
         int decision;
@@ -101,7 +128,7 @@ void delay (int seconds, int milliseconds) {
 
 void delayDots (int amount, int seconds, int milliseconds, bool newLine) {
     int i = 0;
-    
+
     while (i != amount) {
         if (i == 0) {
             std::cout << "." << std::flush;
@@ -147,7 +174,7 @@ void dialouge (std::string name, std::string dialogue, bool pause) {
         delayString(dialogue, 0, 50);
         std::cout << std::endl;
     }
-    
+
     if (pause == true) {
         contin();
     }

@@ -13,10 +13,12 @@ enum class MessageType {
 };
 
 // Error Tools
+int readInt();
+int readIntInRange(int min, int max);
 void validNum (void);
 void cinIgnore (void);
 
-// Option Tools 
+// Option Tools
 void yn (void);
 int accept (void);
 
