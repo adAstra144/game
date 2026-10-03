@@ -7,6 +7,18 @@
 #include <vector>
 #include <sstream>
 
+// Check if int or not
+bool tryReadInt(int &out) {
+    if (std::cin >> out) {
+        cinIgnore();
+        return true;
+    }
+
+    std::cin.clear();
+    cinIgnore();
+    return false;
+}
+
 // Prompts until the user enters an int; Clears bad input.
 int readInt () {
     int value;
@@ -14,23 +26,33 @@ int readInt () {
     while (true) {
         voidPrompt();
 
-        if (std::cin >> value) {
-            cinIgnore();
-            return value;
-        }
+        if (tryReadInt(value)) return value;
 
-        validNum();
+        message(MessageType::ERROR, {"Not a number please try again"});
     }
 }
 
-// Prompts until the user enters an int in [min, max]; Clears bad input.
-int readIntInRange(int min, int max) {
+// Prompts until the user enters a valid int; Redraws menu on bad input.
+int readIntInRange(int min, int max, const std::function<void()> &draw, std::string input) {
+    std::string error = "";
+
     while (true) {
-        int value = readInt();
+        draw();
 
-        if (value >= min && value <= max) return value;
+        if (error != "") message(MessageType::ERROR, {error});
+        if (input != "") message(MessageType::INPUT, {input});
+        voidPrompt();
 
-        message(MessageType::ERROR, {"Invalid Number"});
+        int value;
+        if (!tryReadInt(value)) {
+            error = "Not a number please try again";
+        } else if (value < min || value > max) {
+            error = "Invalid number";
+        } else {
+            return value;
+        }
+
+        clear();
     }
 }
 
@@ -50,8 +72,6 @@ void cinIgnore (void) {
 void yn (void) {
     std::cout << "[1] Yes" << std::endl;
     std::cout << "[2] No" << std::endl;
-    message(MessageType::INPUT, {"Next move :"});
-    voidPrompt();
 }
 
 // Return 1 If Accept. 0 If Decline

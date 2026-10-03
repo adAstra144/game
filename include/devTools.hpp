@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include <cstdlib>
 #include <initializer_list>
+#include <functional>
 
 enum class MessageType {
     ACTION,
@@ -13,8 +13,9 @@ enum class MessageType {
 };
 
 // Error Tools
+bool tryReadInt(int &out);
 int readInt();
-int readIntInRange(int min, int max);
+int readIntInRange(int min, int max, const std::function<void()> &draw, std::string input);
 void validNum (void);
 void cinIgnore (void);
 
