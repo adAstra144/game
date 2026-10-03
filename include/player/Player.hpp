@@ -8,7 +8,7 @@ enum class UpgradeResult {
     INSUFFICIENT_GOLD
 };
 
-// Main Player 
+// Main Player
 class Player {
     private:
         int hp;
@@ -19,7 +19,7 @@ class Player {
         int lvlHp;
         int lvlAtk;
         int lvlSpeed;
-    
+
     public:
         std::string name;
 
@@ -55,4 +55,3 @@ class Player {
         UpgradeResult atkUp (int amount, int price);
         UpgradeResult speedUp (int amount, int price);
 };
-

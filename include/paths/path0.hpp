@@ -2,4 +2,4 @@
 
 #include "../GameState.hpp"
 
-void path0 (GameState *g); 
+void path0 (GameState *g);

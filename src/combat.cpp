@@ -15,8 +15,8 @@ CombatResult turnBasedCombat (GameState *g, Enemy *e) {
 
     cv.turn = 0;
 
-    cv.playerStartingHp = g->p.getHp(); 
-    cv.enemyStartingHp = e->getHp(); 
+    cv.playerStartingHp = g->p.getHp();
+    cv.enemyStartingHp = e->getHp();
 
     cv.playerTurnCount = 0;
     cv.enemyTurnCount = 0;
@@ -25,11 +25,11 @@ CombatResult turnBasedCombat (GameState *g, Enemy *e) {
     contin();
 
     // Determine who goes first based on speed stat
-    if (g->p.getSpeed() > e->getSpeed()) {   
+    if (g->p.getSpeed() > e->getSpeed()) {
         // Player Start
         cv.turn = 0;
         message(MessageType::SYS, {g->p.name, "Starts first"});
-    } else {   
+    } else {
         // Enemy Start
         cv.turn = 1;
         message(MessageType::SYS, {e->name, "Starts first"});
@@ -46,10 +46,10 @@ CombatResult turnBasedCombat (GameState *g, Enemy *e) {
             cv.playerTurnCount++;
             std::cout << g->p.name << "\'s Turn" << " | " << cv.playerTurnCount << std::endl;
 
-            g->p.setDefend(false); // Resets Defending to false 
-            int decision = playerCombatOptions(g, e, &cv); 
+            g->p.setDefend(false); // Resets Defending to false
+            int decision = playerCombatOptions(g, e, &cv);
 
-            if (decision == 2) { 
+            if (decision == 2) {
                 return CombatResult::RAN_AWAY;
             }
 
@@ -57,7 +57,7 @@ CombatResult turnBasedCombat (GameState *g, Enemy *e) {
                 cinIgnore();
                 contin();
                 clear();
-                
+
                 g->p.setHp(cv.playerStartingHp);
 
                 g->p.gainGold(e->getGold());
@@ -75,7 +75,7 @@ CombatResult turnBasedCombat (GameState *g, Enemy *e) {
 
                 return CombatResult::WON; //* Returns 0 If The Player Won
             }
-            
+
             if (decision != 3) {
                 cinIgnore();
             }
@@ -91,9 +91,9 @@ CombatResult turnBasedCombat (GameState *g, Enemy *e) {
             cv.enemyTurnCount++;
             std::cout << e->name << "\'s Turn" << " | " << cv.enemyTurnCount << std::endl;
             std::cout << e->name << "\'s HP: " << e->getHp() << " / " << cv.enemyStartingHp << std::endl;
-            
+
             delayDots(3, 0, 400, true);
-            
+
             // TODO: Consider doing the same with this with what your planning for the player (clear -> print top UI -> print action)
             horizontalBrokenLines();
             message(MessageType::ACTION, {e->name,"Attacks!"});
@@ -120,10 +120,10 @@ CombatResult turnBasedCombat (GameState *g, Enemy *e) {
                 horizontalBrokenLines();
 
                 respawn(g);
-                return CombatResult::LOST; 
+                return CombatResult::LOST;
             }
             contin();
-            
+
             cv.turn = 0;
         }
     }
@@ -140,20 +140,20 @@ int playerCombatOptions (GameState *g, Enemy *e, CombatVariables *cv) {
         std::cout << "[2] Defend" << std::endl;
         std::cout << "[3] Try To Run" << std::endl;
         std::cout << "[4] Show Player Stats" << std::endl;
-        std::cout << "[5] Show Enemy Stats" << std::endl; 
+        std::cout << "[5] Show Enemy Stats" << std::endl;
 
         voidPrompt();
         std::cin >> combatDecision;
 
-        if (combatDecision == 1) { 
+        if (combatDecision == 1) {
             e->takeDamage(g->p.getAtk());
-            
+
             horizontalBrokenLines();
             message(MessageType::ACTION, {g->p.name, "Attacks!"});
             horizontalBrokenLines();
             std::cout << e->name << " HP: " << cv->enemyHpBeforeAttack << " -> " << e->getHp() << std::endl;
             horizontalBrokenLines();
-            
+
             break;
         } else if (combatDecision == 2) {
             g->p.setDefend(true);
@@ -178,7 +178,7 @@ int playerCombatOptions (GameState *g, Enemy *e, CombatVariables *cv) {
 
                 g->p.setHp(cv->playerStartingHp);
 
-                return 2; 
+                return 2;
             } else {
                 horizontalBrokenLines();
                 message(MessageType::ACTION, {g->p.name, "Failed to run away"});
@@ -229,8 +229,10 @@ void enemyStats (Enemy *e) {
 void respawn (GameState *g) {
     while (1) {
         int respawnDecision;
-        message(MessageType::INPUT, {"Respawn :"});    
+        message(MessageType::INPUT, {"Respawn :"});
         yn();
+        message(MessageType::INPUT, {"Next Move :"});
+        voidPrompt();
         std::cin >> respawnDecision;
 
         if (respawnDecision == 1) {
@@ -242,7 +244,7 @@ void respawn (GameState *g) {
             break;
         } else if (respawnDecision == 2) {
             message(MessageType::SYS, {"Goodbye!"});
-            
+
             break;
         } else if (std::cin.fail()) {
             validNum();

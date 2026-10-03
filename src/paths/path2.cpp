@@ -346,6 +346,8 @@ void optionsPath2 (GameState *g) {
             } else if (g->qWizard.active == false) {
                 dialouge("Wizard", "Ready To Take My Offer?", false);
                 yn();
+                message(MessageType::INPUT, {"Next Move :"});
+                voidPrompt();
                 std::cin >> move2;
 
                 if (move2 == 1) {

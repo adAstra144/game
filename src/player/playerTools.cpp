@@ -29,7 +29,7 @@ int statUp (GameState *g) {
         std::cout << "[4] Exit" << std::endl;
         std::cout << "Next Move: ";
         std::cin >> move1;
-        
+
         // Only Requests An "Amount" Input If Picking A Stat Option
         if (move1 == 1 || move1 == 2 || move1 == 3) {
             message(MessageType::INPUT, {"Enter amount :"});
@@ -53,7 +53,7 @@ int statUp (GameState *g) {
 
                 statUp(g);
 
-                return -1;          
+                return -1;
             }
 
             space();
@@ -72,7 +72,7 @@ int statUp (GameState *g) {
                         "HP:",
                         std::to_string(hpBefore),
                         "->",
-                        std::to_string(g->p.getHp()),    
+                        std::to_string(g->p.getHp()),
                     });
                     message(MessageType::SYS, {
                         "Level:",
@@ -99,7 +99,7 @@ int statUp (GameState *g) {
                         "HP:",
                         std::to_string(atkBefore),
                         "->",
-                        std::to_string(g->p.getAtk()),    
+                        std::to_string(g->p.getAtk()),
                     });
                     message(MessageType::SYS, {
                         "Level:",
@@ -126,7 +126,7 @@ int statUp (GameState *g) {
                         "HP:",
                         std::to_string(speedBefore),
                         "->",
-                        std::to_string(g->p.getSpeed()),    
+                        std::to_string(g->p.getSpeed()),
                     });
                     message(MessageType::SYS, {
                         "Level:",

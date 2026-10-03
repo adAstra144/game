@@ -12,7 +12,7 @@ void KingGoblin::specialMove (int turnCount) {
 
         if (hp > 200) {
             hp = 200;
-        } 
+        }
 
         contin();
         std::cout << name << " Used Special Move: Heal" << std::endl;

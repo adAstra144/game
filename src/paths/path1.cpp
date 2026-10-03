@@ -4,7 +4,7 @@
 
 #include "paths/path0.hpp"
 #include "enemy/KingGoblin.hpp"
-#include "combat.hpp" 
+#include "combat.hpp"
 #include "devTools.hpp"
 
 //* King Goblin Path
@@ -58,13 +58,13 @@ void path1_2 (GameState *g) {
     message(MessageType::NARRATE, {"King Goblin has appeared!"});
     horizontalBrokenLines();
     contin();
-    
+
     CombatResult result = turnBasedCombat(g, &kingGoblin);
 
     if (result == CombatResult::WON) {
         // TODO: Add Path1_3 Here
         // TODO: What's Next After King Goblin?
-        std::cout << "Path 1-3?" << std::endl; 
+        std::cout << "Path 1-3?" << std::endl;
     } else if (result == CombatResult::RAN_AWAY) {
         clear();
         message(MessageType::NARRATE, {"Back at the start..."});

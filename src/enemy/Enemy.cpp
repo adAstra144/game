@@ -10,10 +10,10 @@ Enemy::Enemy(std::string name, int hp, int atk, int speed, int gold) {
 }
 
 void Enemy::takeDamage (int amount) {
-    hp -= amount; 
+    hp -= amount;
 }
 void Enemy::specialMove (int turnCount) {
-    
+
 }
 
 

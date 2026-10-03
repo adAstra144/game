@@ -81,6 +81,8 @@ int Player::continueStatUp (int price) {
 
     message(MessageType::INPUT, {"Continue :"});
     yn();
+    message(MessageType::INPUT, {"Next Move :"});
+    voidPrompt();
     std::cin >> decision;
 
     if (decision == 1) {
@@ -89,7 +91,7 @@ int Player::continueStatUp (int price) {
         horizontalBrokenLines();
         message(MessageType::SYS, {"Stat level up cancelled"});
         horizontalBrokenLines();
-        
+
         return 0;
     }
 }
@@ -97,7 +99,7 @@ int Player::continueStatUp (int price) {
 UpgradeResult Player::applyStatUp (int &stat, int &lvl, int amount, int price) {
     int beforeGold = gold;
     int decision = continueStatUp(price);
-    
+
     if (decision == 0) return UpgradeResult::CANCELLED;
 
     gold -= price;
@@ -123,10 +125,10 @@ UpgradeResult Player::applyStatUp (int &stat, int &lvl, int amount, int price) {
     }
 }
 
-UpgradeResult Player::hpUp (int amount, int price) { 
-    return applyStatUp(hp, lvlHp, amount, price); 
+UpgradeResult Player::hpUp (int amount, int price) {
+    return applyStatUp(hp, lvlHp, amount, price);
 }
-UpgradeResult Player::atkUp (int amount, int price) {   
+UpgradeResult Player::atkUp (int amount, int price) {
     return applyStatUp(atk, lvlAtk, amount, price);
 }
 UpgradeResult Player::speedUp (int amount, int price) {
