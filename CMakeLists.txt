@@ -19,6 +19,7 @@ find_package(SFML 3 COMPONENTS Audio System QUIET)
 
 if (NOT SFML_FOUND)
     include(FetchContent)
+    set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
     set(SFML_BUILD_GRAPHICS OFF)
     set(SFML_BUILD_WINDOW OFF)
     set(SFML_BUILD_NETWORK OFF)
