@@ -18,7 +18,19 @@ jobs:
       - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
       - run: cmake --build build --config Release
 
+      - name: Package
+        shell: bash
+        run: |
+          mkdir dist
+          cp -r assets dist/
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            cp build/Release/game.exe dist/
+          else
+            cp build/game dist/
+          fi
+
       - uses: actions/upload-artifact@v4
         with:
           name: game-${{ matrix.os }}
-          path: build/
+          path: dist/
+          if-no-files-found: error
