@@ -17,7 +17,7 @@ struct GameState {
 
     // Quests
     Quest qWizard;
-    int numOfSkeletons;
+    int skeletonsRemaining;
 
     // Dialogues (Format Dialogue(n)<- Path)
     bool dialogue2;

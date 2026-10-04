@@ -9,5 +9,5 @@ void resetGame (GameState *g) {
     // Quests
     g->qWizard.active = false;
     g->qWizard.finished = false;
-    g->numOfSkeletons = 3;
+    g->skeletonsRemaining = 3;
 }

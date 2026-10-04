@@ -71,186 +71,88 @@ void path2 (GameState *g) {
 
 void path2_2 (GameState *g) {
     clear();
-
     std::cout << "~ Current Path: 2-2" << std::endl;
 
     if (g->qWizard.active == true) {
         message(MessageType::SYS, {"Wizard Quest: Active"});
-    }
-    else if (g->qWizard.active == false) {
+    } else if (g->qWizard.active == false) {
         message(MessageType::SYS, {"Wizard Quest: Inactive"});
     }
-
     contin();
 
     Skeleton skeleton;
 
     clear();
-    if (g->numOfSkeletons > 0) {
+    if (g->skeletonsRemaining > 0) {
         dialouge(skeleton.name, "(Bones crackling)", true);
     }
 
     int move1;
 
     while (true) {
-        //* Skeletons all dead => Wizard quest finished
-        if (g->numOfSkeletons <= 0) {
+        //* Check quest completion
+        if (g->skeletonsRemaining <= 0) {
             if (g->qWizard.active == true) {
                 g->qWizard.finished = true;
             }
         }
 
-        if (g->numOfSkeletons > 1) {
+        // Dynamic narration
+        if (g->skeletonsRemaining > 1) {
             message(MessageType::NARRATE, {
                 "You see",
-                std::to_string(g->numOfSkeletons),
+                std::to_string(g->skeletonsRemaining),
                 "Skeleton Scattered In The Wizards Garden"
             });
-        } else if (g->numOfSkeletons == 1) {
+        } else if (g->skeletonsRemaining == 1) {
             message(MessageType::NARRATE, {
                 "You see",
-                std::to_string(g->numOfSkeletons),
+                std::to_string(g->skeletonsRemaining),
                 "Skeleton In The Wizards Garden"
             });
         } else {
             message(MessageType::NARRATE, {"The wizards garden looks clean"} );
         }
 
-        if (g->numOfSkeletons == 3) {
-
-            std::cout << "[1] Attack Skeleton 1" << std::endl;
-            std::cout << "[2] Attack Skeleton 2" << std::endl;
-            std::cout << "[3] Attack Skeleton 3" << std::endl;
-            std::cout << "[4] Turn Back" << std::endl;
-
-        } else if (g->numOfSkeletons == 2) {
-
-            std::cout << "[1] Attack Skeleton 1" << std::endl;
-            std::cout << "[2] Attack Skeleton 2" << std::endl;
-            std::cout << "[3] Turn Back" << std::endl;
-
-        } else if (g->numOfSkeletons == 1) {
-
-            std::cout << "[1] Attack Skeleton 1" << std::endl;
-            std::cout << "[2] Turn Back" << std::endl;
-
-        } else {
-            std::cout << "[1] Turn Back" << std::endl;
+        // Dynamic menu generation
+        for (int i = 1; i <= g->skeletonsRemaining; i++) {
+            std::cout << "[" << i << "] Attack Skeleton " << i << std::endl;
         }
+        std::cout << "[" << g->skeletonsRemaining + 1 << "] Turn Back" << std::endl;
 
         message(MessageType::INPUT, {"Next move :"});
         voidPrompt();
         std::cin >> move1;
+        cinIgnore();
 
         CombatResult result;
 
-        cinIgnore();
-        //* Adaptive Choices (Changes Everytime A Skeleton Is Killed)
-        if (g->numOfSkeletons == 3) {
-            if (move1 == 1) {
-                message(MessageType::ACTION, {"Attacking skeleton 1"});
-                result = turnBasedCombat(g, &skeleton);
+        // Handle "Turn Back" option (always last index)
+        if (move1 == g->skeletonsRemaining + 1) {
+            clear();
+            message(MessageType::ACTION, {"Turning back..."});
+            contin();
 
-                if (result == CombatResult::WON) {
-                    g->numOfSkeletons--;
-                    skeleton.resetStats();
-                } else {
-                    message(MessageType::ERROR, {"Error"});
-                }
-            } else if (move1 == 2) {
-                message(MessageType::ACTION, {"Attacking skeleton 2"});
-                result = turnBasedCombat(g, &skeleton);
+            g->dialogue2 = false;
 
-                if (result == CombatResult::WON) {
-                    g->numOfSkeletons--;
-                    skeleton.resetStats();
-                } else {
-                    message(MessageType::ERROR, {"Error"});
-                }
-            } else if (move1 == 3) {
-                message(MessageType::ACTION, {"Attacking skeleton 3"});
-                result = turnBasedCombat(g, &skeleton);
+            clear();
+            path2(g);
 
-                if (result == CombatResult::WON) {
-                    g->numOfSkeletons--;
-                    skeleton.resetStats();
-                }
-            } else if (move1 == 4) {
-                clear();
-                message(MessageType::ACTION, {"Turning back..."});
-                contin();
+            break;
+        }
 
-                clear();
-                g->dialogue2 = false;
-                path2(g);
-                break;
-            }
-        } else if (g->numOfSkeletons == 2)
-        {
-            if (move1 == 1) {
-                message(MessageType::ACTION, {"Attacking skeleton 1"});
-                result = turnBasedCombat(g, &skeleton);
+        if (move1 >= 1 && move1 <= g->skeletonsRemaining) {
+            message(MessageType::ACTION, {"Attacking Skeleton " + std::to_string(move1)});
+            result = turnBasedCombat(g, &skeleton);
 
-                if (result == CombatResult::WON) {
-                    g->numOfSkeletons--;
-                    skeleton.resetStats();
-                } else {
-                    message(MessageType::ERROR, {"Error"});
-                }
-            } else if (move1 == 2) {
-                message(MessageType::ACTION, {"Attacking skeleton 2"});
-                result = turnBasedCombat(g, &skeleton);
-
-                if (result == CombatResult::WON) {
-                    g->numOfSkeletons--;
-                    skeleton.resetStats();
-                } else {
-                    message(MessageType::ERROR, {"Error"});
-                }
-            } else if (move1 == 3) {
-                clear();
-                message(MessageType::ACTION, {"Turning back..."});
-                contin();
-
-                clear();
-                g->dialogue2 = false;
-                path2(g);
-                break;
-            }
-        } else if (g->numOfSkeletons == 1) {
-            if (move1 == 1) {
-                message(MessageType::ACTION, {"Attacking skeleton 1"});
-                result = turnBasedCombat(g, &skeleton);
-
-                if (result == CombatResult::WON) {
-                    g->numOfSkeletons--;
-                    skeleton.resetStats();
-                } else {
-                    message(MessageType::ERROR, {"Error"});
-                }
-            } else if (move1 == 2) {
-                clear();
-                message(MessageType::ACTION, {"Turning back..."});
-                contin();
-
-                clear();
-                g->dialogue2 = false;
-                path2(g);
-                break;
-            }
-        } else {
-            if (move1 == 1) {
-                clear();
-                message(MessageType::ACTION, {"Turning back..."});
-                contin();
-
-                clear();
-                g->dialogue2 = false;
-                path2(g);
-                break;
+            if (result == CombatResult::WON) {
+                g->skeletonsRemaining--;
+                skeleton.resetStats();
             } else {
                 message(MessageType::ERROR, {"Error"});
             }
+        } else {
+            message(MessageType::ERROR, {"Invalid Number"});
         }
     }
 }
@@ -359,7 +261,7 @@ void optionsPath2 (GameState *g) {
                     clear();
                     dialouge("Wizard", "Nice! Now Go Slay Me Some Skeletons", true);
 
-                    if (g->numOfSkeletons <= 0) {
+                    if (g->skeletonsRemaining <= 0) {
                         g->qWizard.finished = true;
                         dialouge("Wizard", "What?", true);
                         dialouge("Wizard", "You already killed them?", true);
