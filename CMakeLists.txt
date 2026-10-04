@@ -1,14 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(game)
+project(game CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(CMAKE_C_COMPILER clang)
-set(CMAKE_CXX_COMPILER clang++)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 
@@ -16,5 +13,20 @@ add_executable(game ${SOURCES} main.cpp)
 
 target_include_directories(game PRIVATE include)
 
-find_package(SFML 3 COMPONENTS Graphics Window System Audio REQUIRED)
-target_link_libraries(game PRIVATE SFML::Graphics SFML::Window SFML::System SFML::Audio)
+# Use a system-installed SFML 3 if there is one (your Linux machine),
+# otherwise download and build it (GitHub Actions, a Windows PC)
+find_package(SFML 3 COMPONENTS Audio System QUIET)
+
+if (NOT SFML_FOUND)
+    include(FetchContent)
+    set(SFML_BUILD_GRAPHICS OFF)
+    set(SFML_BUILD_WINDOW OFF)
+    set(SFML_BUILD_NETWORK OFF)
+    FetchContent_Declare(SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 3.0.0
+        GIT_SHALLOW ON)
+    FetchContent_MakeAvailable(SFML)
+endif()
+
+target_link_libraries(game PRIVATE SFML::Audio SFML::System)
