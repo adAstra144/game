@@ -6,6 +6,7 @@
 #include <chrono>
 #include <vector>
 #include <sstream>
+#include <cstdio>
 
 // Check if int or not
 bool tryReadInt(int &out) {
@@ -110,7 +111,11 @@ void contin (void) {
 }
 
 void clear (void) {
+#ifdef _WIN32
+    std::system("cls");
+#else
     std::system("clear");
+#endif
 }
 
 std::string textSpacerHp (int amount) {
