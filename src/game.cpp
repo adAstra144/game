@@ -111,11 +111,12 @@ void tutorial (GameState *g)
 
     space();
     contin();
-    clear();
 
     int move1;
 
     while (true) {
+        clear();
+
         move1 = readIntInRange(1, 5, [&]() {
             std::cout << "Enter the corresponding number of the example you want to see" << std::endl;
             std::cout << "Some symbols are already in use and will not be in this list" << std::endl;
