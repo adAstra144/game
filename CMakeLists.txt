@@ -30,4 +30,8 @@ if (NOT SFML_FOUND)
     FetchContent_MakeAvailable(SFML)
 endif()
 
+if (MSVC)
+  target_compile_options(game PRIVATE /utf-8)
+endif()
+
 target_link_libraries(game PRIVATE SFML::Audio SFML::System)
