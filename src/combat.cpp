@@ -203,9 +203,9 @@ void playerStats (GameState *g) {
     clear();
     std::cout << g->p.name << " Stats" << std::endl;
     std::cout << "Stats:    | Level:" << std::endl;
-    std::cout << "HP:" << textSpacerHp(g->p.getHp()) << g->p.getHp() << " | " << g->p.getLvlHp() << std::endl;
-    std::cout << "ATK:" << textSpacerAtk(g->p.getAtk()) << g->p.getAtk() << " | " << g->p.getLvlAtk() << std::endl;
-    std::cout << "SPD:" << textSpacerSpeed(g->p.getSpeed()) << g->p.getSpeed() << " | " << g->p.getLvlSpeed() << std::endl;
+    std::cout << "HP :" << statTextSpacer(g->p.getHp()) << g->p.getHp() << " | " << g->p.getLvlHp() << std::endl;
+    std::cout << "ATK:" << statTextSpacer(g->p.getAtk()) << g->p.getAtk() << " | " << g->p.getLvlAtk() << std::endl;
+    std::cout << "SPD:" << statTextSpacer(g->p.getSpeed()) << g->p.getSpeed() << " | " << g->p.getLvlSpeed() << std::endl;
     std::cout << "GOLD: " << g->p.getGold() << std::endl;
 
     cinIgnore();
@@ -216,9 +216,9 @@ void playerStats (GameState *g) {
 void enemyStats (Enemy *e) {
     clear();
     std::cout << e->name << " Stats" << std::endl;
-    std::cout << "HP:" << textSpacerHp(e->getHp()) << e->getHp() << std::endl;
-    std::cout << "ATK:" << textSpacerAtk(e->getAtk()) << e->getAtk() << std::endl;
-    std::cout << "SPD:" << textSpacerSpeed(e->getSpeed()) << e->getSpeed() << std::endl;
+    std::cout << "HP :" << statTextSpacer(e->getHp()) << e->getHp() << std::endl;
+    std::cout << "ATK:" << statTextSpacer(e->getAtk()) << e->getAtk() << std::endl;
+    std::cout << "SPD:" << statTextSpacer(e->getSpeed()) << e->getSpeed() << std::endl;
     std::cout << "GOLD: " << e->getGold() << std::endl;
 
     cinIgnore();
