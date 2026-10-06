@@ -31,7 +31,7 @@ int statUp (GameState *g) {
         std::cin >> move1;
 
         // Only Requests An "Amount" Input If Picking A Stat Option
-        if (move1 == 1 || move1 == 2 || move1 == 3) {
+        if (move1 <= 3) {
             message(MessageType::INPUT, {"Enter amount :"});
             voidPrompt();
             std::cin >> amount;
@@ -96,7 +96,7 @@ int statUp (GameState *g) {
                 result = g->p.atkUp(amount, price);
                 if (result == UpgradeResult::SUCCESS) {
                     message(MessageType::SYS,{
-                        "HP:",
+                        "ATK:",
                         std::to_string(atkBefore),
                         "->",
                         std::to_string(g->p.getAtk()),
@@ -123,7 +123,7 @@ int statUp (GameState *g) {
                 result = g->p.speedUp(amount, price);
                 if (result == UpgradeResult::SUCCESS) {
                     message(MessageType::SYS,{
-                        "HP:",
+                        "SPD:",
                         std::to_string(speedBefore),
                         "->",
                         std::to_string(g->p.getSpeed()),
