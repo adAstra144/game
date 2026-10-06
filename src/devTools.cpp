@@ -111,11 +111,7 @@ void contin (void) {
 }
 
 void clear (void) {
-#ifdef _WIN32
-    std::system("cls");
-#else
-    std::system("clear");
-#endif
+    std::cout << "\033[2J\033[1;1H";
 }
 
 std::string textSpacerHp (int amount) {
