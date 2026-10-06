@@ -14,7 +14,7 @@
 
 ## Fix
 
-- Wrong stat upgrade successful print
+-
 
 ## Usage
 
