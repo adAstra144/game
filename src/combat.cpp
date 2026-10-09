@@ -73,7 +73,7 @@ CombatResult turnBasedCombat (GameState *g, Enemy *e) {
 
                 clear();
 
-                return CombatResult::WON; //* Returns 0 If The Player Won
+                return CombatResult::WON;
             }
 
             if (decision != 3) {
@@ -187,9 +187,9 @@ int playerCombatOptions (GameState *g, Enemy *e, CombatVariables *cv) {
                 return 3;
             }
         } else if (combatDecision == 4) {
-            playerStats(g);
+            printStats(0, g, e);
         } else if (combatDecision == 5) {
-            enemyStats(e);
+            printStats(1, g, e);
         } else if (std::cin.fail()) {
             validNum();
         } else {
@@ -199,31 +199,36 @@ int playerCombatOptions (GameState *g, Enemy *e, CombatVariables *cv) {
     return -1;
 }
 
-void playerStats (GameState *g) {
-    clear();
-    std::cout << g->p.name << " Stats" << std::endl;
-    std::cout << "Stats:    | Level:" << std::endl;
-    std::cout << "HP :" << statTextSpacer(g->p.getHp()) << g->p.getHp() << " | " << g->p.getLvlHp() << std::endl;
-    std::cout << "ATK:" << statTextSpacer(g->p.getAtk()) << g->p.getAtk() << " | " << g->p.getLvlAtk() << std::endl;
-    std::cout << "SPD:" << statTextSpacer(g->p.getSpeed()) << g->p.getSpeed() << " | " << g->p.getLvlSpeed() << std::endl;
-    std::cout << "GOLD: " << g->p.getGold() << std::endl;
+void printStats(int who, GameState *g, Enemy *e) {
 
-    cinIgnore();
-    contin();
-    clear();
-}
+    if (who == 0) {
+        clear();
+        std::cout << g->p.name << std::endl;
+        horizontalLine();
+        std::cout << std::left << std::setw(7) << "Stat" << std::setw(7) << "Value" << "Level" << std::endl;
+        statRow("HP ", g->p.getHp(), g->p.getLvlHp());
+        statRow("ATK", g->p.getAtk(), g->p.getLvlAtk());
+        statRow("SPD", g->p.getSpeed(), g->p.getLvlSpeed());
+        std::cout << "GOLD   " << g->p.getGold() << std::endl;
+        space();
 
-void enemyStats (Enemy *e) {
-    clear();
-    std::cout << e->name << " Stats" << std::endl;
-    std::cout << "HP :" << statTextSpacer(e->getHp()) << e->getHp() << std::endl;
-    std::cout << "ATK:" << statTextSpacer(e->getAtk()) << e->getAtk() << std::endl;
-    std::cout << "SPD:" << statTextSpacer(e->getSpeed()) << e->getSpeed() << std::endl;
-    std::cout << "GOLD: " << e->getGold() << std::endl;
+        cinIgnore();
+        contin();
+        clear();  
+    } else {
+        clear();
+        std::cout << e->name << std::endl;
+        horizontalLine();
+        statRow("HP ", e->getHp(), 0);
+        statRow("ATK", e->getAtk(), 0);
+        statRow("SPD", e->getSpeed(), 0);
+        std::cout << "GOLD   " << e->getGold() << std::endl;
+        space();
 
-    cinIgnore();
-    contin();
-    clear();
+        cinIgnore();
+        contin();
+        clear();
+    }
 }
 
 void respawn (GameState *g) {

@@ -23,6 +23,5 @@ enum class CombatResult {
 
 CombatResult turnBasedCombat (GameState *g, Enemy *e);
 int playerCombatOptions (GameState *g, Enemy *e, CombatVariables *cv);
-void playerStats (GameState *g);
-void enemyStats (Enemy *e);
+void printStats (int who, GameState *g, Enemy *e);
 void respawn (GameState *g);
