@@ -40,11 +40,8 @@ CombatResult turnBasedCombat (GameState *g, Enemy *e) {
     while (1) {
         if (cv.turn == 0) {
             clear();
-
-            cv.enemyHpBeforeAttack = e->getHp();
-
             cv.playerTurnCount++;
-            std::cout << g->p.name << "\'s Turn" << " | " << cv.playerTurnCount << std::endl;
+            cv.enemyHpBeforeAttack = e->getHp();
 
             g->p.setDefend(false); // Resets Defending to false
             int decision = playerCombatOptions(g, e, &cv);
@@ -85,16 +82,18 @@ CombatResult turnBasedCombat (GameState *g, Enemy *e) {
             cv.turn = 1;
         } else if (cv.turn == 1) {
             clear();
-
+            cv.enemyTurnCount++;
             cv.playerHpBeforeAttack = g->p.getHp();
 
-            cv.enemyTurnCount++;
-            std::cout << e->name << "\'s Turn" << " | " << cv.enemyTurnCount << std::endl;
-            std::cout << e->name << "\'s HP: " << e->getHp() << " / " << cv.enemyStartingHp << std::endl;
+            topCombatUI(&cv, g, e);
+            horizontalLine();
 
             delayDots(3, 0, 400, true);
 
-            // TODO: Consider doing the same with this with what your planning for the player (clear -> print top UI -> print action)
+            clear();
+            topCombatUI(&cv, g, e);
+            horizontalLine();
+
             horizontalBrokenLines();
             message(MessageType::ACTION, {e->name,"Attacks!"});
             horizontalBrokenLines();
@@ -107,6 +106,9 @@ CombatResult turnBasedCombat (GameState *g, Enemy *e) {
 
             if (g->p.getDefend() == true) {
                 contin();
+
+                clear();
+                
                 horizontalBrokenLines();
                 message(MessageType::ACTION, {g->p.name, "Defended | Reduced damage taken"});
                 horizontalBrokenLines();
@@ -135,7 +137,8 @@ int playerCombatOptions (GameState *g, Enemy *e, CombatVariables *cv) {
     int combatDecision;
 
     while (1) {
-        std::cout << g->p.name << "\'s HP: " << g->p.getHp() << " / " << cv->playerStartingHp << std::endl; // Display Player HP
+        topCombatUI(cv, g, e);
+        horizontalLine();
         std::cout << "[1] Attack" << std::endl;
         std::cout << "[2] Defend" << std::endl;
         std::cout << "[3] Try To Run" << std::endl;
@@ -144,6 +147,10 @@ int playerCombatOptions (GameState *g, Enemy *e, CombatVariables *cv) {
 
         voidPrompt();
         std::cin >> combatDecision;
+
+        clear();
+        topCombatUI(cv, g, e);
+        horizontalLine();
 
         if (combatDecision == 1) {
             e->takeDamage(g->p.getAtk());
@@ -259,13 +266,12 @@ void respawn (GameState *g) {
     }
 }
 
-// TODO: Change this ---
-// void topCombatUI (GameState *g, enemy *e, int enemyTurnCount, int enemyStartingHp) {
-//     if (true) {
-//         std::cout << g->p.name << "\'s Turn" << " | " << enemyTurnCount << std::endl;
-//         std::cout << g->p.name << "\'s HP: " << g->p.getHp() << " / " << enemyStartingHp << std::endl;
-//     } else {
-//         std::cout << e->name << "\'s Turn" << " | " << enemyTurnCount << std::endl;
-//         std::cout << e->name << "\'s HP: " << e->getHp() << " / " << enemyStartingHp << std::endl;
-//     }
-// }
+void topCombatUI (CombatVariables *cv, GameState *g, Enemy *e) {
+    if (cv->turn == 0) {
+        std::cout << g->p.name << "\'s HP: " << g->p.getHp() << " / " << cv->playerStartingHp << std::endl;
+        std::cout << "Turn" << " | " << cv->playerTurnCount << std::endl;
+    } else {
+        std::cout << e->name << "\'s HP: " << e->getHp() << " / " << cv->enemyStartingHp << std::endl;
+        std::cout << "Turn" << " | " << cv->enemyTurnCount << std::endl;
+    }
+}

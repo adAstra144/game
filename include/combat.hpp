@@ -25,3 +25,4 @@ CombatResult turnBasedCombat (GameState *g, Enemy *e);
 int playerCombatOptions (GameState *g, Enemy *e, CombatVariables *cv);
 void printStats (int who, GameState *g, Enemy *e);
 void respawn (GameState *g);
+void topCombatUI (CombatVariables *cv, GameState *g, Enemy *e);
