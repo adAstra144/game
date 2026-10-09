@@ -7,6 +7,7 @@
 #include <vector>
 #include <sstream>
 #include <cstdio>
+#include <iomanip>
 
 // Check if int or not
 bool tryReadInt(int &out) {
@@ -114,32 +115,25 @@ void clear (void) {
     std::cout << "\033[2J\033[1;1H";
 }
 
-std::string textSpacerHp (int amount) {
-    if (amount >= 100) {
-        return "   ";
-    } else {
-        return "    ";
-    }
-}
-
-std::string textSpacerAtk (int amount) {
-    if (amount >= 100) {
-        return "  ";
-    } else {
-        return "   ";
-    }
-}
-
-std::string textSpacerSpeed (int amount) {
-    if (amount >= 100) {
-        return "  ";
-    } else {
-        return "   ";
-    }
-}
-
+// Default 10 of "-"
 void horizontalBrokenLines () {
     std::cout << "- - - - - - - - - -" << std::endl;
+}
+void horizontalBrokenLines (int amount) {
+    for (int i = 0; i < amount; i++) {
+        std::cout << "- ";
+    }
+    std::cout << std::endl;
+}
+
+void horizontalLine () {
+    std::cout << "─────────────────────────" << std::endl;
+}
+void horizontalLine (int amount) {
+    for (int i = 0; i < amount; i++) {
+        std::cout << "─";
+    }
+    std::cout << std::endl;
 }
 
 void delay (int seconds, int milliseconds) {
@@ -226,4 +220,14 @@ void hideCursor() {
 
 void showCursor() {
     std::cout << "\033[?25h" << std::flush;
+}
+
+
+void statRow (int n, const std::string &name, int value, int lvl) {
+    std::cout << "[" << n << "] " << std::left << std::setw(7) << name << std::setw(7) << value << lvl << std::endl;
+}
+void statRow(std::string name, int value, int lvl) {
+    std::cout << std::left << std::setw(7) << name << std::setw(7) << value;
+    if (lvl != 0) std::cout << lvl;
+    std::cout << std::endl;
 }
