@@ -77,11 +77,10 @@ int Player::getLvlSpeed () const {
 int Player::continueStatUp (int price) {
     int decision;
 
-    message(MessageType::SYS, {"Will cost:", std::to_string(price), "gold"});
+    message(MessageType::SYS, {"Will cost", std::to_string(price), "gold"});
 
     message(MessageType::INPUT, {"Continue :"});
     yn();
-    message(MessageType::INPUT, {"Next Move :"});
     voidPrompt();
     std::cin >> decision;
 
@@ -104,23 +103,14 @@ UpgradeResult Player::applyStatUp (int &stat, int &lvl, int amount, int price) {
 
     gold -= price;
 
-    clear();
-
     if (gold >= 0) {
         stat += 10 * amount;
         lvl += amount;
 
-        horizontalBrokenLines();
-        message(MessageType::SYS, {"Upgrade Successful!"});
-        horizontalBrokenLines();
-
         return UpgradeResult::SUCCESS;
     } else {
-        horizontalBrokenLines();
-        message(MessageType::ERROR, {"Not enough gold!"});
-        horizontalBrokenLines();
-
         gold = beforeGold;
+
         return UpgradeResult::INSUFFICIENT_GOLD;
     }
 }

@@ -1,7 +1,24 @@
 #include "player/playerTools.hpp"
 
 #include <iostream>
+
 #include "devTools.hpp"
+
+struct statUpVars {
+    int amount;
+    int basePrice;
+    int price;
+    UpgradeResult result;
+
+    int stat;
+    int lvl;
+
+    int statBefore;
+    int lvlBefore;
+};
+
+void statUpTopUI (GameState *g, int basePrice);
+void printResult (GameState *g, UpgradeResult result, std::string name, statUpVars *v);
 
 void resetPlayerStats (GameState *g) {
     g->p.setHp(100);
@@ -14,29 +31,29 @@ void resetPlayerStats (GameState *g) {
 // Handles Increasing
 int statUp (GameState *g) {
     int move1;
-    int amount;
-    int basePrice = 10;
-    int price;
-    UpgradeResult result;
+    
+    statUpVars v;
+
+    v.basePrice = 10;
 
     while (1) {
         clear();
-        std::cout << "Select A Stat To Upgrade: " << std::endl;
-        std::cout << "Current Gold: " << g->p.getGold() << std::endl;
-        std::cout << "[1] HP" << std::endl;
-        std::cout << "[2] ATK" << std::endl;
-        std::cout << "[3] SPEED" << std::endl;
+        statUpTopUI(g, v.basePrice);
+        std::cout << "    " << std::left << std::setw(7) << "Stat" << std::setw(7) << "Value" << "Level" << std::endl;
+        statRow(1, "HP", g->p.getHp(), g->p.getLvlHp());
+        statRow(2, "ATK", g->p.getAtk(), g->p.getLvlAtk());
+        statRow(3, "SPEED", g->p.getSpeed(), g->p.getLvlSpeed());
         std::cout << "[4] Exit" << std::endl;
-        std::cout << "Next Move: ";
+        voidPrompt();
         std::cin >> move1;
 
         // Only Requests An "Amount" Input If Picking A Stat Option
         if (move1 <= 3) {
             message(MessageType::INPUT, {"Enter amount :"});
             voidPrompt();
-            std::cin >> amount;
+            std::cin >> v.amount;
 
-            price = basePrice * amount;
+            v.price = v.basePrice * v.amount;
 
             if (std::cin.fail()) {
                 validNum();
@@ -46,7 +63,7 @@ int statUp (GameState *g) {
             }
 
             // Prevents Zero & Negative Values
-            if (amount <= 0) {
+            if (v.amount <= 0) {
                 horizontalBrokenLines();
                 message(MessageType::ERROR, {"Amount must be atleast 1"});
                 horizontalBrokenLines();
@@ -60,91 +77,50 @@ int statUp (GameState *g) {
         }
 
         clear();
+        statUpTopUI(g, v.basePrice);
+
         switch (move1) {
             case 1: {
-                int hpBefore = g->p.getHp();
-                int lvlBefore = g->p.getLvlHp();
+                v.statBefore = g->p.getHp();
+                v.lvlBefore = g->p.getLvlHp();
 
-                result = g->p.hpUp(amount, price);
+                v.result = g->p.hpUp(v.amount, v.price);
+                v.stat = g->p.getHp();
+                v.lvl = g->p.getLvlHp();
 
-                if (result == UpgradeResult::SUCCESS) {
-                    message(MessageType::SYS,{
-                        "HP:",
-                        std::to_string(hpBefore),
-                        "->",
-                        std::to_string(g->p.getHp()),
-                    });
-                    message(MessageType::SYS, {
-                        "Level:",
-                        std::to_string(lvlBefore),
-                        "->",
-                        std::to_string(g->p.getLvlHp()),
-                    });
-                    cinIgnore();
-                    contin();
-                } else {
-                    contin();
-                }
+                printResult(g, v.result, "HP:", &v);
 
                 break;
             }
 
             case 2: {
-                int atkBefore = g->p.getAtk();
-                int lvlBefore = g->p.getLvlAtk();
+                v.statBefore = g->p.getAtk();
+                v.lvlBefore = g->p.getLvlAtk();
 
-                result = g->p.atkUp(amount, price);
-                if (result == UpgradeResult::SUCCESS) {
-                    message(MessageType::SYS,{
-                        "ATK:",
-                        std::to_string(atkBefore),
-                        "->",
-                        std::to_string(g->p.getAtk()),
-                    });
-                    message(MessageType::SYS, {
-                        "Level:",
-                        std::to_string(lvlBefore),
-                        "->",
-                        std::to_string(g->p.getLvlAtk()),
-                    });
-                    cinIgnore();
-                    contin();
-                } else {
-                    contin();
-                }
+                v.result = g->p.atkUp(v.amount, v.price);
+                v.stat = g->p.getAtk();
+                v.lvl = g->p.getLvlAtk();
+
+                printResult(g, v.result, "ATK:", &v); 
 
                 break;
             }
 
             case 3: {
-                int speedBefore = g->p.getSpeed();
-                int lvlBefore = g->p.getLvlSpeed();
+                v.statBefore = g->p.getSpeed();
+                v.lvlBefore = g->p.getLvlSpeed();
 
-                result = g->p.speedUp(amount, price);
-                if (result == UpgradeResult::SUCCESS) {
-                    message(MessageType::SYS,{
-                        "SPD:",
-                        std::to_string(speedBefore),
-                        "->",
-                        std::to_string(g->p.getSpeed()),
-                    });
-                    message(MessageType::SYS, {
-                        "Level:",
-                        std::to_string(lvlBefore),
-                        "->",
-                        std::to_string(g->p.getLvlSpeed()),
-                    });
-                    cinIgnore();
-                    contin();
-                } else {
-                    contin();
-                }
+                v.result = g->p.speedUp(v.amount, v.price);
+                v.stat = g->p.getSpeed();
+                v.lvl = g->p.getLvlSpeed();    
+            
+                printResult(g, v.result, "SPEED:", &v);
 
                 break;
             }
 
             case 4: {
-                return 0; // Exit With Return 0
+                return 0;
                 break;
             }
 
@@ -165,4 +141,44 @@ int statUp (GameState *g) {
         }
     }
     return -1;
+}
+
+void statUpTopUI (GameState *g, int basePrice) {
+    std::cout << "Gold: " << g->p.getGold() << " | " << "Cost: " << basePrice << " per level" << std::endl;
+    horizontalLine(30);
+}
+
+void printResult (GameState *g, UpgradeResult result, std::string name, statUpVars *v) {
+    clear();
+    statUpTopUI(g, v->basePrice);
+    
+    if (result == UpgradeResult::SUCCESS) {
+        horizontalBrokenLines();
+        message(MessageType::SYS, {"Upgrade Successful!"});
+        horizontalBrokenLines();
+
+        message(MessageType::SYS, {
+            name,
+            std::to_string(v->statBefore), 
+            "->", 
+            std::to_string(v->stat)
+        });
+        message(MessageType::SYS, {
+            name, 
+            std::to_string(v->lvlBefore), 
+            "->", 
+            std::to_string(v->lvl)
+        });
+    } else if (result == UpgradeResult::INSUFFICIENT_GOLD) {
+        horizontalBrokenLines();
+        message(MessageType::ERROR, {"Not enough gold!"});
+        horizontalBrokenLines();
+    } else if (result == UpgradeResult::CANCELLED) {
+        horizontalBrokenLines();
+        message(MessageType::SYS, {"StatUp Cancelled"});
+        horizontalBrokenLines();
+    }
+
+    cinIgnore();
+    contin();
 }
