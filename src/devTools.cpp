@@ -115,7 +115,7 @@ void clear (void) {
     std::cout << "\033[2J\033[1;1H";
 }
 
-// Default 10 of "-"
+// Default = 10
 void horizontalBrokenLines () {
     std::cout << "- - - - - - - - - -" << std::endl;
 }
@@ -126,6 +126,7 @@ void horizontalBrokenLines (int amount) {
     std::cout << std::endl;
 }
 
+// Default = 25
 void horizontalLine () {
     std::cout << "─────────────────────────" << std::endl;
 }
